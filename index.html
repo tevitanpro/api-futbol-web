@@ -177,15 +177,26 @@
     <script>
         const baseUrl = 'https://api-futbol-pro.onrender.com';
 
-        // Función para verificar el código VIP del usuario
+        // Función para verificar Clave Maestra o Códigos Dinámicos de Clientes
         function verificarVIP() {
             const claveIngresada = document.getElementById('vip_code').value.trim();
-            const passwordSecreta = "TEVITAN2026"; // Cambie esta contraseña por la que quiera darle a sus clientes
+            const errorMsg = document.getElementById('error-msg');
 
-            if (claveIngresada === passwordSecreta) {
+            // 1. Su clave maestra personal exclusiva
+            const claveMaestra = "TEVITAN2026";
+
+            // 2. Lista de códigos para los clientes que van pagando (puede agregar más separados por coma)
+            const codigosClientes = [
+                "VIP-7782",
+                "NEQUI-1029",
+                "JACK-4451",
+                "PRO-9983"
+            ];
+
+            if (claveIngresada === claveMaestra || codigosClientes.includes(claveIngresada)) {
                 document.getElementById('jackbusca-lock').classList.add('hidden');
+                errorMsg.classList.add('hidden');
             } else {
-                const errorMsg = document.getElementById('error-msg');
                 errorMsg.classList.remove('hidden');
             }
         }
