@@ -56,25 +56,44 @@
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
             <h2 class="text-lg font-bold text-amber-300 border-b border-slate-800 pb-2">2. Motor JackBusca (Córners y Tarjetas)</h2>
             
-            <!-- Parámetros Generales -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                    <label class="block text-xs text-slate-400 mb-1">Promedio Esperado de Córners</label>
-                    <input type="number" id="prom_corners" value="9.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
-                </div>
+            <!-- Parámetros Generales de Tarjetas y Árbitro -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
                     <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
                 </div>
                 <div>
-                    <label class="block text-xs text-slate-400 mb-1">Cuota Tarjetas Más 3.5</label>
-                    <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                    <label class="block text-xs text-slate-400 mb-1">Promedio Esperado de Córners</label>
+                    <input type="number" id="prom_corners" value="9.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
                 </div>
             </div>
 
-            <!-- ¡NUEVO! Inputs específicos para las cuotas de Córners que usted necesita calcular -->
+            <!-- NUEVO: Cuotas Específicas de Tarjetas -->
             <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Córners para Simular:</p>
+                <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Tarjetas:</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 3.5 Tarjetas</label>
+                        <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 3.5 Tarjetas</label>
+                        <input type="number" id="c_t_menos35" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 4.5 Tarjetas</label>
+                        <input type="number" id="c_t_mas45" value="2.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 4.5 Tarjetas</label>
+                        <input type="number" id="c_t_menos45" value="1.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cuotas Específicas de Córners -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Córners (Del 7.5 al 10.5):</p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div>
                         <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 7.5 Córners</label>
@@ -181,25 +200,15 @@
             const u25 = document.getElementById('c_menos25').value;
             const m35 = document.getElementById('c_mas35').value;
             const u35 = document.getElementById('c_menos35').value;
+            
             const corners = document.getElementById('prom_corners').value;
             const tarjetas = document.getElementById('prom_tarjetas').value;
             const c_t35 = document.getElementById('c_t_mas35').value;
 
-            // Recogemos los valores de las nuevas cuotas de córners para mandarlas al backend si las recibe
-            const cm75 = document.getElementById('c_corner_mas75').value;
-            const cu75 = document.getElementById('c_corner_menos75').value;
-            const cm85 = document.getElementById('c_corner_mas85').value;
-            const cu85 = document.getElementById('c_corner_menos85').value;
-            const cm95 = document.getElementById('c_corner_mas95').value;
-            const cu95 = document.getElementById('c_corner_menos95').value;
-            const cm105 = document.getElementById('c_corner_mas105').value;
-            const cu105 = document.getElementById('c_corner_menos105').value;
-
-            // Construcción de la URL incluyendo todas las variables nuevas
             const url = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_esperado_corners=' + corners + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
             
             const contenedor = document.getElementById('resultado-jack');
-            contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca completo con líneas de córners...</p>';
+            contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca completo...</p>';
 
             try {
                 let resp = await fetch(url);
