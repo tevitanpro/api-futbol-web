@@ -44,6 +44,10 @@
                         <label class="block text-xs text-slate-400 mb-1">Más 3.5 Goles</label>
                         <input type="number" id="c_mas35" value="3.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
                     </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Menos 3.5 Goles</label>
+                        <input type="number" id="c_menos35" value="1.32" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+                    </div>
                 </div>
             </div>
 
@@ -84,12 +88,15 @@
             const m25 = document.getElementById('c_mas25').value;
             const u25 = document.getElementById('c_menos25').value;
             const m35 = document.getElementById('c_mas35').value;
+            const u35 = document.getElementById('c_menos35').value;
             const tarjetas = document.getElementById('prom_tarjetas').value;
             const c_t35 = document.getElementById('c_t_mas35').value;
 
             const baseUrl = 'https://api-futbol-pro.onrender.com';
-            const urlFase1 = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35;
-            const urlJack = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
+            
+            // Construcción exacta apuntando a su FastAPI
+            const urlFase1 = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
+            const urlJack = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
 
             const contenedorRes = document.getElementById('contenido-resultado');
             const cajaRes = document.getElementById('resultado');
