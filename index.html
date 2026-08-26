@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
-    <div class="max-w-5xl mx-auto">
+    <div class="max-w-4xl mx-auto">
         <header class="text-center mb-8">
             <h1 class="text-3xl font-extrabold text-emerald-400">⚽ API Master Pro</h1>
             <p class="text-slate-400 text-sm mt-1">Motor Estocástico de 50,000 Escenarios - Versión Completa (Goles + JackBusca)</p>
@@ -40,14 +40,6 @@
                         <label class="block text-xs text-slate-400 mb-1">Menos 2.5 Goles</label>
                         <input type="number" id="c_menos25" value="1.85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
                     </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Más 3.5 Goles</label>
-                        <input type="number" id="c_mas35" value="3.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Menos 3.5 Goles</label>
-                        <input type="number" id="c_menos35" value="1.32" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
                 </div>
             </div>
 
@@ -56,17 +48,17 @@
                 <h2 class="text-lg font-bold mb-3 text-amber-300 border-b border-slate-800 pb-2">2. Parámetros JackBusca (Córners y Tarjetas)</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
-                        <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                        <label class="block text-xs text-slate-400 mb-1">Promedio Esperado de Córners</label>
+                        <input type="number" id="prom_corners" value="9.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
                     </div>
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Tarjetas Más 3.5</label>
-                        <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                        <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
+                        <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
                     </div>
                 </div>
             </div>
 
-            <button onclick="consultarAPI()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
+            <button onclick="consultarAPI()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20">
                 Ejecutar Simulación Completa (50k Escenarios)
             </button>
         </div>
@@ -87,75 +79,41 @@
             const v = document.getElementById('c_visitante').value;
             const m25 = document.getElementById('c_mas25').value;
             const u25 = document.getElementById('c_menos25').value;
-            const m35 = document.getElementById('c_mas35').value;
-            const u35 = document.getElementById('c_menos35').value;
+            const corners = document.getElementById('prom_corners').value;
             const tarjetas = document.getElementById('prom_tarjetas').value;
-            const c_t35 = document.getElementById('c_t_mas35').value;
 
-            const baseUrl = 'https://api-futbol-pro.onrender.com';
-            
-            const urlFase1 = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
-            const urlJack = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
+            // URL corregida con una sola barra /
+            const urlRender = `https://api-futbol-pro.onrender.com/analisis/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}`;
 
             const contenedorRes = document.getElementById('contenido-resultado');
             const cajaRes = document.getElementById('resultado');
             
-            contenedorRes.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-4 font-bold">Procesando 50,000 escenarios en Render...</p>';
+            contenedorRes.innerHTML = `<p class="col-span-2 text-center text-amber-400 animate-pulse py-4 font-bold">Procesando 50,000 escenarios en el motor de Render...</p>`;
             cajaRes.classList.remove('hidden');
 
             try {
-                let respF1 = await fetch(urlFase1);
-                let resFase1 = await respF1.json();
+                let respuesta = await fetch(urlRender);
+                let datos = await respuesta.json();
 
-                let respJack = await fetch(urlJack);
-                let resJack = await respJack.json();
-
-                let html = '';
-                
-                // Bloque 1: Probabilidades
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>';
-                html += '<p>Local (1): <b>' + resFase1.probabilidades_1x2_simuladas.local + '</b></p>';
-                html += '<p>Empate (X): <b>' + resFase1.probabilidades_1x2_simuladas.empate + '</b></p>';
-                html += '<p>Visitante (2): <b>' + resFase1.probabilidades_1x2_simuladas.visitante + '</b></p>';
-                html += '</div>';
-
-                // Bloque 2: Recomendaciones
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>';
-                html += '<ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">';
-                html += '<li>' + resFase1.top_3_recomendaciones[0] + '</li>';
-                html += '<li>' + resFase1.top_3_recomendaciones[1] + '</li>';
-                html += '<li>' + resFase1.top_3_recomendaciones[2] + '</li>';
-                html += '</ul>';
-                html += '</div>';
-
-                // Bloque 3: Goles
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>';
-                html += '<p>Más de 2.5: <b>' + resFase1.mercados_clave_goles.mas_de_2.5_goles + '</b></p>';
-                html += '<p>Menos de 2.5: <b>' + resFase1.mercados_clave_goles.menos_de_2.5_goles + '</b></p>';
-                html += '<p>Más de 3.5: <b>' + resFase1.mercados_clave_goles.mas_de_3.5_goles + '</b></p>';
-                html += '<p>Menos de 3.5: <b>' + resFase1.mercados_clave_goles.menos_de_3.5_goles + '</b></p>';
-                html += '</div>';
-
-                // Bloque 4: JackBusca (Tarjetas y Córners)
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-amber-400 mb-2">JackBusca - Tarjetas y Córners</h3>';
-                html += '<p class="text-xs text-slate-400 mb-2">Árbitro base: ' + resJack.arbitraje.promedio_tarjetas_referencia + '</p>';
-                html += '<p>Más 3.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados.mas_de_3.5_tarjetas + '</b></p>';
-                html += '<p>Más 4.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas + '</b></p>';
-                html += '<p>Más 5.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados.mas_de_5.5_tarjetas + '</b></p>';
-                html += '<p class="mt-2 text-amber-300 font-semibold">Córners (Más / Menos):</p>';
-                html += '<p class="text-xs">7.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["7.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["7.5"] + '</p>';
-                html += '<p class="text-xs">8.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["8.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["8.5"] + '</p>';
-                html += '<p class="text-xs">9.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["9.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["9.5"] + '</p>';
-                html += '<p class="text-xs">10.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["10.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["10.5"] + '</p>';
-                html += '</div>';
-
+                let html = `
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>
+                        <p>Local: <b>${datos.probabilidades_1x2_simuladas.local}</b></p>
+                        <p>Empate: <b>${datos.probabilidades_1x2_simuladas.empate}</b></p>
+                        <p>Visitante: <b>${datos.probabilidades_1x2_simuladas.visitante}</b></p>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>
+                        <ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">
+                            <li>${datos.top_3_recomendaciones[0]}</li>
+                            <li>${datos.top_3_recomendaciones[1]}</li>
+                            <li>${datos.top_3_recomendaciones[2]}</li>
+                        </ul>
+                    </div>
+                `;
                 contenedorRes.innerHTML = html;
             } catch (err) {
-                contenedorRes.innerHTML = '<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API en Render: ' + err + '</p>';
+                contenedorRes.innerHTML = `<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API en Render. Verifique que la URL esté bien escrita: ${err}</p>`;
             }
         }
     </script>
