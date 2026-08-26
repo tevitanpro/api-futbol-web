@@ -87,56 +87,73 @@
             const tarjetas = document.getElementById('prom_tarjetas').value;
             const c_t35 = document.getElementById('c_t_mas35').value;
 
-            // URLs base para consumir ambas rutas del backend en Render
-            const baseUrl = `https://api-futbol-pro.onrender.com`;
+            const baseUrl = 'https://api-futbol-pro.onrender.com';
             const urlFase1 = `${baseUrl}/analisis/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}&cuota_mas_35_goles=${m35}`;
             const urlJack = `${baseUrl}/jackbusca/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}&cuota_mas_35_goles=${m35}&promedio_tarjetas_arbitro=${tarjetas}&cuota_tarjetas_mas_35=${c_t35}`;
 
             const contenedorRes = document.getElementById('contenido-resultado');
             const cajaRes = document.getElementById('resultado');
             
-            contenedorRes.innerHTML = `<p class="col-span-2 text-center text-amber-400 animate-pulse py-4 font-bold">Procesando 50,000 escenarios en paralelo (Fase 1 + JackBusca)...</p>`;
+            contenedorRes.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-4 font-bold">Procesando 50,000 escenarios en paralelo (Fase 1 + JackBusca)...</p>';
             cajaRes.classList.remove('hidden');
 
             try {
-                // Consumimos ambas rutas en paralelo para traer toda la información limpia
                 let [resFase1, resJack] = await Promise.all([
                     fetch(urlFase1).then(r => r.json()),
                     fetch(urlJack).then(r => r.json())
                 ]);
 
+                let localVal = resFase1.probabilidades_1x2_simuladas.local;
+                let empateVal = resFase1.probabilidades_1x2_simuladas.empate;
+                let visitanteVal = resFase1.probabilidades_1x2_simuladas.visitante;
+
+                let rec0 = resFase1.top_3_recomendaciones[0];
+                let rec1 = resFase1.top_3_recomendaciones[1];
+                let rec2 = resFase1.top_3_recomendaciones[2];
+
+                let over25 = resFase1.mercados_clave_goles.mas_de_2.5_goles;
+                let under25 = resFase1.mercados_clave_goles.menos_de_2.5_goles;
+                let over35 = resFase1.mercados_clave_goles.mas_de_3.5_goles;
+                let under35 = resFase1.mercados_clave_goles.menos_de_3.5_goles;
+
+                let refTarjetas = resJack.arbitraje.promedio_tarjetas_referencia;
+                let tMas35 = resJack.mercados_tarjetas_explicados.mas_de_3.5_tarjetas;
+                let tMas45 = resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas;
+                let cMas95 = resJack.mercados_tiros_de_esquina.mas_de["9.5"];
+                let cMenos95 = resJack.mercados_tiros_de_esquina.menos_de["9.5"];
+
                 let html = `
                     <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                         <h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>
-                        <p>Local (1): <b>${resFase1.probabilidades_1x2_simuladas.local}</b></p>
-                        <p>Empate (X): <b>${resFase1.probabilidades_1x2_simuladas.empate}</b></p>
-                        <p>Visitante (2): <b>${resFase1.probabilidades_1x2_simuladas.visitante}</b></p>
+                        <p>Local (1): <b>${localVal}</b></p>
+                        <p>Empate (X): <b>${empateVal}</b></p>
+                        <p>Visitante (2): <b>${visitanteVal}</b></p>
                     </div>
 
                     <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                         <h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>
                         <ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">
-                            <li>${resFase1.top_3_recomendaciones[0]}</li>
-                            <li>${resFase1.top_3_recomendaciones[1]}</li>
-                            <li>${resFase1.top_3_recomendaciones[2]}</li>
+                            <li>${rec0}</li>
+                            <li>${rec1}</li>
+                            <li>${rec2}</li>
                         </ul>
                     </div>
 
                     <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                         <h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>
-                        <p>Más de 2.5: <b>${resFase1.mercados_clave_goles.mas_de_2.5_goles}</b></p>
-                        <p>Menos de 2.5: <b>${resFase1.mercados_clave_goles.menos_de_2.5_goles}</b></p>
-                        <p>Más de 3.5: <b>${resFase1.mercados_clave_goles.mas_de_3.5_goles}</b></p>
-                        <p>Menos de 3.5: <b>${resFase1.mercados_clave_goles.menos_de_3.5_goles}</b></p>
+                        <p>Más de 2.5: <b>${over25}</b></p>
+                        <p>Menos de 2.5: <b>${under25}</b></p>
+                        <p>Más de 3.5: <b>${over35}</b></p>
+                        <p>Menos de 3.5: <b>${under35}</b></p>
                     </div>
 
                     <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                        <h3 class="font-bold text-amber-400 mb-2">JackBusca - Tarjetas y Córners (9.5)</h3>
-                        <p class="text-xs text-slate-400 mb-2">Árbitro base: ${resJack.arbitraje.promedio_tarjetas_referencia}</p>
-                        <p>Más 3.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_3.5_tarjetas}</b></p>
-                        <p>Más 4.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas}</b></p>
-                        <p class="mt-2">Córners Más 9.5: <b class="text-amber-300">${resJack.mercados_tiros_de_esquina.mas_de["9.5"]}</b></p>
-                        <p>Córners Menos 9.5: <b class="text-amber-300">${resJack.mercados_tiros_de_esquina.menos_de["9.5"]}</b></p>
+                        <h3 class="font-bold text-amber-400 mb-2">JackBusca - Tarjetas y Córners</h3>
+                        <p class="text-xs text-slate-400 mb-2">Árbitro base: ${refTarjetas}</p>
+                        <p>Más 3.5 Tarjetas: <b>${tMas35}</b></p>
+                        <p>Más 4.5 Tarjetas: <b>${tMas45}</b></p>
+                        <p class="mt-2">Córners Más 9.5: <b class="text-amber-300">${cMas95}</b></p>
+                        <p>Córners Menos 9.5: <b class="text-amber-300">${cMenos95}</b></p>
                     </div>
                 `;
                 contenedorRes.innerHTML = html;
