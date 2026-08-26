@@ -7,81 +7,132 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
-    <div class="max-w-5xl mx-auto">
-        <header class="text-center mb-8">
+    <div class="max-w-5xl mx-auto space-y-8">
+        <header class="text-center mb-4">
             <h1 class="text-3xl font-extrabold text-emerald-400">⚽ API Master Pro</h1>
-            <p class="text-slate-400 text-sm mt-1">Motor Estocástico de 50,000 Escenarios - Versión Completa (Goles + JackBusca)</p>
+            <p class="text-slate-400 text-sm mt-1">Panel Estocástico Independiente (Goles & JackBusca)</p>
         </header>
 
-        <!-- Formulario General -->
-        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl mb-8 space-y-6">
-            
-            <!-- Sección 1: Cuotas 1X2 y Goles -->
-            <div>
-                <h2 class="text-lg font-bold mb-3 text-emerald-300 border-b border-slate-800 pb-2">1. Cuotas Principales (1X2 y Goles)</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Local (1)</label>
-                        <input type="number" id="c_local" value="3.03" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Empate (X)</label>
-                        <input type="number" id="c_empate" value="3.26" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Visitante (2)</label>
-                        <input type="number" id="c_visitante" value="2.56" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Más 2.5 Goles</label>
-                        <input type="number" id="c_mas25" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Menos 2.5 Goles</label>
-                        <input type="number" id="c_menos25" value="1.85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Más 3.5 Goles</label>
-                        <input type="number" id="c_mas35" value="3.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Menos 3.5 Goles</label>
-                        <input type="number" id="c_menos35" value="1.32" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
+        <!-- BLOQUE 1: Motor Principal (1X2 y Goles) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+            <h2 class="text-lg font-bold text-emerald-300 border-b border-slate-800 pb-2">1. Motor Principal: 1X2 y Goles</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Cuota Local (1)</label>
+                    <input type="number" id="c_local" value="3.03" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Cuota Empate (X)</label>
+                    <input type="number" id="c_empate" value="3.26" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Cuota Visitante (2)</label>
+                    <input type="number" id="c_visitante" value="2.56" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Más 2.5 Goles</label>
+                    <input type="number" id="c_mas25" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Menos 2.5 Goles</label>
+                    <input type="number" id="c_menos25" value="1.85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Más 3.5 Goles</label>
+                    <input type="number" id="c_mas35" value="3.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Menos 3.5 Goles</label>
+                    <input type="number" id="c_menos35" value="1.32" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
                 </div>
             </div>
-
-            <!-- Sección 2: JackBusca (Córners y Tarjetas) -->
-            <div>
-                <h2 class="text-lg font-bold mb-3 text-amber-300 border-b border-slate-800 pb-2">2. Parámetros JackBusca (Córners y Tarjetas)</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
-                        <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Tarjetas Más 3.5</label>
-                        <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
-                    </div>
-                </div>
-            </div>
-
-            <button onclick="consultarAPI()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/25 cursor-pointer">
-                Ejecutar Simulación Completa (50k Escenarios)
+            <button onclick="consultarGoles()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
+                Ejecutar Análisis 1X2 y Goles
             </button>
+            
+            <!-- Resultados Goles -->
+            <div id="resultado-goles" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800"></div>
         </div>
 
-        <!-- Resultados -->
-        <div id="resultado" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
-            <h2 class="text-xl font-bold mb-4 text-emerald-300">📊 Resultados del Análisis Estocástico</h2>
-            <div id="contenido-resultado" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-300">
-                <!-- Se llena dinámicamente con JS -->
+        <!-- BLOQUE 2: Motor JackBusca (Córners y Tarjetas) -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+            <h2 class="text-lg font-bold text-amber-300 border-b border-slate-800 pb-2">2. Motor JackBusca (Córners y Tarjetas)</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
+                    <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Cuota Tarjetas Más 3.5</label>
+                    <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                </div>
             </div>
+            <button onclick="consultarJackBusca()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer">
+                Ejecutar Análisis JackBusca
+            </button>
+
+            <!-- Resultados JackBusca -->
+            <div id="resultado-jack" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800"></div>
         </div>
     </div>
 
     <script>
-        async function consultarAPI() {
+        const baseUrl = 'https://api-futbol-pro.onrender.com';
+
+        async function consultarGoles() {
+            const l = document.getElementById('c_local').value;
+            const e = document.getElementById('c_empate').value;
+            const v = document.getElementById('c_visitante').value;
+            const m25 = document.getElementById('c_mas25').value;
+            const u25 = document.getElementById('c_menos25').value;
+            const m35 = document.getElementById('c_mas35').value;
+            const u35 = document.getElementById('c_menos35').value;
+
+            const url = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
+            const contenedor = document.getElementById('resultado-goles');
+            
+            contenedor.innerHTML = '<p class="col-span-3 text-center text-emerald-400 animate-pulse py-2 font-bold">Calculando 1X2 y Goles...</p>';
+            contenedor.classList.remove('hidden');
+
+            try {
+                let resp = await fetch(url);
+                let datos = await resp.json();
+
+                let html = '';
+                // 1X2
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                html += '<h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>';
+                html += '<p>Local (1): <b>' + datos.probabilidades_1x2_simuladas.local + '</b></p>';
+                html += '<p>Empate (X): <b>' + datos.probabilidades_1x2_simuladas.empate + '</b></p>';
+                html += '<p>Visitante (2): <b>' + datos.probabilidades_1x2_simuladas.visitante + '</b></p>';
+                html += '</div>';
+
+                // Recomendaciones
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                html += '<h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>';
+                html += '<ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">';
+                html += '<li>' + datos.top_3_recomendaciones[0] + '</li>';
+                html += '<li>' + datos.top_3_recomendaciones[1] + '</li>';
+                html += '<li>' + datos.top_3_recomendaciones[2] + '</li>';
+                html += '</ul>';
+                html += '</div>';
+
+                // Goles
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>';
+                html += '<p>Más 2.5: <b>' + datos.mercados_clave_goles["mas_de_2.5_goles"] + '</b></p>';
+                html += '<p>Menos 2.5: <b>' + datos.mercados_clave_goles["menos_de_2.5_goles"] + '</b></p>';
+                html += '<p>Más 3.5: <b>' + datos.mercados_clave_goles["mas_de_3.5_goles"] + '</b></p>';
+                html += '<p>Menos 3.5: <b>' + datos.mercados_clave_goles["menos_de_3.5_goles"] + '</b></p>';
+                html += '</div>';
+
+                contenedor.innerHTML = html;
+            } catch (err) {
+                contenedor.innerHTML = '<p class="col-span-3 text-center text-red-400 py-2">Error: ' + err + '</p>';
+            }
+        }
+
+        async function consultarJackBusca() {
             const l = document.getElementById('c_local').value;
             const e = document.getElementById('c_empate').value;
             const v = document.getElementById('c_visitante').value;
@@ -92,69 +143,38 @@
             const tarjetas = document.getElementById('prom_tarjetas').value;
             const c_t35 = document.getElementById('c_t_mas35').value;
 
-            const baseUrl = 'https://api-futbol-pro.onrender.com';
-            
-            const urlFase1 = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
-            const urlJack = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
+            const url = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
+            const contenedor = document.getElementById('resultado-jack');
 
-            const contenedorRes = document.getElementById('contenido-resultado');
-            const cajaRes = document.getElementById('resultado');
-            
-            contenedorRes.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-4 font-bold">Procesando 50,000 escenarios en Render...</p>';
-            cajaRes.classList.remove('hidden');
+            contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca (Córners y Tarjetas)...</p>';
+            contenedor.classList.remove('hidden');
 
             try {
-                let respF1 = await fetch(urlFase1);
-                let resFase1 = await respF1.json();
-
-                let respJack = await fetch(urlJack);
-                let resJack = await respJack.json();
+                let resp = await fetch(url);
+                let datos = await resp.json();
 
                 let html = '';
-                
-                // 1. Probabilidades 1X2
+                // Tarjetas
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>';
-                html += '<p>Local (1): <b>' + resFase1.probabilidades_1x2_simuladas.local + '</b></p>';
-                html += '<p>Empate (X): <b>' + resFase1.probabilidades_1x2_simuladas.empate + '</b></p>';
-                html += '<p>Visitante (2): <b>' + resFase1.probabilidades_1x2_simuladas.visitante + '</b></p>';
+                html += '<h3 class="font-bold text-amber-400 mb-2">Tarjetas (Árbitro: ' + datos.arbitraje.promedio_tarjetas_referencia + ')</h3>';
+                html += '<p>Más 3.5: <b>' + datos.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
+                html += '<p>Más 4.5: <b>' + datos.mercados_tarjetas_explicados["mas_de_4.5_tarjetas"] + '</b></p>';
                 html += '</div>';
 
-                // 2. Top Recomendaciones
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>';
-                html += '<ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">';
-                html += '<li>' + resFase1.top_3_recomendaciones[0] + '</li>';
-                html += '<li>' + resFase1.top_3_recomendaciones[1] + '</li>';
-                html += '<li>' + resFase1.top_3_recomendaciones[2] + '</li>';
-                html += '</ul>';
+                // Córners detallados
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-1">';
+                html += '<h3 class="font-bold text-amber-400 mb-2">Córners por Línea</h3>';
+                let corners = datos.mercados_tiros_de_esquina.mas_de;
+                for (let linea in corners) {
+                    let mas = datos.mercados_tiros_de_esquina.mas_de[linea];
+                    let menos = datos.mercados_tiros_de_esquina.menos_de[linea];
+                    html += '<p class="text-xs">Línea <b>' + linea + '</b> ➔ Más: <span class="text-emerald-400 font-semibold">' + mas + '</span> | Menos: <span class="text-rose-400 font-semibold">' + menos + '</span></p>';
+                }
                 html += '</div>';
 
-                // 3. Mercados de Goles (CORREGIDO PARA JS)
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>';
-                html += '<p>Más de 2.5: <b>' + resFase1.mercados_clave_goles["mas_de_2.5_goles"] + '</b></p>';
-                html += '<p>Menos de 2.5: <b>' + resFase1.mercados_clave_goles["menos_de_2.5_goles"] + '</b></p>';
-                html += '<p>Más de 3.5: <b>' + resFase1.mercados_clave_goles["mas_de_3.5_goles"] + '</b></p>';
-                html += '<p>Menos de 3.5: <b>' + resFase1.mercados_clave_goles["menos_de_3.5_goles"] + '</b></p>';
-                html += '</div>';
-
-                // 4. JackBusca - Tarjetas y Córners (CORREGIDO PARA JS)
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-amber-400 mb-2">JackBusca - Tarjetas y Córners</h3>';
-                html += '<p class="text-xs text-slate-400 mb-2">Árbitro base: ' + resJack.arbitraje.promedio_tarjetas_referencia + '</p>';
-                html += '<p>Más 3.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
-                html += '<p>Más 4.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados["mas_de_4.5_tarjetas"] + '</b></p>';
-                html += '<p class="mt-2 text-amber-300 font-semibold text-xs">Córners:</p>';
-                html += '<p class="text-xs">7.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["7.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["7.5"] + '</p>';
-                html += '<p class="text-xs">8.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["8.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["8.5"] + '</p>';
-                html += '<p class="text-xs">9.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["9.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["9.5"] + '</p>';
-                html += '<p class="text-xs">10.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["10.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["10.5"] + '</p>';
-                html += '</div>';
-
-                contenedorRes.innerHTML = html;
+                contenedor.innerHTML = html;
             } catch (err) {
-                contenedorRes.innerHTML = '<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API: ' + err + '</p>';
+                contenedor.innerHTML = '<p class="col-span-2 text-center text-red-400 py-2">Error: ' + err + '</p>';
             }
         }
     </script>
