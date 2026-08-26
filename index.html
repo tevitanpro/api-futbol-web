@@ -66,7 +66,7 @@
                 </div>
             </div>
 
-            <button onclick="consultarAPI()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20">
+            <button onclick="consultarAPI()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
                 Ejecutar Simulación Completa (50k Escenarios)
             </button>
         </div>
@@ -94,9 +94,8 @@
 
             const baseUrl = 'https://api-futbol-pro.onrender.com';
             
-            // Construcción exacta apuntando a su FastAPI
-            const urlFase1 = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
-            const urlJack = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
+            const urlFase1 = `${baseUrl}/analisis/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}&cuota_mas_35_goles=${m35}&cuota_menos_35_goles=${u35}`;
+            const urlJack = `${baseUrl}/jackbusca/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}&cuota_mas_35_goles=${m35}&cuota_menos_35_goles=${u35}&promedio_tarjetas_arbitro=${tarjetas}&cuota_tarjetas_mas_35=${c_t35}`;
 
             const contenedorRes = document.getElementById('contenido-resultado');
             const cajaRes = document.getElementById('resultado');
@@ -141,8 +140,12 @@
                         <p class="text-xs text-slate-400 mb-2">Árbitro base: ${resJack.arbitraje.promedio_tarjetas_referencia}</p>
                         <p>Más 3.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_3.5_tarjetas}</b></p>
                         <p>Más 4.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas}</b></p>
-                        <p class="mt-2">Córners Más 9.5: <b class="text-amber-300">${resJack.mercados_tiros_de_esquina.mas_de["9.5"]}</b></p>
-                        <p>Córners Menos 9.5: <b class="text-amber-300">${resJack.mercados_tiros_de_esquina.menos_de["9.5"]}</b></p>
+                        <p>Más 5.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_5.5_tarjetas}</b></p>
+                        <p class="mt-2 text-amber-300 font-semibold">Córners (Más / Menos):</p>
+                        <p class="text-xs">7.5 -> Más: ${resJack.mercados_tiros_de_esquina.mas_de["7.5"]} | Menos: ${resJack.mercados_tiros_de_esquina.menos_de["7.5"]}</p>
+                        <p class="text-xs">8.5 -> Más: ${resJack.mercados_tiros_de_esquina.mas_de["8.5"]} | Menos: ${resJack.mercados_tiros_de_esquina.menos_de["8.5"]}</p>
+                        <p class="text-xs">9.5 -> Más: ${resJack.mercados_tiros_de_esquina.mas_de["9.5"]} | Menos: ${resJack.mercados_tiros_de_esquina.menos_de["9.5"]} </p>
+                        <p class="text-xs">10.5 -> Más: ${resJack.mercados_tiros_de_esquina.mas_de["10.5"]} | Menos: ${resJack.mercados_tiros_de_esquina.menos_de["10.5"]}</p>
                     </div>
                 `;
                 contenedorRes.innerHTML = html;
