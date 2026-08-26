@@ -130,21 +130,21 @@
                 html += '</ul>';
                 html += '</div>';
 
-                // 3. Mercados de Goles
+                // 3. Mercados de Goles (CORREGIDO PARA JS)
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
                 html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>';
-                html += '<p>Más de 2.5: <b>' + resFase1.mercados_clave_goles.mas_de_2.5_goles + '</b></p>';
-                html += '<p>Menos de 2.5: <b>' + resFase1.mercados_clave_goles.menos_de_2.5_goles + '</b></p>';
-                html += '<p>Más de 3.5: <b>' + resFase1.mercados_clave_goles.mas_de_3.5_goles + '</b></p>';
-                html += '<p>Menos de 3.5: <b>' + resFase1.mercados_clave_goles.menos_de_3.5_goles + '</b></p>';
+                html += '<p>Más de 2.5: <b>' + resFase1.mercados_clave_goles["mas_de_2.5_goles"] + '</b></p>';
+                html += '<p>Menos de 2.5: <b>' + resFase1.mercados_clave_goles["menos_de_2.5_goles"] + '</b></p>';
+                html += '<p>Más de 3.5: <b>' + resFase1.mercados_clave_goles["mas_de_3.5_goles"] + '</b></p>';
+                html += '<p>Menos de 3.5: <b>' + resFase1.mercados_clave_goles["menos_de_3.5_goles"] + '</b></p>';
                 html += '</div>';
 
-                // 4. JackBusca (Tarjetas y Córners)
+                // 4. JackBusca - Tarjetas y Córners (CORREGIDO PARA JS)
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
                 html += '<h3 class="font-bold text-amber-400 mb-2">JackBusca - Tarjetas y Córners</h3>';
                 html += '<p class="text-xs text-slate-400 mb-2">Árbitro base: ' + resJack.arbitraje.promedio_tarjetas_referencia + '</p>';
-                html += '<p>Más 3.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados.mas_de_3.5_tarjetas + '</b></p>';
-                html += '<p>Más 4.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas + '</b></p>';
+                html += '<p>Más 3.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
+                html += '<p>Más 4.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados["mas_de_4.5_tarjetas"] + '</b></p>';
                 html += '<p class="mt-2 text-amber-300 font-semibold text-xs">Córners:</p>';
                 html += '<p class="text-xs">7.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["7.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["7.5"] + '</p>';
                 html += '<p class="text-xs">8.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["8.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["8.5"] + '</p>';
@@ -154,7 +154,7 @@
 
                 contenedorRes.innerHTML = html;
             } catch (err) {
-                contenedorRes.innerHTML = '<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API en Render: ' + err + '</p>';
+                contenedorRes.innerHTML = '<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API: ' + err + '</p>';
             }
         }
     </script>
