@@ -42,6 +42,8 @@
                     <!-- Formulario de Registro (Oculto por defecto) -->
                     <div id="form-register-box" class="space-y-2.5 hidden">
                         <input type="text" id="reg_username" placeholder="Nuevo Usuario" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                        <!-- Casilla de Correo Añadida -->
+                        <input type="email" id="reg_email" placeholder="Correo Electrónico" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
                         <input type="password" id="reg_password" placeholder="Contraseña Segura" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
                         <button onclick="ejecutarRegistro()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md cursor-pointer">
                             Crear Cuenta Gratis
@@ -169,7 +171,7 @@
                     </div>
                 </div>
 
-                <!-- Cuotas Específicas de Tarjetas (Ampliado hasta 5.5 y flexible) -->
+                <!-- Cuotas Específicas de Tarjetas -->
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
                     <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Tarjetas (Déjalas vacías si no existen):</p>
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -200,7 +202,7 @@
                     </div>
                 </div>
 
-                <!-- Cuotas Específicas de Córners (Flexibles) -->
+                <!-- Cuotas Específicas de Córners -->
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
                     <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Córners (Déjalas vacías si no aplican):</p>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -314,11 +316,12 @@
 
         async function ejecutarRegistro() {
             const u = document.getElementById('reg_username').value.trim();
+            const email = document.getElementById('reg_email').value.trim();
             const p = document.getElementById('reg_password').value.trim();
             const msg = document.getElementById('auth-msg');
 
-            if (!u || !p) {
-                msg.innerText = "Completa todos los campos.";
+            if (!u || !email || !p) {
+                msg.innerText = "Completa todos los campos (incluyendo el correo).";
                 msg.classList.remove('hidden');
                 return;
             }
@@ -327,7 +330,7 @@
                 let resp = await fetch(baseUrl + '/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: u, password: p })
+                    body: JSON.stringify({ username: u, email: email, password: p })
                 });
                 let data = await resp.json();
                 if (resp.ok) {
@@ -531,7 +534,6 @@
 
                 contenedor.innerHTML = html;
 
-                // Si hay sesión activa, recargamos el historial automáticamente para que aparezca el nuevo cálculo
                 if (tokenJwt) cargarHistorial();
 
             } catch (err) {
