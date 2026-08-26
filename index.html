@@ -330,12 +330,12 @@
                 let resp = await fetch(baseUrl + '/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                   body: JSON.stringify({ usuario: u, correo: email, password: p })
+                    body: JSON.stringify({ usuario: u, correo: email, password: p })
                 });
                 let data = await resp.json();
                 if (resp.ok) {
                     msg.classList.add('hidden');
-                    alert('¡Cuenta creada con éxito! Ahora inicia sesión.');
+                    alert('¡Cuenta creada con éxito! Ya puedes iniciar sesión.');
                     switchAuthTab('login');
                 } else {
                     msg.innerText = data.detail || "Error al registrarse.";
@@ -348,41 +348,43 @@
         }
 
         async function ejecutarLogin() {
-    const u = document.getElementById('login_username').value.trim();
-    const p = document.getElementById('login_password').value.trim();
-    const msg = document.getElementById('auth-msg');
+            const u = document.getElementById('login_username').value.trim();
+            const p = document.getElementById('login_password').value.trim();
+            const msg = document.getElementById('auth-msg');
 
-    if (!u || !p) {
-        msg.innerText = "Ingresa usuario y contraseña.";
-        msg.classList.remove('hidden');
-        return;
-    }
+            if (!u || !p) {
+                msg.innerText = "Ingresa usuario y contraseña.";
+                msg.classList.remove('hidden');
+                return;
+            }
 
-    try {
-        let resp = await fetch(baseUrl + '/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ usuario: u, password: p })
-        });
-        
-        let data = await resp.json();
-        
-        if (resp.ok) {
-            tokenJwt = "sesion_activa"; 
-            localStorage.setItem('token_jwt', tokenJwt);
-            localStorage.setItem('username', data.usuario);
-            msg.classList.add('hidden');
-            actualizarInterfazLogueado(data.usuario);
-            cargarHistorial();
-        } else {
-            msg.innerText = data.detail || "Credenciales incorrectas.";
-            msg.classList.remove('hidden');
+            try {
+                let resp = await fetch(baseUrl + '/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ usuario: u, password: p })
+                });
+                
+                let data = await resp.json();
+                
+                if (resp.ok) {
+                    tokenJwt = "sesion_activa"; 
+                    localStorage.setItem('token_jwt', tokenJwt);
+                    // Guardamos el nombre de usuario exacto devuelto por la API
+                    localStorage.setItem('username', data.usuario || u);
+                    msg.classList.add('hidden');
+                    actualizarInterfazLogueado(data.usuario || u);
+                    cargarHistorial();
+                } else {
+                    msg.innerText = data.detail || "Credenciales incorrectas.";
+                    msg.classList.remove('hidden');
+                }
+            } catch (err) {
+                msg.innerText = "Error al conectar con el backend.";
+                msg.classList.remove('hidden');
+            }
         }
-    } catch (err) {
-        msg.innerText = "Error al conectar con el backend.";
-        msg.classList.remove('hidden');
-    }
-}
+
         function verificarTokenGuardado() {
             const user = localStorage.getItem('username') || 'Usuario Pro';
             actualizarInterfazLogueado(user);
@@ -417,29 +419,36 @@
 
             try {
                 const usuarioActual = localStorage.getItem('username');
-let resp = await fetch(baseUrl + '/historial/' + usuarioActual, {
+                if (!usuarioActual) {
+                    container.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">Inicia sesión para ver tu historial.</p>';
+                    return;
+                }
+
+                let resp = await fetch(baseUrl + '/historial/' + encodeURIComponent(usuarioActual), {
                     headers: { 'Authorization': 'Bearer ' + tokenJwt }
                 });
+                
                 if (resp.status === 401) {
                     cerrarSesion();
                     return;
                 }
-              let data = await resp.json();
-    let listaHistorial = data.historial;
 
-    if (!listaHistorial || listaHistorial.length === 0) {
-        container.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">No tienes análisis guardados aún.</p>';
-        return;
-    }
+                let data = await resp.json();
+                let listaHistorial = data.historial;
 
-    let html = '';
-    listaHistorial.forEach(item => {
-        html += `<div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">`;
-        html += `<div class="flex justify-between text-[10px] text-slate-400"><span>${item.tipo || 'Análisis'}</span><span>${item.fecha ? item.fecha.substring(0, 10) : ''}</span></div>`;
-        html += `<p class="text-emerald-300 font-semibold truncate">${item.detalles || item.partido || 'Consulta de cuotas'}</p>`;
-        html += `</div>`;
-    });
-    container.innerHTML = html; 
+                if (!listaHistorial || listaHistorial.length === 0) {
+                    container.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">No tienes análisis guardados aún.</p>';
+                    return;
+                }
+
+                let html = '';
+                listaHistorial.forEach(item => {
+                    html += `<div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">`;
+                    html += `<div class="flex justify-between text-[10px] text-slate-400"><span>${item.tipo || 'Análisis'}</span><span>${item.fecha ? item.fecha.substring(0, 10) : ''}</span></div>`;
+                    html += `<p class="text-emerald-300 font-semibold truncate">${item.detalles || item.partido || 'Consulta de cuotas'}</p>`;
+                    html += `</div>`;
+                });
+                container.innerHTML = html; 
             } catch (err) {
                 container.innerHTML = '<p class="text-rose-400 text-center py-2 text-[11px]">Error al cargar historial.</p>';
             }
