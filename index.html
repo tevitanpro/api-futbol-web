@@ -74,7 +74,7 @@
                 <span id="vip-status-badge" class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/20">Modo Vista Previa 🔒</span>
             </div>
 
-            <!-- GUÍA ESPECÍFICA PARA JACKBUSCA (AQUÍ ESTABA EL VACÍO) -->
+            <!-- GUÍA ESPECÍFICA PARA JACKBUSCA -->
             <div class="bg-slate-950 border border-amber-500/20 p-4 rounded-xl text-xs text-slate-300 space-y-1">
                 <p class="font-bold text-amber-400 mb-1">💡 ¿Cómo configurar el Motor JackBusca?</p>
                 <p>1. <b>Promedio Tarjetas Árbitro:</b> Revise las estadísticas del juez central asignado para el encuentro (suele promediar entre 3.5 y 5.5 amarillas).</p>
@@ -156,27 +156,34 @@
                 </div>
             </div>
 
-            <!-- CONTENEDOR BLOQUEADO EXCLUSIVAMENTE EN EL BOTÓN Y ACCESO -->
+            <!-- CONTENEDOR BLOQUEADO CON WOMPI INTEGRADO -->
             <div class="space-y-4 pt-2">
-                <!-- Zona del Botón Protegido -->
                 <div id="jackbusca-lock-container" class="bg-slate-950 border border-amber-500/40 p-4 rounded-xl text-center space-y-3">
                     <div class="flex items-center justify-center gap-2 text-amber-400 font-bold text-sm">
                         <span>🔒</span> Desbloquea los resultados de este motor por solo <b class="text-white">$12.000 COP</b>
                     </div>
                     <p class="text-xs text-slate-400 max-w-lg mx-auto">
-                        Invierta con cabeza fría. Realice el pago vía Nequi o ingrese su código de acceso autorizado para destrabar el cálculo.
+                        Invierta con cabeza fría. Realice el pago automático de forma segura (Nequi, PSE, Tarjeta) o ingrese su código VIP autorizado.
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-2 justify-center items-center pt-1">
-                        <a href="https://wa.me/573007033243?text=Hola,%20quiero%20pagar%20los%20$12.000%20por%20Nequi%20para%20desbloquear%20el%20Motor%20JackBusca.%20Adjunto%20comprobante." target="_blank" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-lg transition shadow-md flex items-center gap-1.5">
-                            💜 Pagar $12k vía Nequi
-                        </a>
-                        <div class="flex gap-1.5">
+
+                    <!-- FORMULARIO AUTOMÁTICO WOMPI -->
+                    <form action="https://checkout.wompi.co/p/" method="GET" class="flex flex-col sm:flex-row gap-2 justify-center items-center pt-1">
+                        <input type="hidden" name="public-key" value="pub_test_TrgWfbEn77YfBKkLdO2PgG86RYRJlo6L">
+                        <input type="hidden" name="currency" value="COP">
+                        <input type="hidden" name="amount-in-cents" value="1200000">
+                        <input type="hidden" name="reference" value="API-MASTER-PRO-VIP-2026">
+
+                        <button type="submit" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-1.5 cursor-pointer">
+                            💜 Pagar $12k Automático (Nequi / Wompi)
+                        </button>
+
+                        <div class="flex gap-1.5 mt-2 sm:mt-0">
                             <input type="password" id="vip_code" placeholder="Código VIP" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-center text-amber-300 w-32 focus:outline-none focus:border-amber-500">
-                            <button onclick="verificarVIP()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-2 rounded-lg transition cursor-pointer">
+                            <button type="button" onclick="verificarVIP()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-2 rounded-xl transition cursor-pointer">
                                 Activar
                             </button>
                         </div>
-                    </div>
+                    </form>
                     <span id="error-msg" class="text-[10px] text-rose-400 block hidden">Código incorrecto. Verifique con el administrador.</span>
                 </div>
 
