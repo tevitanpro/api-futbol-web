@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Master Pro - Panel Táctico Estocástico v8.6</title>
+    <title>API Master Pro - Panel Táctico Estocástico v8.8</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
@@ -37,6 +37,10 @@
                         <button onclick="ejecutarLogin()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition shadow-md cursor-pointer">
                             Iniciar Sesión
                         </button>
+                        <div class="flex justify-between gap-2 text-[10px]">
+                            <button onclick="mostrarRecuperacion()" class="text-slate-400 hover:text-emerald-400 underline">¿Olvidaste tu contraseña?</button>
+                            <button onclick="mostrarReenvioVerificacion()" class="text-slate-400 hover:text-emerald-400 underline">Reenviar verificación</button>
+                        </div>
                     </div>
 
                     <!-- Formulario de Registro (Oculto por defecto) -->
@@ -49,15 +53,27 @@
                             Crear Cuenta Gratis
                         </button>
                     </div>
+                    <div id="form-recovery-box" class="hidden space-y-2.5 border-t border-slate-800 pt-3">
+                        <p id="recovery-title" class="text-xs font-bold text-emerald-300">Recuperar contraseña</p>
+                        <input type="email" id="recovery_email" placeholder="Correo electrónico" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                        <div id="recovery-password-wrap" class="hidden space-y-2">
+                            <input type="password" id="recovery_password" placeholder="Nueva contraseña (mín. 8 caracteres)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+                        </div>
+                        <button id="recovery-action-btn" onclick="solicitarRecuperacion()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2 rounded-xl text-xs">Enviar enlace</button>
+                        <button onclick="ocultarRecuperacion()" class="w-full text-[10px] text-slate-500 hover:text-slate-300">Volver</button>
+                    </div>
                     <span id="auth-msg" class="text-[10px] block text-center text-rose-400 hidden"></span>
                 </div>
 
                 <!-- Si ya inició sesión (Oculto hasta loguearse) -->
                 <div id="user-logged-box" class="hidden space-y-3">
-                    <p class="text-xs text-slate-300">Conectado como: <b id="lbl-username" class="text-emerald-400"></b></p>
-                    <button onclick="cerrarSesion()" class="w-full bg-slate-800 hover:bg-rose-950/40 hover:text-rose-400 hover:border-rose-800 border border-slate-700 text-slate-300 font-bold py-2 rounded-xl text-xs transition cursor-pointer">
-                        Cerrar Sesión
-                    </button>
+                    <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-2">
+                        <div class="flex justify-between gap-3"><span class="text-[10px] text-slate-500">Usuario</span><b id="lbl-username" class="text-xs text-emerald-400 truncate"></b></div>
+                        <div class="flex justify-between gap-3"><span class="text-[10px] text-slate-500">Correo</span><b id="lbl-email" class="text-[10px] text-slate-300 truncate"></b></div>
+                        <div class="flex justify-between gap-3"><span class="text-[10px] text-slate-500">Plan</span><b id="lbl-plan" class="text-[10px] text-amber-300"></b></div>
+                        <div class="flex justify-between gap-3"><span class="text-[10px] text-slate-500">Historial</span><b id="lbl-history-count" class="text-[10px] text-violet-300">0/10</b></div>
+                    </div>
+                    <button onclick="cerrarSesion()" class="w-full bg-slate-800 hover:bg-rose-950/40 hover:text-rose-400 hover:border-rose-800 border border-slate-700 text-slate-300 font-bold py-2 rounded-xl text-xs transition cursor-pointer">Cerrar Sesión</button>
                 </div>
             </div>
 
@@ -69,9 +85,16 @@
                     </h3>
                     <button onclick="cargarHistorial()" class="text-[10px] text-slate-400 hover:text-emerald-400 transition underline cursor-pointer">Actualizar</button>
                 </div>
-                <div id="historial-container" class="space-y-2 max-h-[380px] overflow-y-auto pr-1 text-xs">
+                <div class="grid grid-cols-2 gap-2 mb-2">
+                    <select id="historial-filtro" onchange="renderHistorialFiltrado()" class="bg-slate-950 border border-slate-800 rounded-lg p-2 text-[10px] text-slate-300">
+                        <option value="todos">Todos los motores</option><option value="principal">Motor Principal</option><option value="jackbusca">JackBusca</option>
+                    </select>
+                    <input id="historial-busqueda" oninput="renderHistorialFiltrado()" placeholder="Buscar partido..." class="bg-slate-950 border border-slate-800 rounded-lg p-2 text-[10px] text-slate-300 focus:outline-none focus:border-emerald-500">
+                </div>
+                <div id="historial-container" class="space-y-2 max-h-[430px] overflow-y-auto pr-1 text-xs">
                     <p class="text-slate-500 text-center py-4 text-[11px]">Inicia sesión para ver tu historial guardado.</p>
                 </div>
+                <div id="historial-detalle" class="hidden mt-3 bg-slate-950 border border-violet-500/20 rounded-xl p-3 text-[10px]"></div>
             </div>
         </aside>
 
@@ -312,6 +335,7 @@
 
         // Comprobar estado de sesión al cargar la página
         window.addEventListener('DOMContentLoaded', () => {
+            procesarEnlacesEmail();
             if (tokenJwt) {
                 verificarTokenGuardado();
             }
@@ -336,6 +360,82 @@
             }
         }
 
+        function mostrarRecuperacion() {
+            document.getElementById('form-login-box').classList.add('hidden');
+            document.getElementById('form-register-box').classList.add('hidden');
+            document.getElementById('form-recovery-box').classList.remove('hidden');
+            document.getElementById('recovery-title').innerText = 'Recuperar contraseña';
+            document.getElementById('recovery-action-btn').innerText = 'Enviar enlace';
+            document.getElementById('recovery-action-btn').onclick = solicitarRecuperacion;
+            document.getElementById('recovery-password-wrap').classList.add('hidden');
+        }
+        function mostrarReenvioVerificacion() {
+            document.getElementById('form-login-box').classList.add('hidden');
+            document.getElementById('form-register-box').classList.add('hidden');
+            document.getElementById('form-recovery-box').classList.remove('hidden');
+            document.getElementById('recovery-title').innerText = 'Reenviar verificación de correo';
+            document.getElementById('recovery-action-btn').innerText = 'Reenviar enlace';
+            document.getElementById('recovery-action-btn').onclick = reenviarVerificacion;
+            document.getElementById('recovery-password-wrap').classList.add('hidden');
+        }
+        function ocultarRecuperacion() {
+            document.getElementById('form-recovery-box').classList.add('hidden');
+            document.getElementById('form-login-box').classList.remove('hidden');
+        }
+        async function solicitarRecuperacion() {
+            const email = document.getElementById('recovery_email').value.trim();
+            const msg = document.getElementById('auth-msg');
+            if (!email) { msg.innerText = 'Ingresa tu correo.'; msg.classList.remove('hidden'); return; }
+            try {
+                const resp = await fetch(baseUrl + '/auth/forgot-password', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({correo:email})});
+                const data = await resp.json();
+                msg.innerText = data.mensaje || 'Solicitud procesada. Revisa tu correo.';
+                msg.className = 'text-[10px] block text-center text-emerald-400';
+            } catch(e) { msg.innerText='No fue posible contactar al servidor.'; msg.className='text-[10px] block text-center text-rose-400'; }
+        }
+        async function reenviarVerificacion() {
+            const email = document.getElementById('recovery_email').value.trim();
+            const msg = document.getElementById('auth-msg');
+            if (!email) { msg.innerText = 'Ingresa tu correo.'; msg.classList.remove('hidden'); return; }
+            try {
+                const resp = await fetch(baseUrl + '/auth/resend-verification', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({correo:email})});
+                const data = await resp.json();
+                msg.innerText = data.mensaje || 'Solicitud procesada. Revisa tu correo.';
+                msg.className = 'text-[10px] block text-center text-emerald-400';
+            } catch(e) { msg.innerText='No fue posible contactar al servidor.'; msg.className='text-[10px] block text-center text-rose-400'; }
+        }
+        async function procesarEnlacesEmail() {
+            const params = new URLSearchParams(window.location.search);
+            const verify = params.get('verify_email');
+            const reset = params.get('reset_password');
+            if (verify) {
+                try {
+                    const resp = await fetch(baseUrl + '/auth/verify-email?token=' + encodeURIComponent(verify));
+                    const data = await resp.json();
+                    alert(resp.ok ? (data.mensaje || 'Correo verificado.') : (data.detail || 'Enlace inválido.'));
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                } catch(e) { alert('No fue posible verificar el correo.'); }
+            }
+            if (reset) {
+                mostrarRecuperacion();
+                document.getElementById('recovery-title').innerText = 'Nueva contraseña';
+                document.getElementById('recovery-password-wrap').classList.remove('hidden');
+                document.getElementById('recovery-action-btn').innerText = 'Cambiar contraseña';
+                document.getElementById('recovery-action-btn').onclick = async function() {
+                    const password = document.getElementById('recovery_password').value;
+                    const msg = document.getElementById('auth-msg');
+                    if (password.length < 8) { msg.innerText='La nueva contraseña debe tener al menos 8 caracteres.'; msg.classList.remove('hidden'); return; }
+                    try {
+                        const resp = await fetch(baseUrl + '/auth/reset-password', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:reset,password})});
+                        const data = await resp.json();
+                        msg.innerText = resp.ok ? data.mensaje : (data.detail || 'No se pudo cambiar la contraseña.');
+                        msg.className = resp.ok ? 'text-[10px] block text-center text-emerald-400' : 'text-[10px] block text-center text-rose-400';
+                        if (resp.ok) window.history.replaceState({}, document.title, window.location.pathname);
+                    } catch(e) { msg.innerText='No fue posible contactar al servidor.'; msg.className='text-[10px] block text-center text-rose-400'; }
+                };
+            }
+        }
+
         async function ejecutarRegistro() {
             const u = document.getElementById('reg_username').value.trim();
             const email = document.getElementById('reg_email').value.trim();
@@ -357,7 +457,7 @@
                 let data = await resp.json();
                 if (resp.ok) {
                     msg.classList.add('hidden');
-                    alert('¡Cuenta creada con éxito! Ahora inicia sesión.');
+                    alert(data.mensaje || 'Cuenta creada. Revisa tu correo para verificarla.');
                     switchAuthTab('login');
                 } else {
                     msg.innerText = data.detail || "Error al registrarse.";
@@ -394,7 +494,7 @@
             localStorage.setItem('token_jwt', tokenJwt);
             localStorage.setItem('username', data.usuario);
             msg.classList.add('hidden');
-            actualizarInterfazLogueado(data.usuario);
+            actualizarInterfazLogueado(data.usuario, data.correo, data.plan);
             cargarHistorial();
         } else {
             msg.innerText = data.detail || "Credenciales incorrectas.";
@@ -414,7 +514,7 @@
                 if (!resp.ok) throw new Error('Sesión inválida');
                 const data = await resp.json();
                 localStorage.setItem('username', data.usuario);
-                actualizarInterfazLogueado(data.usuario);
+                actualizarInterfazLogueado(data.usuario, data.correo, data.plan);
                 cargarHistorial();
             } catch (e) {
                 tokenJwt = '';
@@ -423,10 +523,12 @@
             }
         }
 
-        function actualizarInterfazLogueado(username) {
+        function actualizarInterfazLogueado(username, correo='', plan='gratis') {
             document.getElementById('auth-forms-container').classList.add('hidden');
             document.getElementById('user-logged-box').classList.remove('hidden');
             document.getElementById('lbl-username').innerText = username;
+            document.getElementById('lbl-email').innerText = correo || 'Correo verificado';
+            document.getElementById('lbl-plan').innerText = plan === 'gratis' ? 'GRATIS' : String(plan).toUpperCase();
             const badge = document.getElementById('user-status-badge');
             badge.className = "bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/20";
             badge.innerText = "Sesión Activa ✅";
@@ -444,39 +546,69 @@
             document.getElementById('historial-container').innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">Inicia sesión para ver tu historial guardado.</p>';
         }
 
+        let historialActual = [];
         async function cargarHistorial() {
             if (!tokenJwt) return;
             const container = document.getElementById('historial-container');
             container.innerHTML = '<p class="text-emerald-400 text-center py-2 animate-pulse">Cargando historial...</p>';
-
             try {
                 const usuarioActual = localStorage.getItem('username');
-let resp = await fetch(baseUrl + '/historial/' + usuarioActual, {
-                    headers: { 'Authorization': 'Bearer ' + tokenJwt }
-                });
-                if (resp.status === 401) {
-                    cerrarSesion();
-                    return;
-                }
-              let data = await resp.json();
-    let listaHistorial = data.historial;
-
-    if (!listaHistorial || listaHistorial.length === 0) {
-        container.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">No tienes análisis guardados aún.</p>';
-        return;
-    }
-
-    let html = '';
-    listaHistorial.forEach(item => {
-        html += `<div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">`;
-        html += `<div class="flex justify-between text-[10px] text-slate-400"><span>${item.tipo || 'Análisis'}</span><span>${item.fecha ? item.fecha.substring(0, 10) : ''}</span></div>`;
-        html += `<p class="text-emerald-300 font-semibold truncate">${item.detalles || item.partido || 'Consulta de cuotas'}</p>`;
-        html += `</div>`;
-    });
-    container.innerHTML = html; 
+                const resp = await fetch(baseUrl + '/historial/' + encodeURIComponent(usuarioActual), {headers:{'Authorization':'Bearer ' + tokenJwt}});
+                if (resp.status === 401) { cerrarSesion(); return; }
+                const data = await resp.json();
+                if (!resp.ok) throw new Error(data.detail || 'No se pudo cargar el historial.');
+                historialActual = data.historial || [];
+                document.getElementById('lbl-history-count').innerText = `${data.usados}/${data.limite}`;
+                document.getElementById('lbl-plan').innerText = data.plan === 'gratis' ? 'GRATIS' : data.plan.toUpperCase();
+                renderHistorialFiltrado();
             } catch (err) {
                 container.innerHTML = '<p class="text-rose-400 text-center py-2 text-[11px]">Error al cargar historial.</p>';
             }
+        }
+
+        function renderHistorialFiltrado() {
+            const container=document.getElementById('historial-container');
+            if (!tokenJwt) return;
+            const filtro=document.getElementById('historial-filtro')?.value || 'todos';
+            const busq=(document.getElementById('historial-busqueda')?.value || '').trim().toLowerCase();
+            const lista=historialActual.filter(item=>{
+                const texto=(item.partido || '').toLowerCase();
+                const tipo=JSON.stringify(item.datos || {}).toLowerCase();
+                const esJack=texto.includes('jackbusca') || tipo.includes('jackbusca') || (item.datos && item.datos.origen && String(item.datos.origen).toLowerCase().includes('jackbusca'));
+                return (filtro==='todos' || (filtro==='jackbusca' ? esJack : !esJack)) && (!busq || texto.includes(busq));
+            });
+            if (!lista.length) { container.innerHTML='<p class="text-slate-500 text-center py-4 text-[11px]">No hay análisis que coincidan con el filtro.</p>'; return; }
+            container.innerHTML=lista.map(item=>{
+                const d=item.datos||{};
+                const tipo=(item.partido||'').toLowerCase().includes('jackbusca') ? 'JACKBUSCA' : 'MOTOR PRINCIPAL';
+                const estado=d.estado_recomendacion || d.explicacion || 'Análisis guardado';
+                return `<div class="bg-slate-950 p-3 rounded-xl border border-slate-800 hover:border-emerald-500/40 transition space-y-2">
+                    <div class="flex justify-between gap-2"><span class="text-[9px] font-bold ${tipo==='JACKBUSCA'?'text-amber-300':'text-emerald-300'}">${tipo}</span><span class="text-[9px] text-slate-500">${item.fecha||''}</span></div>
+                    <p class="text-xs text-slate-200 font-semibold truncate">${escapeHtml(item.partido||'Consulta')}</p>
+                    <p class="text-[10px] text-slate-500 truncate">${escapeHtml(String(estado))}</p>
+                    <div class="flex gap-2"><button onclick="verAnalisisGuardado(${item.id})" class="flex-1 bg-slate-800 hover:bg-violet-900/40 text-violet-300 py-1.5 rounded-lg text-[10px] font-bold">Ver análisis</button><button onclick="eliminarAnalisis(${item.id})" class="bg-slate-800 hover:bg-rose-900/40 text-rose-300 px-3 py-1.5 rounded-lg text-[10px]">Eliminar</button></div>
+                </div>`;
+            }).join('');
+        }
+        function escapeHtml(value){ const div=document.createElement('div'); div.textContent=value ?? ''; return div.innerHTML; }
+        function verAnalisisGuardado(id){
+            const item=historialActual.find(x=>x.id===id); if(!item) return;
+            const d=item.datos||{}; const box=document.getElementById('historial-detalle'); box.classList.remove('hidden');
+            const top=d.top_3_detallado || d.top_3_recomendaciones || [];
+            let html=`<div class="flex justify-between items-center mb-2"><b class="text-violet-300">Análisis guardado</b><button onclick="document.getElementById('historial-detalle').classList.add('hidden')" class="text-slate-500">✕</button></div><p class="text-slate-300"><b>Partido:</b> ${escapeHtml(item.partido)}</p><p class="text-slate-500 mt-1"><b>Fecha:</b> ${escapeHtml(item.fecha)}</p>`;
+            if(d.estado_recomendacion) html+=`<p class="mt-2 text-amber-300"><b>Estado:</b> ${escapeHtml(d.estado_recomendacion)}</p>`;
+            if(d.explicacion_recomendacion || d.explicacion) html+=`<p class="mt-2 text-slate-400">${escapeHtml(d.explicacion_recomendacion || d.explicacion)}</p>`;
+            if(top.length){ html+='<div class="mt-3 border-t border-slate-800 pt-2"><b class="text-emerald-300">Top / recomendaciones</b>'; top.slice(0,3).forEach((m,i)=>{html+=`<p class="mt-1 text-slate-300">#${i+1} ${escapeHtml(m.nombre||'Mercado')} — ${m.probabilidad??'N/D'}%${m.ev!==undefined&&m.ev!==null?' | EV '+m.ev+'%':''}${m.nivel?' | '+escapeHtml(m.nivel):''}</p>`}); html+='</div>';}
+            box.innerHTML=html; box.scrollIntoView({behavior:'smooth',block:'nearest'});
+        }
+        async function eliminarAnalisis(id){
+            if(!confirm('¿Eliminar este análisis de tu historial?')) return;
+            try{
+                const resp=await fetch(baseUrl+'/historial/item/'+id,{method:'DELETE',headers:{'Authorization':'Bearer '+tokenJwt}});
+                const data=await resp.json(); if(!resp.ok) throw new Error(data.detail||'No se pudo eliminar.');
+                historialActual=historialActual.filter(x=>x.id!==id); document.getElementById('historial-detalle').classList.add('hidden');
+                cargarHistorial();
+            }catch(e){ alert(e.message); }
         }
 
         function verificarVIP() {
