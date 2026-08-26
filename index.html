@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-5xl mx-auto">
         <header class="text-center mb-8">
             <h1 class="text-3xl font-extrabold text-emerald-400">⚽ API Master Pro</h1>
             <p class="text-slate-400 text-sm mt-1">Motor Estocástico de 50,000 Escenarios - Versión Completa (Goles + JackBusca)</p>
@@ -40,6 +40,10 @@
                         <label class="block text-xs text-slate-400 mb-1">Menos 2.5 Goles</label>
                         <input type="number" id="c_menos25" value="1.85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
                     </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Más 3.5 Goles</label>
+                        <input type="number" id="c_mas35" value="3.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+                    </div>
                 </div>
             </div>
 
@@ -48,12 +52,12 @@
                 <h2 class="text-lg font-bold mb-3 text-amber-300 border-b border-slate-800 pb-2">2. Parámetros JackBusca (Córners y Tarjetas)</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1">Promedio Esperado de Córners</label>
-                        <input type="number" id="prom_corners" value="9.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
-                    </div>
-                    <div>
                         <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
                         <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Cuota Tarjetas Más 3.5</label>
+                        <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
                     </div>
                 </div>
             </div>
@@ -79,41 +83,65 @@
             const v = document.getElementById('c_visitante').value;
             const m25 = document.getElementById('c_mas25').value;
             const u25 = document.getElementById('c_menos25').value;
-            const corners = document.getElementById('prom_corners').value;
+            const m35 = document.getElementById('c_mas35').value;
             const tarjetas = document.getElementById('prom_tarjetas').value;
+            const c_t35 = document.getElementById('c_t_mas35').value;
 
-            // URL corregida con una sola barra /
-            const urlRender = `https://api-futbol-pro.onrender.com/analisis/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}`;
+            // URLs base para consumir ambas rutas del backend en Render
+            const baseUrl = `https://api-futbol-pro.onrender.com`;
+            const urlFase1 = `${baseUrl}/analisis/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}&cuota_mas_35_goles=${m35}`;
+            const urlJack = `${baseUrl}/jackbusca/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}&cuota_mas_35_goles=${m35}&promedio_tarjetas_arbitro=${tarjetas}&cuota_tarjetas_mas_35=${c_t35}`;
 
             const contenedorRes = document.getElementById('contenido-resultado');
             const cajaRes = document.getElementById('resultado');
             
-            contenedorRes.innerHTML = `<p class="col-span-2 text-center text-amber-400 animate-pulse py-4 font-bold">Procesando 50,000 escenarios en el motor de Render...</p>`;
+            contenedorRes.innerHTML = `<p class="col-span-2 text-center text-amber-400 animate-pulse py-4 font-bold">Procesando 50,000 escenarios en paralelo (Fase 1 + JackBusca)...</p>`;
             cajaRes.classList.remove('hidden');
 
             try {
-                let respuesta = await fetch(urlRender);
-                let datos = await respuesta.json();
+                // Consumimos ambas rutas en paralelo para traer toda la información limpia
+                let [resFase1, resJack] = await Promise.all([
+                    fetch(urlFase1).then(r => r.json()),
+                    fetch(urlJack).then(r => r.json())
+                ]);
 
                 let html = `
                     <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                         <h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>
-                        <p>Local: <b>${datos.probabilidades_1x2_simuladas.local}</b></p>
-                        <p>Empate: <b>${datos.probabilidades_1x2_simuladas.empate}</b></p>
-                        <p>Visitante: <b>${datos.probabilidades_1x2_simuladas.visitante}</b></p>
+                        <p>Local (1): <b>${resFase1.probabilidades_1x2_simuladas.local}</b></p>
+                        <p>Empate (X): <b>${resFase1.probabilidades_1x2_simuladas.empate}</b></p>
+                        <p>Visitante (2): <b>${resFase1.probabilidades_1x2_simuladas.visitante}</b></p>
                     </div>
+
                     <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                         <h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>
                         <ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">
-                            <li>${datos.top_3_recomendaciones[0]}</li>
-                            <li>${datos.top_3_recomendaciones[1]}</li>
-                            <li>${datos.top_3_recomendaciones[2]}</li>
+                            <li>${resFase1.top_3_recomendaciones[0]}</li>
+                            <li>${resFase1.top_3_recomendaciones[1]}</li>
+                            <li>${resFase1.top_3_recomendaciones[2]}</li>
                         </ul>
+                    </div>
+
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>
+                        <p>Más de 2.5: <b>${resFase1.mercados_clave_goles.mas_de_2.5_goles}</b></p>
+                        <p>Menos de 2.5: <b>${resFase1.mercados_clave_goles.menos_de_2.5_goles}</b></p>
+                        <p>Más de 3.5: <b>${resFase1.mercados_clave_goles.mas_de_3.5_goles}</b></p>
+                        <p>Menos de 3.5: <b>${resFase1.mercados_clave_goles.menos_de_3.5_goles}</b></p>
+                    </div>
+
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <h3 class="font-bold text-amber-400 mb-2">JackBusca - Tarjetas y Córners (9.5)</h3>
+                        <p class="text-xs text-slate-400 mb-2">Árbitro base: ${resJack.arbitraje.promedio_tarjetas_referencia}</p>
+                        <p>Más 3.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_3.5_tarjetas}</b></p>
+                        <p>Más 4.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas}</b></p>
+                        <p class="mt-2">Córners Más 9.5: <b class="text-amber-300">${resJack.mercados_tiros_de_esquina.mas_de["9.5"]}</b></p>
+                        <p>Córners Menos 9.5: <b class="text-amber-300">${resJack.mercados_tiros_de_esquina.menos_de["9.5"]}</b></p>
                     </div>
                 `;
                 contenedorRes.innerHTML = html;
             } catch (err) {
-                contenedorRes.innerHTML = `<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API en Render. Verifique que la URL esté bien escrita: ${err}</p>`;
+                contenedorRes.innerHTML = `<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API en Render: ${err}</p>`;
             }
         }
     </script>
