@@ -96,43 +96,40 @@
             <!-- BLOQUE 1: Motor Principal (1X2, Goles y Ambos Anotan) - GRATIS -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
                 <h2 class="text-lg font-bold text-emerald-300 border-b border-slate-800 pb-2">1. Motor Principal: 1X2, Goles y Ambos Anotan</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Local (1)</label>
-                        <input type="number" id="c_local" value="3.03" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Empate (X)</label>
-                        <input type="number" id="c_empate" value="3.26" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Visitante (2)</label>
-                        <input type="number" id="c_visitante" value="2.56" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Más 2.5 Goles</label>
-                        <input type="number" id="c_mas25" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Menos 2.5 Goles</label>
-                        <input type="number" id="c_menos25" value="1.85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Más 3.5 Goles</label>
-                        <input type="number" id="c_mas35" value="3.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Menos 3.5 Goles</label>
-                        <input type="number" id="c_menos35" value="1.32" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Ambos Anotan (Sí)</label>
-                        <input type="number" id="c_btts_si" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400" placeholder="Opcional">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-slate-400 mb-1">Cuota Ambos Anotan (No)</label>
-                        <input type="number" id="c_btts_no" value="2.05" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400" placeholder="Opcional">
-                    </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                    <div class="text-slate-500 font-bold p-2">MERCADO</div>
+                    <div class="bg-emerald-950/30 border border-emerald-500/20 rounded-lg p-2 text-center font-bold text-emerald-300">PINNACLE · REFERENCIA</div>
+                    <div class="bg-blue-950/30 border border-blue-500/20 rounded-lg p-2 text-center font-bold text-blue-300">CASA DONDE APUESTO</div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Local (1)</div>
+                    <div><input type="number" id="c_local" value="3.03" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_local" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Empate (X)</div>
+                    <div><input type="number" id="c_empate" value="3.26" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_empate" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Visitante (2)</div>
+                    <div><input type="number" id="c_visitante" value="2.56" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_visitante" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 2.5 Goles</div>
+                    <div><input type="number" id="c_mas25" value="1.95" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_mas25" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 2.5 Goles</div>
+                    <div><input type="number" id="c_menos25" value="1.85" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_menos25" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 3.5 Goles</div>
+                    <div><input type="number" id="c_mas35" value="3.40" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_mas35" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 3.5 Goles</div>
+                    <div><input type="number" id="c_menos35" value="1.32" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_menos35" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Ambos Anotan (Sí)</div>
+                    <div><input type="number" id="c_btts_si" value="1.75" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_btts_si" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Ambos Anotan (No)</div>
+                    <div><input type="number" id="c_btts_no" value="2.05" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-400" title="Cuota Pinnacle de referencia"></div>
+                    <div><input type="number" id="c_casa_btts_no" value="" step="0.01" min="1.01" placeholder="Cuota BetPlay / RushBet" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                </div>
+                <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-3 text-[10px] text-slate-400">
+                    <b class="text-emerald-300">Cómo funciona:</b> Pinnacle calibra el modelo y las 50.000 simulaciones. La cuota de BetPlay/RushBet se utiliza únicamente para calcular <b class="text-blue-300">Edge + EV + valor</b>. Así no mezclamos la casa de referencia con la casa donde realmente apuestas.
                 </div>
                 <button onclick="consultarGoles()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
                     Ejecutar Análisis 1X2, Goles y BTTS
@@ -330,12 +327,12 @@
                 let resp = await fetch(baseUrl + '/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ usuario: u, correo: email, password: p })
+                   body: JSON.stringify({ usuario: u, correo: email, password: p })
                 });
                 let data = await resp.json();
                 if (resp.ok) {
                     msg.classList.add('hidden');
-                    alert('¡Cuenta creada con éxito! Ya puedes iniciar sesión.');
+                    alert('¡Cuenta creada con éxito! Ahora inicia sesión.');
                     switchAuthTab('login');
                 } else {
                     msg.innerText = data.detail || "Error al registrarse.";
@@ -348,43 +345,41 @@
         }
 
         async function ejecutarLogin() {
-            const u = document.getElementById('login_username').value.trim();
-            const p = document.getElementById('login_password').value.trim();
-            const msg = document.getElementById('auth-msg');
+    const u = document.getElementById('login_username').value.trim();
+    const p = document.getElementById('login_password').value.trim();
+    const msg = document.getElementById('auth-msg');
 
-            if (!u || !p) {
-                msg.innerText = "Ingresa usuario y contraseña.";
-                msg.classList.remove('hidden');
-                return;
-            }
+    if (!u || !p) {
+        msg.innerText = "Ingresa usuario y contraseña.";
+        msg.classList.remove('hidden');
+        return;
+    }
 
-            try {
-                let resp = await fetch(baseUrl + '/auth/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ usuario: u, password: p })
-                });
-                
-                let data = await resp.json();
-                
-                if (resp.ok) {
-                    tokenJwt = "sesion_activa"; 
-                    localStorage.setItem('token_jwt', tokenJwt);
-                    // Guardamos el nombre de usuario exacto devuelto por la API
-                    localStorage.setItem('username', data.usuario || u);
-                    msg.classList.add('hidden');
-                    actualizarInterfazLogueado(data.usuario || u);
-                    cargarHistorial();
-                } else {
-                    msg.innerText = data.detail || "Credenciales incorrectas.";
-                    msg.classList.remove('hidden');
-                }
-            } catch (err) {
-                msg.innerText = "Error al conectar con el backend.";
-                msg.classList.remove('hidden');
-            }
+    try {
+        let resp = await fetch(baseUrl + '/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usuario: u, password: p })
+        });
+        
+        let data = await resp.json();
+        
+        if (resp.ok) {
+            tokenJwt = "sesion_activa"; 
+            localStorage.setItem('token_jwt', tokenJwt);
+            localStorage.setItem('username', data.usuario);
+            msg.classList.add('hidden');
+            actualizarInterfazLogueado(data.usuario);
+            cargarHistorial();
+        } else {
+            msg.innerText = data.detail || "Credenciales incorrectas.";
+            msg.classList.remove('hidden');
         }
-
+    } catch (err) {
+        msg.innerText = "Error al conectar con el backend.";
+        msg.classList.remove('hidden');
+    }
+}
         function verificarTokenGuardado() {
             const user = localStorage.getItem('username') || 'Usuario Pro';
             actualizarInterfazLogueado(user);
@@ -419,36 +414,29 @@
 
             try {
                 const usuarioActual = localStorage.getItem('username');
-                if (!usuarioActual) {
-                    container.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">Inicia sesión para ver tu historial.</p>';
-                    return;
-                }
-
-                let resp = await fetch(baseUrl + '/historial/' + encodeURIComponent(usuarioActual), {
+let resp = await fetch(baseUrl + '/historial/' + usuarioActual, {
                     headers: { 'Authorization': 'Bearer ' + tokenJwt }
                 });
-                
                 if (resp.status === 401) {
                     cerrarSesion();
                     return;
                 }
+              let data = await resp.json();
+    let listaHistorial = data.historial;
 
-                let data = await resp.json();
-                let listaHistorial = data.historial;
+    if (!listaHistorial || listaHistorial.length === 0) {
+        container.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">No tienes análisis guardados aún.</p>';
+        return;
+    }
 
-                if (!listaHistorial || listaHistorial.length === 0) {
-                    container.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">No tienes análisis guardados aún.</p>';
-                    return;
-                }
-
-                let html = '';
-                listaHistorial.forEach(item => {
-                    html += `<div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">`;
-                    html += `<div class="flex justify-between text-[10px] text-slate-400"><span>${item.tipo || 'Análisis'}</span><span>${item.fecha ? item.fecha.substring(0, 10) : ''}</span></div>`;
-                    html += `<p class="text-emerald-300 font-semibold truncate">${item.detalles || item.partido || 'Consulta de cuotas'}</p>`;
-                    html += `</div>`;
-                });
-                container.innerHTML = html; 
+    let html = '';
+    listaHistorial.forEach(item => {
+        html += `<div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">`;
+        html += `<div class="flex justify-between text-[10px] text-slate-400"><span>${item.tipo || 'Análisis'}</span><span>${item.fecha ? item.fecha.substring(0, 10) : ''}</span></div>`;
+        html += `<p class="text-emerald-300 font-semibold truncate">${item.detalles || item.partido || 'Consulta de cuotas'}</p>`;
+        html += `</div>`;
+    });
+    container.innerHTML = html; 
             } catch (err) {
                 container.innerHTML = '<p class="text-rose-400 text-center py-2 text-[11px]">Error al cargar historial.</p>';
             }
@@ -492,10 +480,30 @@
             const bttsSi = document.getElementById('c_btts_si').value;
             const bttsNo = document.getElementById('c_btts_no').value;
 
+            const casaLocal = document.getElementById('c_casa_local').value;
+            const casaEmpate = document.getElementById('c_casa_empate').value;
+            const casaVisitante = document.getElementById('c_casa_visitante').value;
+            const casaM25 = document.getElementById('c_casa_mas25').value;
+            const casaU25 = document.getElementById('c_casa_menos25').value;
+            const casaM35 = document.getElementById('c_casa_mas35').value;
+            const casaU35 = document.getElementById('c_casa_menos35').value;
+            const casaBttsSi = document.getElementById('c_casa_btts_si').value;
+            const casaBttsNo = document.getElementById('c_casa_btts_no').value;
+
             let url = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
             
             if (bttsSi) url += '&cuota_btts_si=' + bttsSi;
             if (bttsNo) url += '&cuota_btts_no=' + bttsNo;
+
+            if (casaLocal) url += '&casa_local=' + casaLocal;
+            if (casaEmpate) url += '&casa_empate=' + casaEmpate;
+            if (casaVisitante) url += '&casa_visitante=' + casaVisitante;
+            if (casaM25) url += '&casa_mas_25=' + casaM25;
+            if (casaU25) url += '&casa_menos_25=' + casaU25;
+            if (casaM35) url += '&casa_mas_35=' + casaM35;
+            if (casaU35) url += '&casa_menos_35=' + casaU35;
+            if (casaBttsSi) url += '&casa_btts_si=' + casaBttsSi;
+            if (casaBttsNo) url += '&casa_btts_no=' + casaBttsNo;
 
             const contenedor = document.getElementById('resultado-goles');
             contenedor.innerHTML = '<p class="col-span-3 text-center text-emerald-400 animate-pulse py-2 font-bold">Calculando 1X2, Goles y BTTS...</p>';
@@ -518,12 +526,47 @@
                 html += '</div>';
 
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>';
-                html += '<ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">';
-                if(datos.top_3_recomendaciones[0]) html += '<li>' + datos.top_3_recomendaciones[0] + '</li>';
-                if(datos.top_3_recomendaciones[1]) html += '<li>' + datos.top_3_recomendaciones[1] + '</li>';
-                if(datos.top_3_recomendaciones[2]) html += '<li>' + datos.top_3_recomendaciones[2] + '</li>';
+                const estadoRec = datos.estado_recomendacion || 'SIN EVALUAR';
+                const colorEstado = estadoRec === 'HAY VALOR DETECTADO' ? 'text-emerald-400' : 'text-amber-300';
+                html += '<h3 class="font-bold ' + colorEstado + ' mb-2">Top Matemático: ' + estadoRec + '</h3>';
+                html += '<p class="text-[10px] text-slate-400 mb-3">El ranking usa probabilidad analítica Poisson + Edge + Valor Esperado (EV) + confianza. Una probabilidad alta por sí sola NO convierte un mercado en recomendación.</p>';
+                html += '<div class="bg-slate-950/60 rounded-lg p-3 mb-3 border border-slate-700">';
+                html += '<p class="text-xs text-slate-300"><b class="text-violet-300">¿Por qué?</b> ' + (datos.explicacion_recomendacion || '') + '</p>';
+                html += '</div>';
+                html += '<ul class="list-disc list-inside text-sm space-y-2 text-emerald-300 font-semibold">';
+                if(datos.top_3_detallado && datos.top_3_detallado.length) {
+                    datos.top_3_detallado.forEach(function(m, i) {
+                        html += '<li><b>' + (i + 1) + '. ' + m.nombre + '</b> — Modelo ' + m.probabilidad + '% | Pinnacle ' + Number(m.cuota_pinnacle).toFixed(2) + ' | Casa ' + Number(m.cuota_casa).toFixed(2) + ' | Edge ' + (m.edge >= 0 ? '+' : '') + m.edge + '% | EV ' + (m.ev >= 0 ? '+' : '') + m.ev + '% | ' + m.nivel + '<br><span class="text-[10px] text-slate-400 font-normal">' + m.explicacion + '</span></li>';
+                    });
+                } else {
+                    html += '<li class="text-amber-300">NO RECOMENDACIÓN: ningún mercado superó los mínimos establecidos.</li>';
+                }
                 html += '</ul>';
+                if(datos.top_3_candidatos && datos.top_3_candidatos.length) {
+                    html += '<div class="mt-3 pt-3 border-t border-slate-700">';
+                    html += '<p class="text-[10px] font-bold text-slate-400 mb-1">Candidatos descartados o pendientes de valor:</p>';
+                    datos.top_3_candidatos.forEach(function(m) {
+                        if (m.accion === 'NO RECOMENDADO') {
+                            html += '<p class="text-[10px] text-slate-400">• ' + m.nombre + ': EV ' + (m.ev !== null && m.ev !== undefined ? ((m.ev >= 0 ? '+' : '') + m.ev + '%') : 'pendiente de cuota') + ' — <span class="text-amber-300">NO RECOMENDADO</span>. ' + m.explicacion + '</p>';
+                        }
+                    });
+                    html += '</div>';
+                }
+                html += '<div class="mt-3 pt-3 border-t border-slate-700 text-[10px] text-slate-400">';
+                html += '<b>Regla:</b> EV = (Probabilidad del modelo × cuota) − 1. El sistema no fuerza tres apuestas cuando no existe valor suficiente.';
+                html += '</div>';
+                html += '</div>';
+
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                html += '<h3 class="font-bold text-blue-400 mb-2">Comparación Pinnacle vs Casa</h3>';
+                html += '<p class="text-[10px] text-slate-400 mb-2">Pinnacle = referencia para calibrar. Casa = precio real usado para calcular EV.</p>';
+                if (datos.top_3_detallado && datos.top_3_detallado.length) {
+                    datos.top_3_detallado.forEach(function(m) {
+                        html += '<div class="border-t border-slate-700 pt-2 mt-2 text-xs"><b>' + m.nombre + '</b>: Modelo ' + m.probabilidad + '% | Pinnacle ' + Number(m.cuota_pinnacle).toFixed(2) + ' | Casa ' + Number(m.cuota_casa).toFixed(2) + ' | Edge ' + (m.edge >= 0 ? '+' : '') + m.edge + '% | EV ' + (m.ev >= 0 ? '+' : '') + m.ev + '%</div>';
+                    });
+                } else {
+                    html += '<p class="text-xs text-amber-300">Completa las cuotas de la casa donde apuestas para calcular el valor.</p>';
+                }
                 html += '</div>';
 
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
@@ -539,6 +582,21 @@
                     html += '<p>Ambos Anotan (No): <b>' + bttsnoVal + '</b></p>';
                 }
                 html += '</div>';
+
+                if (datos.modelo) {
+                    html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                    html += '<h3 class="font-bold text-violet-400 mb-2">Calibración del Motor</h3>';
+                    html += '<p>Goles esperados local: <b>' + datos.modelo.goles_esperados_local + '</b></p>';
+                    html += '<p>Goles esperados visitante: <b>' + datos.modelo.goles_esperados_visitante + '</b></p>';
+                    html += '<p class="text-[10px] text-slate-400 mt-2">' + datos.modelo.metodo + '</p>';
+                    if (datos.modelo.confianza_modelo !== undefined) {
+                        html += '<p class="text-[10px] text-slate-400 mt-1">Confianza estructural del ajuste: <b class="text-violet-300">' + datos.modelo.confianza_modelo + '%</b></p>';
+                    }
+                    if (datos.btts_referencia_pinnacle && datos.btts_referencia_pinnacle.si) {
+                        html += '<p class="pt-2 mt-2 border-t border-slate-700">BTTS vs mercado: <b>Sí ' + datos.btts_referencia_pinnacle.edge_si + '%</b> | <b>No ' + datos.btts_referencia_pinnacle.edge_no + '%</b></p>';
+                    }
+                    html += '</div>';
+                }
 
                 contenedor.innerHTML = html;
 
