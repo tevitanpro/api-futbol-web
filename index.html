@@ -49,14 +49,14 @@
             <button onclick="consultarGoles()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
                 Ejecutar Análisis 1X2 y Goles
             </button>
-            
-            <!-- Resultados Goles -->
             <div id="resultado-goles" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800"></div>
         </div>
 
         <!-- BLOQUE 2: Motor JackBusca (Córners y Tarjetas) -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
             <h2 class="text-lg font-bold text-amber-300 border-b border-slate-800 pb-2">2. Motor JackBusca (Córners y Tarjetas)</h2>
+            
+            <!-- Parámetros Generales -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Promedio Esperado de Córners</label>
@@ -71,12 +71,52 @@
                     <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
                 </div>
             </div>
+
+            <!-- ¡NUEVO! Inputs específicos para las cuotas de Córners que usted necesita calcular -->
+            <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Córners para Simular:</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 7.5 Córners</label>
+                        <input type="number" id="c_corner_mas75" value="1.45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 7.5 Córners</label>
+                        <input type="number" id="c_corner_menos75" value="2.60" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 8.5 Córners</label>
+                        <input type="number" id="c_corner_mas85" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 8.5 Córners</label>
+                        <input type="number" id="c_corner_menos85" value="2.00" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 9.5 Córners</label>
+                        <input type="number" id="c_corner_mas95" value="2.10" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 9.5 Córners</label>
+                        <input type="number" id="c_corner_menos95" value="1.65" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 10.5 Córners</label>
+                        <input type="number" id="c_corner_mas105" value="2.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 10.5 Córners</label>
+                        <input type="number" id="c_corner_menos105" value="1.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                    </div>
+                </div>
+            </div>
+
             <button onclick="consultarJackBusca()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer">
                 Ejecutar Análisis JackBusca
             </button>
 
             <!-- Resultados JackBusca -->
-            <div id="resultado-jack" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800"></div>
+            <div id="resultado-jack" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800"></div>
         </div>
     </div>
 
@@ -103,7 +143,6 @@
                 let datos = await resp.json();
 
                 let html = '';
-                // 1X2
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
                 html += '<h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>';
                 html += '<p>Local (1): <b>' + datos.probabilidades_1x2_simuladas.local + '</b></p>';
@@ -111,7 +150,6 @@
                 html += '<p>Visitante (2): <b>' + datos.probabilidades_1x2_simuladas.visitante + '</b></p>';
                 html += '</div>';
 
-                // Recomendaciones
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
                 html += '<h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>';
                 html += '<ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">';
@@ -121,7 +159,6 @@
                 html += '</ul>';
                 html += '</div>';
 
-                // Goles
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
                 html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>';
                 html += '<p>Más 2.5: <b>' + datos.mercados_clave_goles["mas_de_2.5_goles"] + '</b></p>';
@@ -148,12 +185,21 @@
             const tarjetas = document.getElementById('prom_tarjetas').value;
             const c_t35 = document.getElementById('c_t_mas35').value;
 
-            // Aquí estaba el detalle: ahora sí incluimos el promedio de córners en la URL
+            // Recogemos los valores de las nuevas cuotas de córners para mandarlas al backend si las recibe
+            const cm75 = document.getElementById('c_corner_mas75').value;
+            const cu75 = document.getElementById('c_corner_menos75').value;
+            const cm85 = document.getElementById('c_corner_mas85').value;
+            const cu85 = document.getElementById('c_corner_menos85').value;
+            const cm95 = document.getElementById('c_corner_mas95').value;
+            const cu95 = document.getElementById('c_corner_menos95').value;
+            const cm105 = document.getElementById('c_corner_mas105').value;
+            const cu105 = document.getElementById('c_corner_menos105').value;
+
+            // Construcción de la URL incluyendo todas las variables nuevas
             const url = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_esperado_corners=' + corners + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
             
             const contenedor = document.getElementById('resultado-jack');
-            contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca completo...</p>';
-            contenedor.classList.remove('hidden');
+            contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca completo con líneas de córners...</p>';
 
             try {
                 let resp = await fetch(url);
@@ -161,7 +207,7 @@
 
                 let html = '';
                 
-                // Columna Izquierda: Tarjetas Completas
+                // Tarjetas
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2">';
                 html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Tarjetas (Árbitro: ' + datos.arbitraje.promedio_tarjetas_referencia + ')</h3>';
                 html += '<p class="text-sm">Más de 3.5 Tarjetas: <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
@@ -170,23 +216,23 @@
                 html += '<p class="text-sm">Menos de 4.5 Tarjetas: <b class="text-rose-400">' + datos.mercados_tarjetas_explicados["menos_de_4.5_tarjetas"] + '</b></p>';
                 html += '</div>';
 
-                // Columna Derecha: Córners Desglosados (Más y Menos por línea)
+                // Córners desglosados
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">';
                 html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Córners por Línea (Base: ' + corners + ')</h3>';
                 
                 let masCorners = datos.mercados_tiros_de_esquina.mas_de;
                 let menosCorners = datos.mercados_tiros_de_esquina.menos_de;
 
-                html += '<div class="grid grid-cols-2 gap-2 text-xs">';
+                html += '<div class="grid grid-cols-2 gap-4 text-xs">';
                 html += '<div><span class="text-amber-300 font-bold block mb-1">Más de (...)</span>';
                 for (let linea in masCorners) {
-                    html += '<p>Más ' + linea + ': <span class="text-emerald-400 font-bold">' + masCorners[linea] + '</span></p>';
+                    html += '<p class="py-0.5">Más ' + linea + ': <span class="text-emerald-400 font-bold">' + masCorners[linea] + '</span></p>';
                 }
                 html += '</div>';
 
                 html += '<div><span class="text-amber-300 font-bold block mb-1">Menos de (...)</span>';
                 for (let linea in menosCorners) {
-                    html += '<p>Menos ' + linea + ': <span class="text-rose-400 font-bold">' + menosCorners[linea] + '</span></p>';
+                    html += '<p class="py-0.5">Menos ' + linea + ': <span class="text-rose-400 font-bold">' + menosCorners[linea] + '</span></p>';
                 }
                 html += '</div>';
                 html += '</div>';
@@ -194,7 +240,7 @@
 
                 contenedor.innerHTML = html;
             } catch (err) {
-                contenedor.innerHTML = '<p class="col-span-2 text-center text-red-400 py-2">Error: ' + err + '</p>';
+                contenedor.innerHTML = '<p class="col-span-2 text-center text-red-400 py-2">Error de conexión: ' + err + '</p>';
             }
         }
     </script>
