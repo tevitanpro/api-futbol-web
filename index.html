@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Master Pro - Panel Táctico Estocástico</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
+    <div class="max-w-4xl mx-auto">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-extrabold text-emerald-400">⚽ API Master Pro</h1>
+            <p class="text-slate-400 text-sm mt-1">Motor Estocástico de 50,000 Escenarios - Versión Completa (Goles + JackBusca)</p>
+        </header>
+
+        <!-- Formulario General -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl mb-8 space-y-6">
+            
+            <!-- Sección 1: Cuotas 1X2 y Goles -->
+            <div>
+                <h2 class="text-lg font-bold mb-3 text-emerald-300 border-b border-slate-800 pb-2">1. Cuotas Principales (1X2 y Goles)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Cuota Local (1)</label>
+                        <input type="number" id="c_local" value="3.03" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Cuota Empate (X)</label>
+                        <input type="number" id="c_empate" value="3.26" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Cuota Visitante (2)</label>
+                        <input type="number" id="c_visitante" value="2.56" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Más 2.5 Goles</label>
+                        <input type="number" id="c_mas25" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Menos 2.5 Goles</label>
+                        <input type="number" id="c_menos25" value="1.85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección 2: JackBusca (Córners y Tarjetas) -->
+            <div>
+                <h2 class="text-lg font-bold mb-3 text-amber-300 border-b border-slate-800 pb-2">2. Parámetros JackBusca (Córners y Tarjetas)</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Promedio Esperado de Córners</label>
+                        <input type="number" id="prom_corners" value="9.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
+                        <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="consultarAPI()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20">
+                Ejecutar Simulación Completa (50k Escenarios)
+            </button>
+        </div>
+
+        <!-- Resultados -->
+        <div id="resultado" class="hidden bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-xl font-bold mb-4 text-emerald-300">📊 Resultados del Análisis Estocástico</h2>
+            <div id="contenido-resultado" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-slate-300">
+                <!-- Se llena dinámicamente con JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        async function consultarAPI() {
+            const l = document.getElementById('c_local').value;
+            const e = document.getElementById('c_empate').value;
+            const v = document.getElementById('c_visitante').value;
+            const m25 = document.getElementById('c_mas25').value;
+            const u25 = document.getElementById('c_menos25').value;
+            const corners = document.getElementById('prom_corners').value;
+            const tarjetas = document.getElementById('prom_tarjetas').value;
+
+            // ⚠️ REEMPLACE ESTA URL CON LA DE SU RENDER REAL ⚠️
+            const urlRender = `https://TU-API-EN-RENDER.onrender.com/analisis/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}`;
+
+            const contenedorRes = document.getElementById('contenido-resultado');
+            const cajaRes = document.getElementById('resultado');
+            
+            contenedorRes.innerHTML = `<p class="col-span-2 text-center text-amber-400 animate-pulse py-4 font-bold">Procesando 50,000 escenarios en el motor de Render...</p>`;
+            cajaRes.classList.remove('hidden');
+
+            try {
+                let respuesta = await fetch(urlRender);
+                let datos = await respuesta.json();
+
+                let html = `
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>
+                        <p>Local: <b>${datos.probabilidades_1x2_simuladas.local}</b></p>
+                        <p>Empate: <b>${datos.probabilidades_1x2_simuladas.empate}</b></p>
+                        <p>Visitante: <b>${datos.probabilidades_1x2_simuladas.visitante}</b></p>
+                    </div>
+                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
+                        <h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>
+                        <ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">
+                            <li>${datos.top_3_recomendaciones[0]}</li>
+                            <li>${datos.top_3_recomendaciones[1]}</li>
+                            <li>${datos.top_3_recomendaciones[2]}</li>
+                        </ul>
+                    </div>
+                `;
+                contenedorRes.innerHTML = html;
+            } catch (err) {
+                contenedorRes.innerHTML = `<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API en Render. Verifique que la URL esté bien escrita: ${err}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
