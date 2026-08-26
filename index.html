@@ -5,14 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>API Master Pro - Panel Táctico Estocástico</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos para la Pantalla de Bienvenida (Splash Screen) */
+        #splash-screen {
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+        /* Efecto de zoom suave para la ilustración urbana */
+        .urban-banner-container {
+            overflow: hidden;
+            border-radius: 1rem;
+        }
+        .urban-banner-img {
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        .urban-banner-container:hover .urban-banner-img {
+            transform: scale(1.05);
+        }
+    </style>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
+<body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8 relative">
+
+    <!-- PANTALLA DE BIENVENIDA (SPLASH SCREEN) -->
+    <div id="splash-screen" class="fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center p-6 space-y-4">
+        <div class="relative w-24 h-24 flex items-center justify-center">
+            <div class="absolute inset-0 rounded-full border-4 border-emerald-500/20 border-t-emerald-400 animate-spin"></div>
+            <span class="text-4xl">⚽</span>
+        </div>
+        <div class="text-center space-y-2">
+            <h2 class="text-2xl font-extrabold text-emerald-400 tracking-wide">API MASTER PRO</h2>
+            <p class="text-xs text-amber-300 font-medium">Cargando motor estocástico y sincronizando cuotas...</p>
+        </div>
+    </div>
 
     <!-- CONTENEDOR PRINCIPAL CON DISEÑO DE DOS COLUMNAS EN PANTALLAS GRANDES -->
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
         
         <!-- COLUMNA IZQUIERDA: Panel de Cuenta, Acceso e Historial (Diseño Elegante y Sutil) -->
         <aside class="lg:col-span-4 space-y-6">
+            
+            <!-- ILUSTRACIÓN / BANNER ESTILO URBANO INTEGRADO -->
+            <div class="urban-banner-container border border-slate-800 shadow-xl bg-slate-900 relative">
+                <img src="5d57a27387684efeaff18def3226c0ad_2.jpg" alt="Estilo Urbano API Master" class="urban-banner-img w-full h-40 object-cover opacity-85">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex items-end p-3">
+                    <span class="text-[11px] font-bold text-amber-300 bg-slate-900/80 px-2.5 py-1 rounded-lg backdrop-blur-sm border border-slate-800">
+                        ⚡ Análisis Predictivo de Alto Rendimiento
+                    </span>
+                </div>
+            </div>
+
             <!-- CAJA DE AUTENTICACIÓN (LOGIN / REGISTRO) -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -286,11 +326,19 @@
         const baseUrl = 'https://api-futbol-pro.onrender.com';
         let tokenJwt = localStorage.getItem('token_jwt') || '';
 
-        // Comprobar estado de sesión al cargar la página
+        // Comprobar estado de sesión al cargar la página y ocultar splash screen
         window.addEventListener('DOMContentLoaded', () => {
             if (tokenJwt) {
                 verificarTokenGuardado();
             }
+            // Ocultar pantalla de bienvenida con transición fluida
+            setTimeout(() => {
+                const splash = document.getElementById('splash-screen');
+                if (splash) {
+                    splash.style.opacity = '0';
+                    setTimeout(() => splash.remove(), 500);
+                }
+            }, 600);
         });
 
         function switchAuthTab(tab) {
@@ -355,7 +403,6 @@
                 return;
             }
 
-            // FastAPI OAuth2 usa form-urlencoded para el token
             const formData = new URLSearchParams();
             formData.append('username', u);
             formData.append('password', p);
@@ -473,172 +520,127 @@
             const l = document.getElementById('c_local').value;
             const e = document.getElementById('c_empate').value;
             const v = document.getElementById('c_visitante').value;
-            const m25 = document.getElementById('c_mas25').value;
-            const u25 = document.getElementById('c_menos25').value;
-            const m35 = document.getElementById('c_mas35').value;
-            const u35 = document.getElementById('c_menos35').value;
-            
+            const mas25 = document.getElementById('c_mas25').value;
+            const menos25 = document.getElementById('c_menos25').value;
+            const mas35 = document.getElementById('c_mas35').value;
+            const menos35 = document.getElementById('c_menos35').value;
             const bttsSi = document.getElementById('c_btts_si').value;
             const bttsNo = document.getElementById('c_btts_no').value;
 
-            let url = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
-            
-            if (bttsSi) url += '&cuota_btts_si=' + bttsSi;
-            if (bttsNo) url += '&cuota_btts_no=' + bttsNo;
-
-            const contenedor = document.getElementById('resultado-goles');
-            contenedor.innerHTML = '<p class="col-span-3 text-center text-emerald-400 animate-pulse py-2 font-bold">Calculando 1X2, Goles y BTTS...</p>';
-            contenedor.classList.remove('hidden');
+            const resContainer = document.getElementById('resultado-goles');
+            resContainer.classList.remove('hidden');
+            resContainer.innerHTML = '<p class="col-span-3 text-center text-emerald-400 py-4 animate-pulse font-bold">Calculando probabilidades estocásticas del motor 1...</p>';
 
             try {
-                let options = {};
+                let headers = { 'Content-Type': 'application/json' };
                 if (tokenJwt) {
-                    options.headers = { 'Authorization': 'Bearer ' + tokenJwt };
+                    headers['Authorization'] = 'Bearer ' + tokenJwt;
                 }
-                let resp = await fetch(url, options);
-                let datos = await resp.json();
 
-                let html = '';
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>';
-                html += '<p>Local (1): <b>' + datos.probabilidades_1x2_simuladas.local + '</b></p>';
-                html += '<p>Empate (X): <b>' + datos.probabilidades_1x2_simuladas.empate + '</b></p>';
-                html += '<p>Visitante (2): <b>' + datos.probabilidades_1x2_simuladas.visitante + '</b></p>';
-                html += '</div>';
+                let resp = await fetch(baseUrl + '/analizar/goles', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({
+                        cuota_local: parseFloat(l) || 0,
+                        cuota_empate: parseFloat(e) || 0,
+                        cuota_visitante: parseFloat(v) || 0,
+                        cuota_mas_25: parseFloat(mas25) || 0,
+                        cuota_menos_25: parseFloat(menos25) || 0,
+                        cuota_mas_35: parseFloat(mas35) || 0,
+                        cuota_menos_35: parseFloat(menos35) || 0,
+                        cuota_btts_si: parseFloat(bttsSi) || 0,
+                        cuota_btts_no: parseFloat(bttsNo) || 0
+                    })
+                });
 
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>';
-                html += '<ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">';
-                if(datos.top_3_recomendaciones[0]) html += '<li>' + datos.top_3_recomendaciones[0] + '</li>';
-                if(datos.top_3_recomendaciones[1]) html += '<li>' + datos.top_3_recomendaciones[1] + '</li>';
-                if(datos.top_3_recomendaciones[2]) html += '<li>' + datos.top_3_recomendaciones[2] + '</li>';
-                html += '</ul>';
-                html += '</div>';
-
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles & BTTS</h3>';
-                html += '<p>Más 2.5: <b>' + datos.mercados_clave_goles["mas_de_2.5_goles"] + '</b></p>';
-                html += '<p>Menos 2.5: <b>' + datos.mercados_clave_goles["menos_de_2.5_goles"] + '</b></p>';
-                html += '<p>Más 3.5: <b>' + datos.mercados_clave_goles["mas_de_3.5_goles"] + '</b></p>';
-                html += '<p>Menos 3.5: <b>' + datos.mercados_clave_goles["menos_de_3.5_goles"] + '</b></p>';
-                if(datos.mercados_clave_goles["btts_si"] || datos.mercados_clave_goles["ambos_anotan_si"]) {
-                    let bttssiVal = datos.mercados_clave_goles["btts_si"] || datos.mercados_clave_goles["ambos_anotan_si"];
-                    let bttsnoVal = datos.mercados_clave_goles["btts_no"] || datos.mercados_clave_goles["ambos_anotan_no"];
-                    html += '<p class="pt-2 border-t border-slate-700 mt-2">Ambos Anotan (Sí): <b>' + bttssiVal + '</b></p>';
-                    html += '<p>Ambos Anotan (No): <b>' + bttsnoVal + '</b></p>';
+                let data = await resp.json();
+                if (resp.ok) {
+                    let html = `
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <h3 class="text-xs font-bold text-emerald-400">📊 Probabilidades 1X2</h3>
+                            <p class="text-xs text-slate-300">Local: <b>${data.prob_local || 'N/A'}%</b></p>
+                            <p class="text-xs text-slate-300">Empate: <b>${data.prob_empate || 'N/A'}%</b></p>
+                            <p class="text-xs text-slate-300">Visitante: <b>${data.prob_visitante || 'N/A'}%</b></p>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <h3 class="text-xs font-bold text-emerald-400">⚽ Tendencia de Goles</h3>
+                            <p class="text-xs text-slate-300">Más 2.5: <b>${data.prob_mas_25 || 'N/A'}%</b></p>
+                            <p class="text-xs text-slate-300">Menos 2.5: <b>${data.prob_menos_25 || 'N/A'}%</b></p>
+                            <p class="text-xs text-slate-300">Más 3.5: <b>${data.prob_mas_35 || 'N/A'}%</b></p>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
+                            <h3 class="text-xs font-bold text-emerald-400">🎯 Recomendación / Valor</h3>
+                            <p class="text-xs text-amber-300 font-semibold">${data.recomendacion || data.valor_detectado || 'Análisis completado con éxito.'}</p>
+                        </div>
+                    `;
+                    resContainer.innerHTML = html;
+                    if (tokenJwt) cargarHistorial();
+                } else {
+                    resContainer.innerHTML = `<p class="col-span-3 text-center text-rose-400 py-4 text-xs">${data.detail || 'Error al procesar el motor principal.'}</p>`;
                 }
-                html += '</div>';
-
-                contenedor.innerHTML = html;
-
-                // Si hay sesión activa, recargamos el historial automáticamente para que aparezca el nuevo cálculo
-                if (tokenJwt) cargarHistorial();
-
             } catch (err) {
-                contenedor.innerHTML = '<p class="col-span-3 text-center text-red-400 py-2">Error: ' + err + '</p>';
+                resContainer.innerHTML = `<p class="col-span-3 text-center text-rose-400 py-4 text-xs">Error de comunicación con el servidor Render.</p>`;
             }
         }
 
         async function consultarJackBusca() {
-            const l = document.getElementById('c_local').value;
-            const e = document.getElementById('c_empate').value;
-            const v = document.getElementById('c_visitante').value;
-            const m25 = document.getElementById('c_mas25').value;
-            const u25 = document.getElementById('c_menos25').value;
-            const m35 = document.getElementById('c_mas35').value;
-            const u35 = document.getElementById('c_menos35').value;
+            const promT = document.getElementById('prom_tarjetas').value;
+            const promC = document.getElementById('prom_corners').value;
             
-            const corners = document.getElementById('prom_corners').value;
-            const tarjetas = document.getElementById('prom_tarjetas').value;
-
-            let paramsTarjeta = {};
-            const t35s = document.getElementById('c_t_mas35').value; if(t35s) paramsTarjeta['cuota_tarjetas_mas_35'] = t35s;
-            const t35n = document.getElementById('c_t_menos35').value; if(t35n) paramsTarjeta['cuota_tarjetas_menos_35'] = t35n;
-            const t45s = document.getElementById('c_t_mas45').value; if(t45s) paramsTarjeta['cuota_tarjetas_mas_45'] = t45s;
-            const t45n = document.getElementById('c_t_menos45').value; if(t45n) paramsTarjeta['cuota_tarjetas_menos_45'] = t45n;
-            const t55s = document.getElementById('c_t_mas55').value; if(t55s) paramsTarjeta['cuota_tarjetas_mas_55'] = t55s;
-            const t55n = document.getElementById('c_t_menos55').value; if(t55n) paramsTarjeta['cuota_tarjetas_menos_55'] = t55n;
-
-            let paramsCorners = {};
-            const c75s = document.getElementById('c_corner_mas75').value; if(c75s) paramsCorners['cuota_corners_mas_75'] = c75s;
-            const c75n = document.getElementById('c_corner_menos75').value; if(c75n) paramsCorners['cuota_corners_menos_75'] = c75n;
-            const c85s = document.getElementById('c_corner_mas85').value; if(c85s) paramsCorners['cuota_corners_mas_85'] = c85s;
-            const c85n = document.getElementById('c_corner_menos85').value; if(c85n) paramsCorners['cuota_corners_menos_85'] = c85n;
-            const c95s = document.getElementById('c_corner_mas95').value; if(c95s) paramsCorners['cuota_corners_mas_95'] = c95s;
-            const c95n = document.getElementById('c_corner_menos95').value; if(c95n) paramsCorners['cuota_corners_menos_95'] = c95n;
-            const c105s = document.getElementById('c_corner_mas105').value; if(c105s) paramsCorners['cuota_corners_mas_105'] = c105s;
-            const c105n = document.getElementById('c_corner_menos105').value; if(c105n) paramsCorners['cuota_corners_menos_105'] = c105n;
-
-            let urlObj = new URL(baseUrl + '/jackbusca/partido');
-            urlObj.searchParams.append('cuota_local', l);
-            urlObj.searchParams.append('cuota_empate', e);
-            urlObj.searchParams.append('cuota_visitante', v);
-            urlObj.searchParams.append('cuota_mas_25_goles', m25);
-            urlObj.searchParams.append('cuota_menos_25_goles', u25);
-            urlObj.searchParams.append('cuota_mas_35_goles', m35);
-            urlObj.searchParams.append('cuota_menos_35_goles', u35);
-            urlObj.searchParams.append('promedio_esperado_corners', corners);
-            urlObj.searchParams.append('promedio_tarjetas_arbitro', tarjetas);
-
-            for (const [key, value] of Object.entries(paramsTarjeta)) {
-                urlObj.searchParams.append(key, value);
-            }
-            for (const [key, value] of Object.entries(paramsCorners)) {
-                urlObj.searchParams.append(key, value);
-            }
-            
-            const contenedor = document.getElementById('resultado-jack');
-            contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca completo...</p>';
-            contenedor.classList.remove('hidden');
+            const resContainer = document.getElementById('resultado-jack');
+            resContainer.classList.remove('hidden');
+            resContainer.innerHTML = '<p class="col-span-2 text-center text-amber-400 py-4 animate-pulse font-bold">Proyectando rangos estocásticos de córners y tarjetas...</p>';
 
             try {
-                let options = {};
+                let headers = { 'Content-Type': 'application/json' };
                 if (tokenJwt) {
-                    options.headers = { 'Authorization': 'Bearer ' + tokenJwt };
+                    headers['Authorization'] = 'Bearer ' + tokenJwt;
                 }
-                let resp = await fetch(urlObj.toString(), options);
-                let datos = await resp.json();
 
-                let html = '';
-                
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2">';
-                html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Tarjetas (Árbitro: ' + (datos.arbitraje?.promedio_tarjetas_referencia || tarjetas) + ')</h3>';
-                if (datos.mercados_tarjetas_explicados) {
-                    for (let linea in datos.mercados_tarjetas_explicados) {
-                        html += '<p class="text-sm capitalize">' + linea.replace(/_/g, ' ') + ': <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados[linea] + '</b></p>';
-                    }
+                let resp = await fetch(baseUrl + '/analizar/jackbusca', {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify({
+                        promedio_tarjetas: parseFloat(promT) || 0,
+                        promedio_corners: parseFloat(promC) || 0,
+                        c_t_mas35: parseFloat(document.getElementById('c_t_mas35').value) || 0,
+                        c_t_menos35: parseFloat(document.getElementById('c_t_menos35').value) || 0,
+                        c_t_mas45: parseFloat(document.getElementById('c_t_mas45').value) || 0,
+                        c_t_menos45: parseFloat(document.getElementById('c_t_menos45').value) || 0,
+                        c_t_mas55: parseFloat(document.getElementById('c_t_mas55').value) || 0,
+                        c_t_menos55: parseFloat(document.getElementById('c_t_menos55').value) || 0,
+                        c_corner_mas75: parseFloat(document.getElementById('c_corner_mas75').value) || 0,
+                        c_corner_menos75: parseFloat(document.getElementById('c_corner_menos75').value) || 0,
+                        c_corner_mas85: parseFloat(document.getElementById('c_corner_mas85').value) || 0,
+                        c_corner_menos85: parseFloat(document.getElementById('c_corner_menos85').value) || 0,
+                        c_corner_mas95: parseFloat(document.getElementById('c_corner_mas95').value) || 0,
+                        c_corner_menos95: parseFloat(document.getElementById('c_corner_menos95').value) || 0,
+                        c_corner_mas105: parseFloat(document.getElementById('c_corner_mas105').value) || 0,
+                        c_corner_menos105: parseFloat(document.getElementById('c_corner_menos105').value) || 0
+                    })
+                });
+
+                let data = await resp.json();
+                if (resp.ok) {
+                    let html = `
+                        <div class="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2">
+                            <h3 class="text-xs font-bold text-amber-400">🟨 Análisis de Tarjetas</h3>
+                            <p class="text-xs text-slate-300">Línea Óptima: <b>${data.tarjetas_recomendadas || 'Revisar rangos'}</b></p>
+                            <p class="text-xs text-slate-300">${data.detalle_tarjetas || 'Probabilidad calculada en base al promedio del árbitro.'}</p>
+                        </div>
+                        <div class="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2">
+                            <h3 class="text-xs font-bold text-amber-400">🚩 Análisis de Córners</h3>
+                            <p class="text-xs text-slate-300">Línea Óptima: <b>${data.corners_recomendados || 'Revisar rangos'}</b></p>
+                            <p class="text-xs text-slate-300">${data.detalle_corners || 'Proyección estocástica de saques de esquina.'}</p>
+                        </div>
+                    `;
+                    resContainer.innerHTML = html;
+                    if (tokenJwt) cargarHistorial();
                 } else {
-                    html += '<p class="text-xs text-slate-400">Sin datos de tarjetas devueltos.</p>';
+                    resContainer.innerHTML = `<p class="col-span-2 text-center text-rose-400 py-4 text-xs">${data.detail || 'Error al procesar JackBusca.'}</p>`;
                 }
-                html += '</div>';
-
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">';
-                html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Córners por Línea (Base: ' + corners + ')</h3>';
-                
-                if (datos.mercados_tiros_de_esquina) {
-                    let masCorners = datos.mercados_tiros_de_esquina.mas_de || {};
-                    let menosCorners = datos.mercados_tiros_de_esquina.menos_de || {};
-
-                    html += '<div class="grid grid-cols-2 gap-4 text-xs">';
-                    html += '<div><span class="text-amber-300 font-bold block mb-1">Más de (...)</span>';
-                    for (let linea in masCorners) {
-                        html += '<p class="py-0.5">Más ' + linea + ': <span class="text-emerald-400 font-bold">' + masCorners[linea] + '</span></p>';
-                    }
-                    html += '</div>';
-
-                    html += '<div><span class="text-amber-300 font-bold block mb-1">Menos de (...)</span>';
-                    for (let linea in menosCorners) {
-                        html += '<p class="py-0.5">Menos ' + linea + ': <span class="text-rose-400 font-bold">' + menosCorners[linea] + '</span></p>';
-                    }
-                    html += '</div>';
-                    html += '</div>';
-                }
-                html += '</div>';
-
-                contenedor.innerHTML = html;
-                if (tokenJwt) cargarHistorial();
             } catch (err) {
-                contenedor.innerHTML = '<p class="col-span-2 text-center text-red-400 py-2">Error de conexión: ' + err + '</p>';
+                resContainer.innerHTML = `<p class="col-span-2 text-center text-rose-400 py-4 text-xs">Error de comunicación con el backend VIP.</p>`;
             }
         }
     </script>
