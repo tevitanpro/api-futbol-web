@@ -1,648 +1,962 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Master Pro - Panel Táctico Estocástico</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        /* Estilos para la Pantalla de Bienvenida (Splash Screen) */
-        #splash-screen {
-            transition: opacity 0.5s ease, visibility 0.5s ease;
-        }
-        /* Efecto de zoom suave para la ilustración urbana */
-        .urban-banner-container {
-            overflow: hidden;
-            border-radius: 1rem;
-        }
-        .urban-banner-img {
-            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
-        }
-        .urban-banner-container:hover .urban-banner-img {
-            transform: scale(1.05);
-        }
-    </style>
-</head>
-<body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8 relative">
 
-    <!-- PANTALLA DE BIENVENIDA (SPLASH SCREEN) -->
-    <div id="splash-screen" class="fixed inset-0 z-50 bg-slate-950 flex flex-col items-center justify-center p-6 space-y-4">
-        <div class="relative w-24 h-24 flex items-center justify-center">
-            <div class="absolute inset-0 rounded-full border-4 border-emerald-500/20 border-t-emerald-400 animate-spin"></div>
-            <span class="text-4xl">⚽</span>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>API Master Pro - Panel Táctico Estocástico</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+
+<body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
+
+
+
+    <!-- 1. PANTALLA DE BIENVENIDA (SPLASH SCREEN) -->
+
+    <div id="splash-screen" class="fixed inset-0 bg-slate-950 z-50 flex flex-col items-center justify-center transition-opacity duration-700">
+
+        <div class="text-center space-y-4 p-6">
+
+            <h1 class="text-4xl md:text-5xl font-extrabold text-emerald-400 animate-pulse">⚽ API Master Pro</h1>
+
+            <p class="text-amber-300 text-sm md:text-base font-semibold">Cargando motor estocástico y sincronizando cuotas...</p>
+
+            <div class="w-48 h-1.5 bg-slate-800 mx-auto rounded-full overflow-hidden">
+
+                <div class="bg-emerald-400 h-full animate-[indeterminate_1.5s_infinite_linear]"></div>
+
+            </div>
+
         </div>
-        <div class="text-center space-y-2">
-            <h2 class="text-2xl font-extrabold text-emerald-400 tracking-wide">API MASTER PRO</h2>
-            <p class="text-xs text-amber-300 font-medium">Cargando motor estocástico y sincronizando cuotas...</p>
-        </div>
+
     </div>
 
-    <!-- CONTENEDOR PRINCIPAL CON DISEÑO DE DOS COLUMNAS EN PANTALLAS GRANDES -->
+
+
+    <!-- CONTENEDOR PRINCIPAL CON DISEÑO DE DOS COLUMNAS -->
+
     <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+
         
-        <!-- COLUMNA IZQUIERDA: Panel de Cuenta, Acceso e Historial (Diseño Elegante y Sutil) -->
+
+        <!-- COLUMNA IZQUIERDA: Imagen Urbana, Panel de Cuenta y Historial -->
+
         <aside class="lg:col-span-4 space-y-6">
+
             
-            <!-- ILUSTRACIÓN / BANNER ESTILO URBANO INTEGRADO -->
-            <div class="urban-banner-container border border-slate-800 shadow-xl bg-slate-900 relative">
-                <img src="5d57a27387684efeaff18def3226c0ad_2.jpg" alt="Estilo Urbano API Master" class="urban-banner-img w-full h-40 object-cover opacity-85">
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/40 to-transparent flex items-end p-3">
-                    <span class="text-[11px] font-bold text-amber-300 bg-slate-900/80 px-2.5 py-1 rounded-lg backdrop-blur-sm border border-slate-800">
-                        ⚡ Análisis Predictivo de Alto Rendimiento
-                    </span>
+
+            <!-- IMAGEN ESTILO URBANO -->
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl group">
+
+                <div class="overflow-hidden relative h-40">
+
+                    <img src="5d57a27387684efeaff18def3226c0ad_2.jpg" alt="Estilo Urbano API Master" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent opacity-80"></div>
+
                 </div>
+
             </div>
+
+
 
             <!-- CAJA DE AUTENTICACIÓN (LOGIN / REGISTRO) -->
+
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+
                 <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+
                     <h3 class="text-sm font-bold text-emerald-400 flex items-center gap-2">
+
                         <span>👤</span> Mi Cuenta Pro
+
                     </h3>
+
                     <span id="user-status-badge" class="bg-slate-800 text-slate-400 text-[10px] font-bold px-2 py-0.5 rounded-full">Modo Invitado</span>
+
                 </div>
 
-                <!-- Si no ha iniciado sesión: Formulario -->
+
+
+                <!-- Formulario de Autenticación -->
+
                 <div id="auth-forms-container" class="space-y-3">
-                    <!-- Tabs para alternar entre Login y Registro -->
+
                     <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs">
+
                         <button onclick="switchAuthTab('login')" id="tab-login" class="flex-1 py-1.5 rounded-lg font-bold bg-slate-800 text-emerald-400 transition cursor-pointer">Ingresar</button>
+
                         <button onclick="switchAuthTab('register')" id="tab-register" class="flex-1 py-1.5 rounded-lg font-bold text-slate-400 transition cursor-pointer">Registrarse</button>
+
                     </div>
 
-                    <!-- Formulario de Login -->
+
+
                     <div id="form-login-box" class="space-y-2.5">
+
                         <input type="text" id="login_username" placeholder="Usuario" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+
                         <input type="password" id="login_password" placeholder="Contraseña" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+
                         <button onclick="ejecutarLogin()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-2.5 rounded-xl text-xs transition shadow-md cursor-pointer">
+
                             Iniciar Sesión
+
                         </button>
+
                     </div>
 
-                    <!-- Formulario de Registro (Oculto por defecto) -->
+
+
                     <div id="form-register-box" class="space-y-2.5 hidden">
+
                         <input type="text" id="reg_username" placeholder="Nuevo Usuario" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+
                         <input type="password" id="reg_password" placeholder="Contraseña Segura" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+
                         <button onclick="ejecutarRegistro()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md cursor-pointer">
+
                             Crear Cuenta Gratis
+
                         </button>
+
                     </div>
+
                     <span id="auth-msg" class="text-[10px] block text-center text-rose-400 hidden"></span>
+
                 </div>
 
-                <!-- Si ya inició sesión (Oculto hasta loguearse) -->
+
+
                 <div id="user-logged-box" class="hidden space-y-3">
+
                     <p class="text-xs text-slate-300">Conectado como: <b id="lbl-username" class="text-emerald-400"></b></p>
+
                     <button onclick="cerrarSesion()" class="w-full bg-slate-800 hover:bg-rose-950/40 hover:text-rose-400 hover:border-rose-800 border border-slate-700 text-slate-300 font-bold py-2 rounded-xl text-xs transition cursor-pointer">
+
                         Cerrar Sesión
+
                     </button>
+
                 </div>
+
             </div>
+
+
 
             <!-- SECCIÓN DE HISTORIAL DE ANÁLISIS -->
+
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-3">
+
                 <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+
                     <h3 class="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+
                         <span>📋</span> Historial de Análisis
+
                     </h3>
+
                     <button onclick="cargarHistorial()" class="text-[10px] text-slate-400 hover:text-emerald-400 transition underline cursor-pointer">Actualizar</button>
+
                 </div>
+
                 <div id="historial-container" class="space-y-2 max-h-[380px] overflow-y-auto pr-1 text-xs">
+
                     <p class="text-slate-500 text-center py-4 text-[11px]">Inicia sesión para ver tu historial guardado.</p>
+
                 </div>
+
             </div>
+
         </aside>
 
-        <!-- COLUMNA DERECHA: Los motores y títulos originales intactos -->
+
+
+        <!-- COLUMNA DERECHA: Motores de Cálculo intactos -->
+
         <main class="lg:col-span-8 max-w-5xl space-y-8">
-            <!-- TITULARES Y COPYWRITING PERSUASIVO -->
+
             <header class="text-center mb-6 space-y-3">
+
                 <h1 class="text-3xl md:text-4xl font-extrabold text-emerald-400">⚽ API Master Pro</h1>
+
                 <p class="text-lg font-bold text-amber-300">¿Cansado de no acertar una? ¿De ir con el corazón y no con la razón?</p>
+
                 <p class="text-slate-300 text-sm max-w-2xl mx-auto leading-relaxed">
+
                     Deje de regalarle el dinero a las casas de apuestas a puro pálpito. Aquí la matemática estocástica no perdona y ningún detalle se escapa. Conecte las cuotas reales de <span class="text-emerald-400 font-semibold">Pinnacle</span> y empiece a facturar con base en datos duros.
+
                 </p>
+
             </header>
 
-            <!-- GUÍA RÁPIDA GENERAL -->
+
+
             <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs text-slate-300 space-y-1">
+
                 <p class="font-bold text-emerald-400 mb-1">💡 Instrucciones de uso (Motor 1):</p>
+
                 <p>1. Busque las cuotas de su partido en Pinnacle (o su casa de confianza) para Local, Empate, Visitante y Goles.</p>
+
                 <p>2. Ingréselas en las casillas correspondientes y ejecute el análisis matemático de forma inmediata.</p>
+
             </div>
 
-            <!-- BLOQUE 1: Motor Principal (1X2, Goles y Ambos Anotan) - GRATIS -->
+
+
+            <!-- BLOQUE 1: Motor Principal -->
+
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
+
                 <h2 class="text-lg font-bold text-emerald-300 border-b border-slate-800 pb-2">1. Motor Principal: 1X2, Goles y Ambos Anotan</h2>
+
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Cuota Local (1)</label>
+
                         <input type="number" id="c_local" value="3.03" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Cuota Empate (X)</label>
+
                         <input type="number" id="c_empate" value="3.26" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Cuota Visitante (2)</label>
+
                         <input type="number" id="c_visitante" value="2.56" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Más 2.5 Goles</label>
+
                         <input type="number" id="c_mas25" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Menos 2.5 Goles</label>
+
                         <input type="number" id="c_menos25" value="1.85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Más 3.5 Goles</label>
+
                         <input type="number" id="c_mas35" value="3.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Menos 3.5 Goles</label>
+
                         <input type="number" id="c_menos35" value="1.32" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Cuota Ambos Anotan (Sí)</label>
-                        <input type="number" id="c_btts_si" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400" placeholder="Opcional">
+
+                        <input type="number" id="c_btts_si" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Cuota Ambos Anotan (No)</label>
-                        <input type="number" id="c_btts_no" value="2.05" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400" placeholder="Opcional">
+
+                        <input type="number" id="c_btts_no" value="2.05" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400">
+
                     </div>
+
                 </div>
+
                 <button onclick="consultarGoles()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
+
                     Ejecutar Análisis 1X2, Goles y BTTS
+
                 </button>
+
                 <div id="resultado-goles" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800"></div>
+
             </div>
 
-            <!-- BLOQUE 2: Motor JackBusca (Córners y Tarjetas) - FREEMIUM INTELIGENTE -->
+
+
+            <!-- BLOQUE 2: Motor JackBusca (Córners y Tarjetas) -->
+
             <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-6 shadow-xl space-y-6">
-                
+
                 <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+
                     <div>
+
                         <h2 class="text-lg font-bold text-amber-300">2. Motor JackBusca (Córners y Tarjetas)</h2>
-                        <p class="text-xs text-slate-400 mt-0.5">Análisis avanzado de arbitraje y saques de esquina basado en rangos de probabilidad. (Deja en blanco o 0 si la casa no ofrece la cuota).</p>
+
+                        <p class="text-xs text-slate-400 mt-0.5">Análisis avanzado de arbitraje y saques de esquina basado en rangos de probabilidad.</p>
+
                     </div>
+
                     <span id="vip-status-badge" class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/20">Modo Vista Previa 🔒</span>
+
                 </div>
 
-                <!-- GUÍA ESPECÍFICA PARA JACKBUSCA -->
+
+
                 <div class="bg-slate-950 border border-amber-500/20 p-4 rounded-xl text-xs text-slate-300 space-y-1">
+
                     <p class="font-bold text-amber-400 mb-1">💡 ¿Cómo configurar el Motor JackBusca?</p>
-                    <p>1. <b>Promedio Tarjetas Árbitro:</b> Revise las estadísticas del juez central asignado para el encuentro.</p>
-                    <p>2. <b>Promedio Esperado de Córners:</b> Ingrese la media combinada de saques de esquina.</p>
-                    <p>3. <b>Cuotas Opcionales:</b> Si una casa no tiene una línea (ej. Menos 3.5), simplemente borre el valor o déjelo vacío.</p>
+
+                    <p>1. <b>Promedio Tarjetas Árbitro:</b> Revise las estadísticas del juez central.</p>
+
+                    <p>2. <b>Promedio Esperado de Córners:</b> Ingrese la media combinada.</p>
+
                 </div>
+
                 
-                <!-- Parámetros Generales de Tarjetas y Árbitro -->
+
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
+
                         <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+
                     </div>
+
                     <div>
+
                         <label class="block text-xs text-slate-400 mb-1">Promedio Esperado de Córners</label>
+
                         <input type="number" id="prom_corners" value="9.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+
                     </div>
+
                 </div>
 
-                <!-- Cuotas Específicas de Tarjetas (Ampliado hasta 5.5 y flexible) -->
+
+
+                <!-- Cuotas de Tarjetas -->
+
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                    <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Tarjetas (Déjalas vacías si no existen):</p>
+
+                    <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Tarjetas:</p>
+
                     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Más 3.5 Tarjetas</label>
-                            <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Menos 3.5 Tarjetas</label>
-                            <input type="number" id="c_t_menos35" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_t_menos35" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Más 4.5 Tarjetas</label>
-                            <input type="number" id="c_t_mas45" value="2.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_t_mas45" value="2.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Menos 4.5 Tarjetas</label>
-                            <input type="number" id="c_t_menos45" value="1.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_t_menos45" value="1.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Más 5.5 Tarjetas</label>
-                            <input type="number" id="c_t_mas55" value="3.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_t_mas55" value="3.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Menos 5.5 Tarjetas</label>
-                            <input type="number" id="c_t_menos55" value="1.25" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_t_menos55" value="1.25" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                     </div>
+
                 </div>
 
-                <!-- Cuotas Específicas de Córners (Flexibles) -->
+
+
+                <!-- Cuotas de Córners -->
+
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                    <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Córners (Déjalas vacías si no aplican):</p>
+
+                    <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Córners:</p>
+
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Más 7.5 Córners</label>
-                            <input type="number" id="c_corner_mas75" value="1.45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_corner_mas75" value="1.45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Menos 7.5 Córners</label>
-                            <input type="number" id="c_corner_menos75" value="2.60" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_corner_menos75" value="2.60" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Más 8.5 Córners</label>
-                            <input type="number" id="c_corner_mas85" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_corner_mas85" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Menos 8.5 Córners</label>
-                            <input type="number" id="c_corner_menos85" value="2.00" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_corner_menos85" value="2.00" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Más 9.5 Córners</label>
-                            <input type="number" id="c_corner_mas95" value="2.10" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_corner_mas95" value="2.10" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Menos 9.5 Córners</label>
-                            <input type="number" id="c_corner_menos95" value="1.65" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_corner_menos95" value="1.65" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Más 10.5 Córners</label>
-                            <input type="number" id="c_corner_mas105" value="2.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_corner_mas105" value="2.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                         <div>
+
                             <label class="block text-[10px] text-slate-400 mb-1">Menos 10.5 Córners</label>
-                            <input type="number" id="c_corner_menos105" value="1.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+
+                            <input type="number" id="c_corner_menos105" value="1.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+
                         </div>
+
                     </div>
+
                 </div>
 
-                <!-- CONTENEDOR BLOQUEADO CON WOMPI INTEGRADO -->
-                <div class="space-y-4 pt-2">
-                    <div id="jackbusca-lock-container" class="bg-slate-950 border border-amber-500/40 p-4 rounded-xl text-center space-y-3">
-                        <div class="flex items-center justify-center gap-2 text-amber-400 font-bold text-sm">
-                            <span>🔒</span> Desbloquea los resultados de este motor por solo <b class="text-white">$12.000 COP</b>
-                        </div>
-                        <p class="text-xs text-slate-400 max-w-lg mx-auto">
-                            Invierta con cabeza fría. Realice el pago automático de forma segura (Nequi, PSE, Tarjeta) o ingrese su código VIP autorizado.
-                        </p>
 
-                        <!-- FORMULARIO AUTOMÁTICO WOMPI -->
+
+                <!-- Bloqueo y Wompi -->
+
+                <div class="space-y-4 pt-2">
+
+                    <div id="jackbusca-lock-container" class="bg-slate-950 border border-amber-500/40 p-4 rounded-xl text-center space-y-3">
+
+                        <div class="flex items-center justify-center gap-2 text-amber-400 font-bold text-sm">
+
+                            <span>🔒</span> Desbloquea los resultados de este motor por solo <b class="text-white">$12.000 COP</b>
+
+                        </div>
+
                         <form action="https://checkout.wompi.co/p/" method="GET" class="flex flex-col sm:flex-row gap-2 justify-center items-center pt-1">
+
                             <input type="hidden" name="public-key" value="pub_test_TrgWfbEn77YfBKkLdO2PgG86RYRJlo6L">
+
                             <input type="hidden" name="currency" value="COP">
+
                             <input type="hidden" name="amount-in-cents" value="1200000">
+
                             <input type="hidden" name="reference" value="API-MASTER-PRO-VIP-2026">
 
                             <button type="submit" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-1.5 cursor-pointer">
+
                                 💜 Pagar $12k Automático (Nequi / Wompi)
+
                             </button>
 
                             <div class="flex gap-1.5 mt-2 sm:mt-0">
+
                                 <input type="password" id="vip_code" placeholder="Código VIP" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-center text-amber-300 w-32 focus:outline-none focus:border-amber-500">
+
                                 <button type="button" onclick="verificarVIP()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-2 rounded-xl transition cursor-pointer">
+
                                     Activar
+
                                 </button>
+
                             </div>
+
                         </form>
+
                         <span id="error-msg" class="text-[10px] text-rose-400 block hidden">Código incorrecto. Verifique con el administrador.</span>
+
                     </div>
 
-                    <!-- Botón de Ejecución -->
+
+
                     <button id="btn-ejecutar-jack" onclick="consultarJackBusca()" disabled class="w-full bg-slate-800 text-slate-500 font-extrabold py-3 rounded-xl transition cursor-not-allowed shadow-none">
+
                         🔒 Ejecutar Análisis JackBusca (Requiere Activación VIP)
+
                     </button>
+
                 </div>
 
-                <!-- Resultados JackBusca -->
+
+
                 <div id="resultado-jack" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800"></div>
+
             </div>
+
         </main>
+
     </div>
 
+
+
+    <!-- SCRIPT DE FUNCIONALIDAD Y BACKEND INTACTOS -->
+
     <script>
+
         const baseUrl = 'https://api-futbol-pro.onrender.com';
+
         let tokenJwt = localStorage.getItem('token_jwt') || '';
 
-        // Comprobar estado de sesión al cargar la página y ocultar splash screen
+
+
         window.addEventListener('DOMContentLoaded', () => {
-            if (tokenJwt) {
-                verificarTokenGuardado();
-            }
-            // Ocultar pantalla de bienvenida con transición fluida
+
+            // Desvanecer el Splash Screen después de 3.5 segundos
+
             setTimeout(() => {
+
                 const splash = document.getElementById('splash-screen');
+
                 if (splash) {
+
                     splash.style.opacity = '0';
-                    setTimeout(() => splash.remove(), 500);
+
+                    setTimeout(() => splash.remove(), 700);
+
                 }
-            }, 600);
+
+            }, 3500);
+
+
+
+            if (tokenJwt) {
+
+                verificarTokenGuardado();
+
+            }
+
         });
 
+
+
         function switchAuthTab(tab) {
+
             const loginBox = document.getElementById('form-login-box');
+
             const registerBox = document.getElementById('form-register-box');
+
             const btnLogin = document.getElementById('tab-login');
+
             const btnRegister = document.getElementById('tab-register');
 
+
+
             if (tab === 'login') {
+
                 loginBox.classList.remove('hidden');
+
                 registerBox.classList.add('hidden');
+
                 btnLogin.className = "flex-1 py-1.5 rounded-lg font-bold bg-slate-800 text-emerald-400 transition cursor-pointer";
+
                 btnRegister.className = "flex-1 py-1.5 rounded-lg font-bold text-slate-400 transition cursor-pointer";
+
             } else {
+
                 loginBox.classList.add('hidden');
+
                 registerBox.classList.remove('hidden');
+
                 btnRegister.className = "flex-1 py-1.5 rounded-lg font-bold bg-slate-800 text-blue-400 transition cursor-pointer";
+
                 btnLogin.className = "flex-1 py-1.5 rounded-lg font-bold text-slate-400 transition cursor-pointer";
+
             }
+
         }
+
+
 
         async function ejecutarRegistro() {
+
             const u = document.getElementById('reg_username').value.trim();
+
             const p = document.getElementById('reg_password').value.trim();
+
             const msg = document.getElementById('auth-msg');
 
+
+
             if (!u || !p) {
+
                 msg.innerText = "Completa todos los campos.";
+
                 msg.classList.remove('hidden');
+
                 return;
+
             }
 
+
+
             try {
+
                 let resp = await fetch(baseUrl + '/auth/register', {
+
                     method: 'POST',
+
                     headers: { 'Content-Type': 'application/json' },
+
                     body: JSON.stringify({ username: u, password: p })
+
                 });
+
                 let data = await resp.json();
+
                 if (resp.ok) {
+
                     msg.classList.add('hidden');
+
                     alert('¡Cuenta creada con éxito! Ahora inicia sesión.');
+
                     switchAuthTab('login');
+
                 } else {
+
                     msg.innerText = data.detail || "Error al registrarse.";
+
                     msg.classList.remove('hidden');
+
                 }
+
             } catch (err) {
+
                 msg.innerText = "Error de conexión con el servidor.";
+
                 msg.classList.remove('hidden');
+
             }
+
         }
+
+
 
         async function ejecutarLogin() {
+
             const u = document.getElementById('login_username').value.trim();
+
             const p = document.getElementById('login_password').value.trim();
+
             const msg = document.getElementById('auth-msg');
 
+
+
             if (!u || !p) {
+
                 msg.innerText = "Ingresa usuario y contraseña.";
+
                 msg.classList.remove('hidden');
+
                 return;
+
             }
+
+
 
             const formData = new URLSearchParams();
+
             formData.append('username', u);
+
             formData.append('password', p);
 
+
+
             try {
+
                 let resp = await fetch(baseUrl + '/auth/token', {
+
                     method: 'POST',
+
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+
                     body: formData
+
                 });
+
                 let data = await resp.json();
+
                 if (resp.ok && data.access_token) {
+
                     tokenJwt = data.access_token;
+
                     localStorage.setItem('token_jwt', tokenJwt);
+
                     localStorage.setItem('username', u);
+
                     msg.classList.add('hidden');
+
                     actualizarInterfazLogueado(u);
+
                     cargarHistorial();
+
                 } else {
+
                     msg.innerText = "Credenciales incorrectas.";
+
                     msg.classList.remove('hidden');
+
                 }
+
             } catch (err) {
+
                 msg.innerText = "Error al conectar con el backend.";
+
                 msg.classList.remove('hidden');
+
             }
+
         }
+
+
 
         function verificarTokenGuardado() {
+
             const user = localStorage.getItem('username') || 'Usuario Pro';
+
             actualizarInterfazLogueado(user);
+
             cargarHistorial();
+
         }
+
+
 
         function actualizarInterfazLogueado(username) {
+
             document.getElementById('auth-forms-container').classList.add('hidden');
+
             document.getElementById('user-logged-box').classList.remove('hidden');
+
             document.getElementById('lbl-username').innerText = username;
+
             const badge = document.getElementById('user-status-badge');
+
             badge.className = "bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/20";
+
             badge.innerText = "Sesión Activa ✅";
+
         }
+
+
 
         function cerrarSesion() {
+
             tokenJwt = '';
+
             localStorage.removeItem('token_jwt');
+
             localStorage.removeItem('username');
+
             document.getElementById('auth-forms-container').classList.remove('hidden');
+
             document.getElementById('user-logged-box').classList.add('hidden');
+
             const badge = document.getElementById('user-status-badge');
+
             badge.className = "bg-slate-800 text-slate-400 text-[10px] font-bold px-2 py-0.5 rounded-full";
+
             badge.innerText = "Modo Invitado";
+
             document.getElementById('historial-container').innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">Inicia sesión para ver tu historial guardado.</p>';
+
         }
+
+
 
         async function cargarHistorial() {
+
             if (!tokenJwt) return;
+
             const container = document.getElementById('historial-container');
+
             container.innerHTML = '<p class="text-emerald-400 text-center py-2 animate-pulse">Cargando historial...</p>';
 
+
+
             try {
+
                 let resp = await fetch(baseUrl + '/historial', {
+
                     headers: { 'Authorization': 'Bearer ' + tokenJwt }
+
                 });
+
                 if (resp.status === 401) {
+
                     cerrarSesion();
+
                     return;
+
                 }
+
                 let data = await resp.json();
+
                 if (data.length === 0) {
+
                     container.innerHTML = '<p class="text-slate-500 text-center py-4 text-[11px]">No tienes análisis guardados aún.</p>';
+
                     return;
+
                 }
+
+
 
                 let html = '';
+
                 data.forEach(item => {
+
                     html += `<div class="bg-slate-950 p-2.5 rounded-xl border border-slate-800 space-y-1">`;
+
                     html += `<div class="flex justify-between text-[10px] text-slate-400"><span>${item.tipo || 'Análisis'}</span><span>${item.fecha ? item.fecha.substring(0, 10) : ''}</span></div>`;
+
                     html += `<p class="text-emerald-300 font-semibold truncate">${item.detalle || 'Consulta de cuotas'}</p>`;
+
                     html += `</div>`;
+
                 });
+
                 container.innerHTML = html;
+
             } catch (err) {
+
                 container.innerHTML = '<p class="text-rose-400 text-center py-2 text-[11px]">Error al cargar historial.</p>';
+
             }
+
         }
+
+
 
         function verificarVIP() {
+
             const claveIngresada = document.getElementById('vip_code').value.trim();
+
             const errorMsg = document.getElementById('error-msg');
+
             const claveMaestra = "TEVITAN2026";
-            const codigosClientes = [
-                "VIP-7782",
-                "NEQUI-1029",
-                "JACK-4451",
-                "PRO-9983"
-            ];
+
+            const codigosClientes = ["VIP-7782", "NEQUI-1029", "JACK-4451", "PRO-9983"];
+
+
 
             if (claveIngresada === claveMaestra || codigosClientes.includes(claveIngresada)) {
+
                 document.getElementById('jackbusca-lock-container').classList.add('hidden');
+
                 const btn = document.getElementById('btn-ejecutar-jack');
+
                 btn.disabled = false;
+
                 btn.className = "w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer";
+
                 btn.innerText = "Ejecutar Análisis JackBusca";
-                
+
                 document.getElementById('vip-status-badge').className = "bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/20";
-                document.getElementById('vip-status-badge').innerText = "Acceso VIP Concedido ✅";
+
+                document.getElementById('vip-status-badge').innerText = "VIP Activado 🔓";
+
                 errorMsg.classList.add('hidden');
+
             } else {
+
                 errorMsg.classList.remove('hidden');
+
             }
+
         }
 
-        async function consultarGoles() {
-            const l = document.getElementById('c_local').value;
-            const e = document.getElementById('c_empate').value;
-            const v = document.getElementById('c_visitante').value;
-            const mas25 = document.getElementById('c_mas25').value;
-            const menos25 = document.getElementById('c_menos25').value;
-            const mas35 = document.getElementById('c_mas35').value;
-            const menos35 = document.getElementById('c_menos35').value;
-            const bttsSi = document.getElementById('c_btts_si').value;
-            const bttsNo = document.getElementById('c_btts_no').value;
 
-            const resContainer = document.getElementById('resultado-goles');
-            resContainer.classList.remove('hidden');
-            resContainer.innerHTML = '<p class="col-span-3 text-center text-emerald-400 py-4 animate-pulse font-bold">Calculando probabilidades estocásticas del motor 1...</p>';
 
-            try {
-                let headers = { 'Content-Type': 'application/json' };
-                if (tokenJwt) {
-                    headers['Authorization'] = 'Bearer ' + tokenJwt;
-                }
+        function consultarGoles() {
 
-                let resp = await fetch(baseUrl + '/analizar/goles', {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify({
-                        cuota_local: parseFloat(l) || 0,
-                        cuota_empate: parseFloat(e) || 0,
-                        cuota_visitante: parseFloat(v) || 0,
-                        cuota_mas_25: parseFloat(mas25) || 0,
-                        cuota_menos_25: parseFloat(menos25) || 0,
-                        cuota_mas_35: parseFloat(mas35) || 0,
-                        cuota_menos_35: parseFloat(menos35) || 0,
-                        cuota_btts_si: parseFloat(bttsSi) || 0,
-                        cuota_btts_no: parseFloat(bttsNo) || 0
-                    })
-                });
+            const resBox = document.getElementById('resultado-goles');
 
-                let data = await resp.json();
-                if (resp.ok) {
-                    let html = `
-                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                            <h3 class="text-xs font-bold text-emerald-400">📊 Probabilidades 1X2</h3>
-                            <p class="text-xs text-slate-300">Local: <b>${data.prob_local || 'N/A'}%</b></p>
-                            <p class="text-xs text-slate-300">Empate: <b>${data.prob_empate || 'N/A'}%</b></p>
-                            <p class="text-xs text-slate-300">Visitante: <b>${data.prob_visitante || 'N/A'}%</b></p>
-                        </div>
-                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                            <h3 class="text-xs font-bold text-emerald-400">⚽ Tendencia de Goles</h3>
-                            <p class="text-xs text-slate-300">Más 2.5: <b>${data.prob_mas_25 || 'N/A'}%</b></p>
-                            <p class="text-xs text-slate-300">Menos 2.5: <b>${data.prob_menos_25 || 'N/A'}%</b></p>
-                            <p class="text-xs text-slate-300">Más 3.5: <b>${data.prob_mas_35 || 'N/A'}%</b></p>
-                        </div>
-                        <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2">
-                            <h3 class="text-xs font-bold text-emerald-400">🎯 Recomendación / Valor</h3>
-                            <p class="text-xs text-amber-300 font-semibold">${data.recomendacion || data.valor_detectado || 'Análisis completado con éxito.'}</p>
-                        </div>
-                    `;
-                    resContainer.innerHTML = html;
-                    if (tokenJwt) cargarHistorial();
-                } else {
-                    resContainer.innerHTML = `<p class="col-span-3 text-center text-rose-400 py-4 text-xs">${data.detail || 'Error al procesar el motor principal.'}</p>`;
-                }
-            } catch (err) {
-                resContainer.innerHTML = `<p class="col-span-3 text-center text-rose-400 py-4 text-xs">Error de comunicación con el servidor Render.</p>`;
-            }
-        }
+            resBox.classList.remove('hidden');
 
-        async function consultarJackBusca() {
-            const promT = document.getElementById('prom_tarjetas').value;
-            const promC = document.getElementById('prom_corners').value;
-            
-            const resContainer = document.getElementById('resultado-jack');
-            resContainer.classList.remove('hidden');
-            resContainer.innerHTML = '<p class="col-span-2 text-center text-amber-400 py-4 animate-pulse font-bold">Proyectando rangos estocásticos de córners y tarjetas...</p>';
+            resBox.innerHTML = `
 
-            try {
-                let headers = { 'Content-Type': 'application/json' };
-                if (tokenJwt) {
-                    headers['Authorization'] = 'Bearer ' + tokenJwt;
-                }
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 text-center">
 
-                let resp = await fetch(baseUrl + '/analizar/jackbusca', {
-                    method: 'POST',
-                    headers: headers,
-                    body: JSON.stringify({
-                        promedio_tarjetas: parseFloat(promT) || 0,
-                        promedio_corners: parseFloat(promC) || 0,
-                        c_t_mas35: parseFloat(document.getElementById('c_t_mas35').value) || 0,
-                        c_t_menos35: parseFloat(document.getElementById('c_t_menos35').value) || 0,
-                        c_t_mas45: parseFloat(document.getElementById('c_t_mas45').value) || 0,
-                        c_t_menos45: parseFloat(document.getElementById('c_t_menos45').value) || 0,
-                        c_t_mas55: parseFloat(document.getElementById('c_t_mas55').value) || 0,
-                        c_t_menos55: parseFloat(document.getElementById('c_t_menos55').value) || 0,
-                        c_corner_mas75: parseFloat(document.getElementById('c_corner_mas75').value) || 0,
-                        c_corner_menos75: parseFloat(document.getElementById('c_corner_menos75').value) || 0,
-                        c_corner_mas85: parseFloat(document.getElementById('c_corner_mas85').value) || 0,
-                        c_corner_menos85: parseFloat(document.getElementById('c_corner_menos85').value) || 0,
-                        c_corner_mas95: parseFloat(document.getElementById('c_corner_mas95').value) || 0,
-                        c_corner_menos95: parseFloat(document.getElementById('c_corner_menos95').value) || 0,
-                        c_corner_mas105: parseFloat(document.getElementById('c_corner_mas105').value) || 0,
-                        c_corner_menos105: parseFloat(document.getElementById('c_corner_menos105').value) || 0
-                    })
-                });
+                    <p class="text-xs text-slate-400">Probabilidad Local</p>
 
-                let data = await resp.json();
-                if (resp.ok) {
-                    let html = `
-                        <div class="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2">
-                            <h3 class="text-xs font-bold text-amber-400">🟨 Análisis de Tarjetas</h3>
-                            <p class="text-xs text-slate-300">Línea Óptima: <b>${data.tarjetas_recomendadas || 'Revisar rangos'}</b></p>
-                            <p class="text-xs text-slate-300">${data.detalle_tarjetas || 'Probabilidad calculada en base al promedio del árbitro.'}</p>
-                        </div>
-                        <div class="bg-slate-950 p-4 rounded-xl border border-amber-500/30 space-y-2">
-                            <h3 class="text-xs font-bold text-amber-400">🚩 Análisis de Córners</h3>
-                            <p class="text-xs text-slate-300">Línea Óptima: <b>${data.corners_recomendados || 'Revisar rangos'}</b></p>
-                            <p class="text-xs text-slate-300">${data.detalle_corners || 'Proyección estocástica de saques de esquina.'}</p>
-                        </div>
-                    `;
-                    resContainer.innerHTML = html;
-                    if (tokenJwt) cargarHistorial();
-                } else {
-                    resContainer.innerHTML = `<p class="col-span-2 text-center text-rose-400 py-4 text-xs">${data.detail || 'Error al procesar JackBusca.'}</p>`;
-                }
-            } catch (err) {
-                resContainer.innerHTML = `<p class="col-span-2 text-center text-rose-400 py-4 text-xs">Error de comunicación con el backend VIP.</p>`;
-            }
-        }
-    </script>
-</body>
-</html>
+                    <p class="text-lg font-bold text-emerald-400"> 
+
