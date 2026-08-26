@@ -57,7 +57,11 @@
         <!-- BLOQUE 2: Motor JackBusca (Córners y Tarjetas) -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
             <h2 class="text-lg font-bold text-amber-300 border-b border-slate-800 pb-2">2. Motor JackBusca (Córners y Tarjetas)</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Promedio Esperado de Córners</label>
+                    <input type="number" id="prom_corners" value="9.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
+                </div>
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Promedio Tarjetas Árbitro</label>
                     <input type="number" id="prom_tarjetas" value="4.5" step="0.1" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-amber-400">
@@ -140,6 +144,7 @@
             const u25 = document.getElementById('c_menos25').value;
             const m35 = document.getElementById('c_mas35').value;
             const u35 = document.getElementById('c_menos35').value;
+            const corners = document.getElementById('prom_corners').value;
             const tarjetas = document.getElementById('prom_tarjetas').value;
             const c_t35 = document.getElementById('c_t_mas35').value;
 
@@ -154,22 +159,36 @@
                 let datos = await resp.json();
 
                 let html = '';
-                // Tarjetas
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-amber-400 mb-2">Tarjetas (Árbitro: ' + datos.arbitraje.promedio_tarjetas_referencia + ')</h3>';
-                html += '<p>Más 3.5: <b>' + datos.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
-                html += '<p>Más 4.5: <b>' + datos.mercados_tarjetas_explicados["mas_de_4.5_tarjetas"] + '</b></p>';
+                
+                // Columna Izquierda: Tarjetas
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2">';
+                html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Tarjetas (Árbitro: ' + datos.arbitraje.promedio_tarjetas_referencia + ')</h3>';
+                html += '<p class="text-sm">Más de 3.5 Tarjetas: <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
+                html += '<p class="text-sm">Más de 4.5 Tarjetas: <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados["mas_de_4.5_tarjetas"] + '</b></p>';
+                html += '<p class="text-sm">Menos de 3.5 Tarjetas: <b class="text-rose-400">' + datos.mercados_tarjetas_explicados["menos_de_3.5_tarjetas"] + '</b></p>';
+                html += '<p class="text-sm">Menos de 4.5 Tarjetas: <b class="text-rose-400">' + datos.mercados_tarjetas_explicados["menos_de_4.5_tarjetas"] + '</b></p>';
                 html += '</div>';
 
-                // Córners detallados
-                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-1">';
-                html += '<h3 class="font-bold text-amber-400 mb-2">Córners por Línea</h3>';
-                let corners = datos.mercados_tiros_de_esquina.mas_de;
-                for (let linea in corners) {
-                    let mas = datos.mercados_tiros_de_esquina.mas_de[linea];
-                    let menos = datos.mercados_tiros_de_esquina.menos_de[linea];
-                    html += '<p class="text-xs">Línea <b>' + linea + '</b> ➔ Más: <span class="text-emerald-400 font-semibold">' + mas + '</span> | Menos: <span class="text-rose-400 font-semibold">' + menos + '</span></p>';
+                // Columna Derecha: Córners Desglosados por Líneas (Desde 7.5 en adelante)
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">';
+                html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Córners por Línea (Base: ' + corners + ')</h3>';
+                
+                let masCorners = datos.mercados_tiros_de_esquina.mas_de;
+                let menosCorners = datos.mercados_tiros_de_esquina.menos_de;
+
+                html += '<div class="grid grid-cols-2 gap-2 text-xs">';
+                html += '<div><span class="text-slate-400 font-bold block mb-1">Más de (...)</span>';
+                for (let linea in masCorners) {
+                    html += '<p>Más ' + linea + ': <span class="text-emerald-400 font-bold">' + masCorners[linea] + '</span></p>';
                 }
+                html += '</div>';
+
+                html += '<div><span class="text-slate-400 font-bold block mb-1">Menos de (...)</span>';
+                for (let linea in menosCorners) {
+                    html += '<p>Menos ' + linea + ': <span class="text-rose-400 font-bold">' + menosCorners[linea] + '</span></p>';
+                }
+                html += '</div>';
+                html += '</div>';
                 html += '</div>';
 
                 contenedor.innerHTML = html;
