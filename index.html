@@ -94,8 +94,8 @@
 
             const baseUrl = 'https://api-futbol-pro.onrender.com';
             
-            const urlFase1 = `${baseUrl}/analisis/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}&cuota_mas_35_goles=${m35}&cuota_menos_35_goles=${u35}`;
-            const urlJack = `${baseUrl}/jackbusca/partido?cuota_local=${l}&cuota_empate=${e}&cuota_visitante=${v}&cuota_mas_25_goles=${m25}&cuota_menos_25_goles=${u25}&cuota_mas_35_goles=${m35}&cuota_menos_35_goles=${u35}&promedio_tarjetas_arbitro=${tarjetas}&cuota_tarjetas_mas_35=${c_t35}`;
+            const urlFase1 = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
+            const urlJack = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
 
             const contenedorRes = document.getElementById('contenido-resultado');
             const cajaRes = document.getElementById('resultado');
@@ -110,51 +110,49 @@
                 let respJack = await fetch(urlJack);
                 let resJack = await respJack.json();
 
-                // Extracción limpia de córners para evitar errores de sintaxis en el template string
-                const t = resJack.mercados_tiros_de_esquina;
-                const c75_m = t.mas_de["7.5"], c75_u = t.menos_de["7.5"];
-                const c85_m = t.mas_de["8.5"], c85_u = t.menos_de["8.5"];
-                const c95_m = t.mas_de["9.5"], c95_u = t.menos_de["9.5"];
-                const c105_m = t.mas_de["10.5"], c105_u = t.menos_de["10.5"];
+                let html = '';
+                
+                // Bloque 1: Probabilidades
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                html += '<h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>';
+                html += '<p>Local (1): <b>' + resFase1.probabilidades_1x2_simuladas.local + '</b></p>';
+                html += '<p>Empate (X): <b>' + resFase1.probabilidades_1x2_simuladas.empate + '</b></p>';
+                html += '<p>Visitante (2): <b>' + resFase1.probabilidades_1x2_simuladas.visitante + '</b></p>';
+                html += '</div>';
 
-                let html = `
-                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                        <h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>
-                        <p>Local (1): <b>${resFase1.probabilidades_1x2_simuladas.local}</b></p>
-                        <p>Empate (X): <b>${resFase1.probabilidades_1x2_simuladas.empate}</b></p>
-                        <p>Visitante (2): <b>${resFase1.probabilidades_1x2_simuladas.visitante}</b></p>
-                    </div>
+                // Bloque 2: Recomendaciones
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                html += '<h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>';
+                html += '<ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">';
+                html += '<li>' + resFase1.top_3_recomendaciones[0] + '</li>';
+                html += '<li>' + resFase1.top_3_recomendaciones[1] + '</li>';
+                html += '<li>' + resFase1.top_3_recomendaciones[2] + '</li>';
+                html += '</ul>';
+                html += '</div>';
 
-                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                        <h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>
-                        <ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">
-                            <li>${resFase1.top_3_recomendaciones[0]}</li>
-                            <li>${resFase1.top_3_recomendaciones[1]}</li>
-                            <li>${resFase1.top_3_recomendaciones[2]}</li>
-                        </ul>
-                    </div>
+                // Bloque 3: Goles
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>';
+                html += '<p>Más de 2.5: <b>' + resFase1.mercados_clave_goles.mas_de_2.5_goles + '</b></p>';
+                html += '<p>Menos de 2.5: <b>' + resFase1.mercados_clave_goles.menos_de_2.5_goles + '</b></p>';
+                html += '<p>Más de 3.5: <b>' + resFase1.mercados_clave_goles.mas_de_3.5_goles + '</b></p>';
+                html += '<p>Menos de 3.5: <b>' + resFase1.mercados_clave_goles.menos_de_3.5_goles + '</b></p>';
+                html += '</div>';
 
-                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                        <h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>
-                        <p>Más de 2.5: <b>${resFase1.mercados_clave_goles.mas_de_2.5_goles}</b></p>
-                        <p>Menos de 2.5: <b>${resFase1.mercados_clave_goles.menos_de_2.5_goles}</b></p>
-                        <p>Más de 3.5: <b>${resFase1.mercados_clave_goles.mas_de_3.5_goles}</b></p>
-                        <p>Menos de 3.5: <b>${resFase1.mercados_clave_goles.menos_de_3.5_goles}</b></p>
-                    </div>
+                // Bloque 4: JackBusca (Tarjetas y Córners)
+                html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
+                html += '<h3 class="font-bold text-amber-400 mb-2">JackBusca - Tarjetas y Córners</h3>';
+                html += '<p class="text-xs text-slate-400 mb-2">Árbitro base: ' + resJack.arbitraje.promedio_tarjetas_referencia + '</p>';
+                html += '<p>Más 3.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados.mas_de_3.5_tarjetas + '</b></p>';
+                html += '<p>Más 4.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas + '</b></p>';
+                html += '<p>Más 5.5 Tarjetas: <b>' + resJack.mercados_tarjetas_explicados.mas_de_5.5_tarjetas + '</b></p>';
+                html += '<p class="mt-2 text-amber-300 font-semibold">Córners (Más / Menos):</p>';
+                html += '<p class="text-xs">7.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["7.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["7.5"] + '</p>';
+                html += '<p class="text-xs">8.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["8.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["8.5"] + '</p>';
+                html += '<p class="text-xs">9.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["9.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["9.5"] + '</p>';
+                html += '<p class="text-xs">10.5 -> Más: ' + resJack.mercados_tiros_de_esquina.mas_de["10.5"] + ' | Menos: ' + resJack.mercados_tiros_de_esquina.menos_de["10.5"] + '</p>';
+                html += '</div>';
 
-                    <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-                        <h3 class="font-bold text-amber-400 mb-2">JackBusca - Tarjetas y Córners</h3>
-                        <p class="text-xs text-slate-400 mb-2">Árbitro base: ${resJack.arbitraje.promedio_tarjetas_referencia}</p>
-                        <p>Más 3.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_3.5_tarjetas}</b></p>
-                        <p>Más 4.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas}</b></p>
-                        <p>Más 5.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_5.5_tarjetas}</b></p>
-                        <p class="mt-2 text-amber-300 font-semibold">Córners (Más / Menos):</p>
-                        <p class="text-xs">7.5 -> Más: ${c75_m} | Menos: ${c75_u}</p>
-                        <p class="text-xs">8.5 -> Más: ${c85_m} | Menos: ${c85_u}</p>
-                        <p class="text-xs">9.5 -> Más: ${c95_m} | Menos: ${c95_u}</p>
-                        <p class="text-xs">10.5 -> Más: ${c105_m} | Menos: ${c105_u}</p>
-                    </div>
-                `;
                 contenedorRes.innerHTML = html;
             } catch (err) {
                 contenedorRes.innerHTML = '<p class="col-span-2 text-center text-red-400 py-4">Error conectando con la API en Render: ' + err + '</p>';
