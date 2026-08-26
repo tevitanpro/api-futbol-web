@@ -24,9 +24,9 @@
             <p>2. Ingréselas en las casillas correspondientes y ejecute el análisis matemático de forma inmediata.</p>
         </div>
 
-        <!-- BLOQUE 1: Motor Principal (1X2 y Goles) - GRATIS -->
+        <!-- BLOQUE 1: Motor Principal (1X2, Goles y Ambos Anotan) - GRATIS -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
-            <h2 class="text-lg font-bold text-emerald-300 border-b border-slate-800 pb-2">1. Motor Principal: 1X2 y Goles</h2>
+            <h2 class="text-lg font-bold text-emerald-300 border-b border-slate-800 pb-2">1. Motor Principal: 1X2, Goles y Ambos Anotan</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
                     <label class="block text-xs text-slate-400 mb-1">Cuota Local (1)</label>
@@ -56,9 +56,17 @@
                     <label class="block text-xs text-slate-400 mb-1">Menos 3.5 Goles</label>
                     <input type="number" id="c_menos35" value="1.32" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold">
                 </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Cuota Ambos Anotan (Sí)</label>
+                    <input type="number" id="c_btts_si" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400" placeholder="Opcional">
+                </div>
+                <div>
+                    <label class="block text-xs text-slate-400 mb-1">Cuota Ambos Anotan (No)</label>
+                    <input type="number" id="c_btts_no" value="2.05" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-center font-bold text-emerald-400" placeholder="Opcional">
+                </div>
             </div>
             <button onclick="consultarGoles()" class="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-emerald-500/20 cursor-pointer">
-                Ejecutar Análisis 1X2 y Goles
+                Ejecutar Análisis 1X2, Goles y BTTS
             </button>
             <div id="resultado-goles" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800"></div>
         </div>
@@ -69,7 +77,7 @@
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
                 <div>
                     <h2 class="text-lg font-bold text-amber-300">2. Motor JackBusca (Córners y Tarjetas)</h2>
-                    <p class="text-xs text-slate-400 mt-0.5">Análisis avanzado de arbitraje y saques de esquina basado en rangos de probabilidad.</p>
+                    <p class="text-xs text-slate-400 mt-0.5">Análisis avanzado de arbitraje y saques de esquina basado en rangos de probabilidad. (Deja en blanco o 0 si la casa no ofrece la cuota).</p>
                 </div>
                 <span id="vip-status-badge" class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/20">Modo Vista Previa 🔒</span>
             </div>
@@ -77,9 +85,9 @@
             <!-- GUÍA ESPECÍFICA PARA JACKBUSCA -->
             <div class="bg-slate-950 border border-amber-500/20 p-4 rounded-xl text-xs text-slate-300 space-y-1">
                 <p class="font-bold text-amber-400 mb-1">💡 ¿Cómo configurar el Motor JackBusca?</p>
-                <p>1. <b>Promedio Tarjetas Árbitro:</b> Revise las estadísticas del juez central asignado para el encuentro (suele promediar entre 3.5 y 5.5 amarillas).</p>
-                <p>2. <b>Promedio Esperado de Córners:</b> Ingrese la media combinada de saques de esquina que suelen sumar ambos equipos por partido.</p>
-                <p>3. <b>Cuotas Específicas:</b> Copie las cuotas exactas que ofrece su operador para las líneas de tarjetas y corners (del 7.5 al 10.5).</p>
+                <p>1. <b>Promedio Tarjetas Árbitro:</b> Revise las estadísticas del juez central asignado para el encuentro.</p>
+                <p>2. <b>Promedio Esperado de Córners:</b> Ingrese la media combinada de saques de esquina.</p>
+                <p>3. <b>Cuotas Opcionales:</b> Si una casa no tiene una línea (ej. Menos 3.5), simplemente borre el valor o déjelo vacío.</p>
             </div>
             
             <!-- Parámetros Generales de Tarjetas y Árbitro -->
@@ -94,64 +102,72 @@
                 </div>
             </div>
 
-            <!-- Cuotas Específicas de Tarjetas -->
+            <!-- Cuotas Específicas de Tarjetas (Ampliado hasta 5.5 y flexible) -->
             <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Tarjetas:</p>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Tarjetas (Déjalas vacías si no existen):</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 3.5 Tarjetas</label>
-                        <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Más 3.5 Tarjetas</label>
+                        <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 3.5 Tarjetas</label>
-                        <input type="number" id="c_t_menos35" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Menos 3.5 Tarjetas</label>
+                        <input type="number" id="c_t_menos35" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 4.5 Tarjetas</label>
-                        <input type="number" id="c_t_mas45" value="2.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Más 4.5 Tarjetas</label>
+                        <input type="number" id="c_t_mas45" value="2.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 4.5 Tarjetas</label>
-                        <input type="number" id="c_t_menos45" value="1.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Menos 4.5 Tarjetas</label>
+                        <input type="number" id="c_t_menos45" value="1.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Más 5.5 Tarjetas</label>
+                        <input type="number" id="c_t_mas55" value="3.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                    </div>
+                    <div>
+                        <label class="block text-[10px] text-slate-400 mb-1">Menos 5.5 Tarjetas</label>
+                        <input type="number" id="c_t_menos55" value="1.25" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                 </div>
             </div>
 
-            <!-- Cuotas Específicas de Córners -->
+            <!-- Cuotas Específicas de Córners (Flexibles) -->
             <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Córners (Del 7.5 al 10.5):</p>
+                <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Específicas de Córners (Déjalas vacías si no aplican):</p>
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 7.5 Córners</label>
-                        <input type="number" id="c_corner_mas75" value="1.45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Más 7.5 Córners</label>
+                        <input type="number" id="c_corner_mas75" value="1.45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 7.5 Córners</label>
-                        <input type="number" id="c_corner_menos75" value="2.60" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Menos 7.5 Córners</label>
+                        <input type="number" id="c_corner_menos75" value="2.60" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 8.5 Córners</label>
-                        <input type="number" id="c_corner_mas85" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Más 8.5 Córners</label>
+                        <input type="number" id="c_corner_mas85" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 8.5 Córners</label>
-                        <input type="number" id="c_corner_menos85" value="2.00" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Menos 8.5 Córners</label>
+                        <input type="number" id="c_corner_menos85" value="2.00" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 9.5 Córners</label>
-                        <input type="number" id="c_corner_mas95" value="2.10" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Más 9.5 Córners</label>
+                        <input type="number" id="c_corner_mas95" value="2.10" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 9.5 Córners</label>
-                        <input type="number" id="c_corner_menos95" value="1.65" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Menos 9.5 Córners</label>
+                        <input type="number" id="c_corner_menos95" value="1.65" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Más 10.5 Córners</label>
-                        <input type="number" id="c_corner_mas105" value="2.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Más 10.5 Córners</label>
+                        <input type="number" id="c_corner_mas105" value="2.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                     <div>
-                        <label class="block text-[10px] text-slate-400 mb-1">Cuota Menos 10.5 Córners</label>
-                        <input type="number" id="c_corner_menos105" value="1.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300">
+                        <label class="block text-[10px] text-slate-400 mb-1">Menos 10.5 Córners</label>
+                        <input type="number" id="c_corner_menos105" value="1.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                     </div>
                 </div>
             </div>
@@ -187,7 +203,7 @@
                     <span id="error-msg" class="text-[10px] text-rose-400 block hidden">Código incorrecto. Verifique con el administrador.</span>
                 </div>
 
-                <!-- Botón de Ejecución (Bloqueado hasta ingresar clave) -->
+                <!-- Botón de Ejecución -->
                 <button id="btn-ejecutar-jack" onclick="consultarJackBusca()" disabled class="w-full bg-slate-800 text-slate-500 font-extrabold py-3 rounded-xl transition cursor-not-allowed shadow-none">
                     🔒 Ejecutar Análisis JackBusca (Requiere Activación VIP)
                 </button>
@@ -235,11 +251,18 @@
             const u25 = document.getElementById('c_menos25').value;
             const m35 = document.getElementById('c_mas35').value;
             const u35 = document.getElementById('c_menos35').value;
-
-            const url = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
-            const contenedor = document.getElementById('resultado-goles');
             
-            contenedor.innerHTML = '<p class="col-span-3 text-center text-emerald-400 animate-pulse py-2 font-bold">Calculando 1X2 y Goles...</p>';
+            // Nuevos campos opcionales para BTTS
+            const bttsSi = document.getElementById('c_btts_si').value;
+            const bttsNo = document.getElementById('c_btts_no').value;
+
+            let url = baseUrl + '/analisis/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35;
+            
+            if (bttsSi) url += '&cuota_btts_si=' + bttsSi;
+            if (bttsNo) url += '&cuota_btts_no=' + bttsNo;
+
+            const contenedor = document.getElementById('resultado-goles');
+            contenedor.innerHTML = '<p class="col-span-3 text-center text-emerald-400 animate-pulse py-2 font-bold">Calculando 1X2, Goles y BTTS...</p>';
             contenedor.classList.remove('hidden');
 
             try {
@@ -257,18 +280,24 @@
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
                 html += '<h3 class="font-bold text-emerald-400 mb-2">Top Recomendaciones</h3>';
                 html += '<ul class="list-disc list-inside text-sm space-y-1 text-emerald-300 font-semibold">';
-                html += '<li>' + datos.top_3_recomendaciones[0] + '</li>';
-                html += '<li>' + datos.top_3_recomendaciones[1] + '</li>';
-                html += '<li>' + datos.top_3_recomendaciones[2] + '</li>';
+                if(datos.top_3_recomendaciones[0]) html += '<li>' + datos.top_3_recomendaciones[0] + '</li>';
+                if(datos.top_3_recomendaciones[1]) html += '<li>' + datos.top_3_recomendaciones[1] + '</li>';
+                if(datos.top_3_recomendaciones[2]) html += '<li>' + datos.top_3_recomendaciones[2] + '</li>';
                 html += '</ul>';
                 html += '</div>';
 
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700">';
-                html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles</h3>';
+                html += '<h3 class="font-bold text-blue-400 mb-2">Mercados de Goles & BTTS</h3>';
                 html += '<p>Más 2.5: <b>' + datos.mercados_clave_goles["mas_de_2.5_goles"] + '</b></p>';
                 html += '<p>Menos 2.5: <b>' + datos.mercados_clave_goles["menos_de_2.5_goles"] + '</b></p>';
                 html += '<p>Más 3.5: <b>' + datos.mercados_clave_goles["mas_de_3.5_goles"] + '</b></p>';
                 html += '<p>Menos 3.5: <b>' + datos.mercados_clave_goles["menos_de_3.5_goles"] + '</b></p>';
+                if(datos.mercados_clave_goles["btts_si"] || datos.mercados_clave_goles["ambos_anotan_si"]) {
+                    let bttssiVal = datos.mercados_clave_goles["btts_si"] || datos.mercados_clave_goles["ambos_anotan_si"];
+                    let bttsnoVal = datos.mercados_clave_goles["btts_no"] || datos.mercados_clave_goles["ambos_anotan_no"];
+                    html += '<p class="pt-2 border-t border-slate-700 mt-2">Ambos Anotan (Sí): <b>' + bttssiVal + '</b></p>';
+                    html += '<p>Ambos Anotan (No): <b>' + bttsnoVal + '</b></p>';
+                }
                 html += '</div>';
 
                 contenedor.innerHTML = html;
@@ -289,69 +318,88 @@
             const corners = document.getElementById('prom_corners').value;
             const tarjetas = document.getElementById('prom_tarjetas').value;
 
-            const c_t_mas35 = document.getElementById('c_t_mas35').value;
-            const c_t_menos35 = document.getElementById('c_t_menos35').value;
-            const c_t_mas45 = document.getElementById('c_t_mas45').value;
-            const c_t_menos45 = document.getElementById('c_t_menos45').value;
+            // Recolectar cuotas de tarjetas de forma dinámica (omitiendo vacías para evitar errores)
+            let paramsTarjeta = {};
+            const t35s = document.getElementById('c_t_mas35').value; if(t35s) paramsTarjeta['cuota_tarjetas_mas_35'] = t35s;
+            const t35n = document.getElementById('c_t_menos35').value; if(t35n) paramsTarjeta['cuota_tarjetas_menos_35'] = t35n;
+            const t45s = document.getElementById('c_t_mas45').value; if(t45s) paramsTarjeta['cuota_tarjetas_mas_45'] = t45s;
+            const t45n = document.getElementById('c_t_menos45').value; if(t45n) paramsTarjeta['cuota_tarjetas_menos_45'] = t45n;
+            const t55s = document.getElementById('c_t_mas55').value; if(t55s) paramsTarjeta['cuota_tarjetas_mas_55'] = t55s;
+            const t55n = document.getElementById('c_t_menos55').value; if(t55n) paramsTarjeta['cuota_tarjetas_menos_55'] = t55n;
 
-            const c_c_mas75 = document.getElementById('c_corner_mas75').value;
-            const c_c_menos75 = document.getElementById('c_corner_menos75').value;
-            const c_c_mas85 = document.getElementById('c_corner_mas85').value;
-            const c_c_menos85 = document.getElementById('c_corner_menos85').value;
-            const c_c_mas95 = document.getElementById('c_corner_mas95').value;
-            const c_c_menos95 = document.getElementById('c_corner_menos95').value;
-            const c_c_mas105 = document.getElementById('c_corner_mas105').value;
-            const c_c_menos105 = document.getElementById('c_corner_menos105').value;
+            // Recolectar cuotas de córners de forma dinámica (omitiendo vacías)
+            let paramsCorners = {};
+            const c75s = document.getElementById('c_corner_mas75').value; if(c75s) paramsCorners['cuota_corners_mas_75'] = c75s;
+            const c75n = document.getElementById('c_corner_menos75').value; if(c75n) paramsCorners['cuota_corners_menos_75'] = c75n;
+            const c85s = document.getElementById('c_corner_mas85').value; if(c85s) paramsCorners['cuota_corners_mas_85'] = c85s;
+            const c85n = document.getElementById('c_corner_menos85').value; if(c85n) paramsCorners['cuota_corners_menos_85'] = c85n;
+            const c95s = document.getElementById('c_corner_mas95').value; if(c95s) paramsCorners['cuota_corners_mas_95'] = c95s;
+            const c95n = document.getElementById('c_corner_menos95').value; if(c95n) paramsCorners['cuota_corners_menos_95'] = c95n;
+            const c105s = document.getElementById('c_corner_mas105').value; if(c105s) paramsCorners['cuota_corners_mas_105'] = c105s;
+            const c105n = document.getElementById('c_corner_menos105').value; if(c105n) paramsCorners['cuota_corners_menos_105'] = c105n;
 
-            const url = baseUrl + '/jackbusca/partido?' + 
-                'cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + 
-                '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + 
-                '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + 
-                '&promedio_esperado_corners=' + corners + '&promedio_tarjetas_arbitro=' + tarjetas + 
-                '&cuota_tarjetas_mas_35=' + c_t_mas35 + '&cuota_tarjetas_menos_35=' + c_t_menos35 +
-                '&cuota_tarjetas_mas_45=' + c_t_mas45 + '&cuota_tarjetas_menos_45=' + c_t_menos45 +
-                '&cuota_corners_mas_75=' + c_c_mas75 + '&cuota_corners_menos_75=' + c_c_menos75 +
-                '&cuota_corners_mas_85=' + c_c_mas85 + '&cuota_corners_menos_85=' + c_c_menos85 +
-                '&cuota_corners_mas_95=' + c_c_mas95 + '&cuota_corners_menos_95=' + c_c_menos95 +
-                '&cuota_corners_mas_105=' + c_c_mas105 + '&cuota_corners_menos_105=' + c_c_menos105;
+            let urlObj = new URL(baseUrl + '/jackbusca/partido');
+            urlObj.searchParams.append('cuota_local', l);
+            urlObj.searchParams.append('cuota_empate', e);
+            urlObj.searchParams.append('cuota_visitante', v);
+            urlObj.searchParams.append('cuota_mas_25_goles', m25);
+            urlObj.searchParams.append('cuota_menos_25_goles', u25);
+            urlObj.searchParams.append('cuota_mas_35_goles', m35);
+            urlObj.searchParams.append('cuota_menos_35_goles', u35);
+            urlObj.searchParams.append('promedio_esperado_corners', corners);
+            urlObj.searchParams.append('promedio_tarjetas_arbitro', tarjetas);
+
+            for (const [key, value] of Object.entries(paramsTarjeta)) {
+                urlObj.searchParams.append(key, value);
+            }
+            for (const [key, value] of Object.entries(paramsCorners)) {
+                urlObj.searchParams.append(key, value);
+            }
             
             const contenedor = document.getElementById('resultado-jack');
             contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca completo...</p>';
             contenedor.classList.remove('hidden');
 
             try {
-                let resp = await fetch(url);
+                let resp = await fetch(urlObj.toString());
                 let datos = await resp.json();
 
                 let html = '';
                 
+                // Tarjetas
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2">';
-                html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Tarjetas (Árbitro: ' + datos.arbitraje.promedio_tarjetas_referencia + ')</h3>';
-                html += '<p class="text-sm">Más de 3.5 Tarjetas: <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
-                html += '<p class="text-sm">Más de 4.5 Tarjetas: <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados["mas_de_4.5_tarjetas"] + '</b></p>';
-                html += '<p class="text-sm">Menos de 3.5 Tarjetas: <b class="text-rose-400">' + datos.mercados_tarjetas_explicados["menos_de_3.5_tarjetas"] + '</b></p>';
-                html += '<p class="text-sm">Menos de 4.5 Tarjetas: <b class="text-rose-400">' + datos.mercados_tarjetas_explicados["menos_de_4.5_tarjetas"] + '</b></p>';
+                html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Tarjetas (Árbitro: ' + (datos.arbitraje?.promedio_tarjetas_referencia || tarjetas) + ')</h3>';
+                if (datos.mercados_tarjetas_explicados) {
+                    for (let linea in datos.mercados_tarjetas_explicados) {
+                        html += '<p class="text-sm capitalize">' + linea.replace(/_/g, ' ') + ': <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados[linea] + '</b></p>';
+                    }
+                } else {
+                    html += '<p class="text-xs text-slate-400">Sin datos de tarjetas devueltos.</p>';
+                }
                 html += '</div>';
 
+                // Córners
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">';
                 html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Córners por Línea (Base: ' + corners + ')</h3>';
                 
-                let masCorners = datos.mercados_tiros_de_esquina.mas_de;
-                let menosCorners = datos.mercados_tiros_de_esquina.menos_de;
+                if (datos.mercados_tiros_de_esquina) {
+                    let masCorners = datos.mercados_tiros_de_esquina.mas_de || {};
+                    let menosCorners = datos.mercados_tiros_de_esquina.menos_de || {};
 
-                html += '<div class="grid grid-cols-2 gap-4 text-xs">';
-                html += '<div><span class="text-amber-300 font-bold block mb-1">Más de (...)</span>';
-                for (let linea in masCorners) {
-                    html += '<p class="py-0.5">Más ' + linea + ': <span class="text-emerald-400 font-bold">' + masCorners[linea] + '</span></p>';
-                }
-                html += '</div>';
+                    html += '<div class="grid grid-cols-2 gap-4 text-xs">';
+                    html += '<div><span class="text-amber-300 font-bold block mb-1">Más de (...)</span>';
+                    for (let linea in masCorners) {
+                        html += '<p class="py-0.5">Más ' + linea + ': <span class="text-emerald-400 font-bold">' + masCorners[linea] + '</span></p>';
+                    }
+                    html += '</div>';
 
-                html += '<div><span class="text-amber-300 font-bold block mb-1">Menos de (...)</span>';
-                for (let linea in menosCorners) {
-                    html += '<p class="py-0.5">Menos ' + linea + ': <span class="text-rose-400 font-bold">' + menosCorners[linea] + '</span></p>';
+                    html += '<div><span class="text-amber-300 font-bold block mb-1">Menos de (...)</span>';
+                    for (let linea in menosCorners) {
+                        html += '<p class="py-0.5">Menos ' + linea + ': <span class="text-rose-400 font-bold">' + menosCorners[linea] + '</span></p>';
+                    }
+                    html += '</div>';
+                    html += '</div>';
                 }
-                html += '</div>';
-                html += '</div>';
                 html += '</div>';
 
                 contenedor.innerHTML = html;
