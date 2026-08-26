@@ -416,7 +416,8 @@
             container.innerHTML = '<p class="text-emerald-400 text-center py-2 animate-pulse">Cargando historial...</p>';
 
             try {
-                let resp = await fetch(baseUrl + '/historial', {
+                const usuarioActual = localStorage.getItem('username');
+let resp = await fetch(baseUrl + '/historial/' + usuarioActual, {
                     headers: { 'Authorization': 'Bearer ' + tokenJwt }
                 });
                 if (resp.status === 401) {
