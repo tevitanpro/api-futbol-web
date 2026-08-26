@@ -330,7 +330,7 @@
                 let resp = await fetch(baseUrl + '/auth/register', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: u, email: email, password: p })
+                   body: JSON.stringify({ usuario: u, correo: email, password: p })
                 });
                 let data = await resp.json();
                 if (resp.ok) {
@@ -348,45 +348,41 @@
         }
 
         async function ejecutarLogin() {
-            const u = document.getElementById('login_username').value.trim();
-            const p = document.getElementById('login_password').value.trim();
-            const msg = document.getElementById('auth-msg');
+    const u = document.getElementById('login_username').value.trim();
+    const p = document.getElementById('login_password').value.trim();
+    const msg = document.getElementById('auth-msg');
 
-            if (!u || !p) {
-                msg.innerText = "Ingresa usuario y contraseña.";
-                msg.classList.remove('hidden');
-                return;
-            }
+    if (!u || !p) {
+        msg.innerText = "Ingresa usuario y contraseña.";
+        msg.classList.remove('hidden');
+        return;
+    }
 
-            // FastAPI OAuth2 usa form-urlencoded para el token
-            const formData = new URLSearchParams();
-            formData.append('username', u);
-            formData.append('password', p);
-
-            try {
-                let resp = await fetch(baseUrl + '/auth/token', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formData
-                });
-                let data = await resp.json();
-                if (resp.ok && data.access_token) {
-                    tokenJwt = data.access_token;
-                    localStorage.setItem('token_jwt', tokenJwt);
-                    localStorage.setItem('username', u);
-                    msg.classList.add('hidden');
-                    actualizarInterfazLogueado(u);
-                    cargarHistorial();
-                } else {
-                    msg.innerText = "Credenciales incorrectas.";
-                    msg.classList.remove('hidden');
-                }
-            } catch (err) {
-                msg.innerText = "Error al conectar con el backend.";
-                msg.classList.remove('hidden');
-            }
+    try {
+        let resp = await fetch(baseUrl + '/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ usuario: u, password: p })
+        });
+        
+        let data = await resp.json();
+        
+        if (resp.ok) {
+            tokenJwt = "sesion_activa"; 
+            localStorage.setItem('token_jwt', tokenJwt);
+            localStorage.setItem('username', data.usuario);
+            msg.classList.add('hidden');
+            actualizarInterfazLogueado(data.usuario);
+            cargarHistorial();
+        } else {
+            msg.innerText = data.detail || "Credenciales incorrectas.";
+            msg.classList.remove('hidden');
         }
-
+    } catch (err) {
+        msg.innerText = "Error al conectar con el backend.";
+        msg.classList.remove('hidden');
+    }
+}
         function verificarTokenGuardado() {
             const user = localStorage.getItem('username') || 'Usuario Pro';
             actualizarInterfazLogueado(user);
