@@ -110,6 +110,13 @@
                 let respJack = await fetch(urlJack);
                 let resJack = await respJack.json();
 
+                // Extracción limpia de córners para evitar errores de sintaxis en el template string
+                const t = resJack.mercados_tiros_de_esquina;
+                const c75_m = t.mas_de["7.5"], c75_u = t.menos_de["7.5"];
+                const c85_m = t.mas_de["8.5"], c85_u = t.menos_de["8.5"];
+                const c95_m = t.mas_de["9.5"], c95_u = t.menos_de["9.5"];
+                const c105_m = t.mas_de["10.5"], c105_u = t.menos_de["10.5"];
+
                 let html = `
                     <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
                         <h3 class="font-bold text-emerald-400 mb-2">Probabilidades 1X2</h3>
@@ -142,10 +149,10 @@
                         <p>Más 4.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_4.5_tarjetas}</b></p>
                         <p>Más 5.5 Tarjetas: <b>${resJack.mercados_tarjetas_explicados.mas_de_5.5_tarjetas}</b></p>
                         <p class="mt-2 text-amber-300 font-semibold">Córners (Más / Menos):</p>
-                        <p class="text-xs">7.5 -> Más: ${resJack.mercados_tiros_de_esquina.mas_de["7.5"]} | Menos: ${resJack.mercados_tiros_de_esquina.menos_de["7.5"]}</p>
-                        <p class="text-xs">8.5 -> Más: ${resJack.mercados_tiros_de_esquina.mas_de["8.5"]} | Menos: ${resJack.mercados_tiros_de_esquina.menos_de["8.5"]}</p>
-                        <p class="text-xs">9.5 -> Más: ${resJack.mercados_tiros_de_esquina.mas_de["9.5"]} | Menos: ${resJack.mercados_tiros_de_esquina.menos_de["9.5"]} </p>
-                        <p class="text-xs">10.5 -> Más: ${resJack.mercados_tiros_de_esquina.mas_de["10.5"]} | Menos: ${resJack.mercados_tiros_de_esquina.menos_de["10.5"]}</p>
+                        <p class="text-xs">7.5 -> Más: ${c75_m} | Menos: ${c75_u}</p>
+                        <p class="text-xs">8.5 -> Más: ${c85_m} | Menos: ${c85_u}</p>
+                        <p class="text-xs">9.5 -> Más: ${c95_m} | Menos: ${c95_u}</p>
+                        <p class="text-xs">10.5 -> Más: ${c105_m} | Menos: ${c105_u}</p>
                     </div>
                 `;
                 contenedorRes.innerHTML = html;
