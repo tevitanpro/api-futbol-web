@@ -17,9 +17,9 @@
             </p>
         </header>
 
-        <!-- GUÍA RÁPIDA PARA EL USUARIO -->
+        <!-- GUÍA RÁPIDA GENERAL -->
         <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs text-slate-300 space-y-1">
-            <p class="font-bold text-emerald-400 mb-1">💡 Instrucciones de uso:</p>
+            <p class="font-bold text-emerald-400 mb-1">💡 Instrucciones de uso (Motor 1):</p>
             <p>1. Busque las cuotas de su partido en Pinnacle (o su casa de confianza) para Local, Empate, Visitante y Goles.</p>
             <p>2. Ingréselas en las casillas correspondientes y ejecute el análisis matemático de forma inmediata.</p>
         </div>
@@ -72,6 +72,14 @@
                     <p class="text-xs text-slate-400 mt-0.5">Análisis avanzado de arbitraje y saques de esquina basado en rangos de probabilidad.</p>
                 </div>
                 <span id="vip-status-badge" class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/20">Modo Vista Previa 🔒</span>
+            </div>
+
+            <!-- GUÍA ESPECÍFICA PARA JACKBUSCA (AQUÍ ESTABA EL VACÍO) -->
+            <div class="bg-slate-950 border border-amber-500/20 p-4 rounded-xl text-xs text-slate-300 space-y-1">
+                <p class="font-bold text-amber-400 mb-1">💡 ¿Cómo configurar el Motor JackBusca?</p>
+                <p>1. <b>Promedio Tarjetas Árbitro:</b> Revise las estadísticas del juez central asignado para el encuentro (suele promediar entre 3.5 y 5.5 amarillas).</p>
+                <p>2. <b>Promedio Esperado de Córners:</b> Ingrese la media combinada de saques de esquina que suelen sumar ambos equipos por partido.</p>
+                <p>3. <b>Cuotas Específicas:</b> Copie las cuotas exactas que ofrece su operador para las líneas de tarjetas y corners (del 7.5 al 10.5).</p>
             </div>
             
             <!-- Parámetros Generales de Tarjetas y Árbitro -->
@@ -198,7 +206,6 @@
             ];
 
             if (claveIngresada === claveMaestra || codigosClientes.includes(claveIngresada)) {
-                // Ocultar sección de pago y activar botón
                 document.getElementById('jackbusca-lock-container').classList.add('hidden');
                 const btn = document.getElementById('btn-ejecutar-jack');
                 btn.disabled = false;
