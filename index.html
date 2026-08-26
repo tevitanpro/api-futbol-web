@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Master Pro - Panel Táctico Estocástico</title>
+    <title>API Master Pro - Panel Táctico Estocástico v8.6</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
@@ -390,7 +390,7 @@
         let data = await resp.json();
         
         if (resp.ok) {
-            tokenJwt = "sesion_activa"; 
+            tokenJwt = data.token;
             localStorage.setItem('token_jwt', tokenJwt);
             localStorage.setItem('username', data.usuario);
             msg.classList.add('hidden');
@@ -405,10 +405,22 @@
         msg.classList.remove('hidden');
     }
 }
-        function verificarTokenGuardado() {
-            const user = localStorage.getItem('username') || 'Usuario Pro';
-            actualizarInterfazLogueado(user);
-            cargarHistorial();
+        async function verificarTokenGuardado() {
+            const savedToken = localStorage.getItem('token_jwt');
+            if (!savedToken) return;
+            tokenJwt = savedToken;
+            try {
+                const resp = await fetch(baseUrl + '/auth/me', { headers: { 'Authorization': 'Bearer ' + tokenJwt } });
+                if (!resp.ok) throw new Error('Sesión inválida');
+                const data = await resp.json();
+                localStorage.setItem('username', data.usuario);
+                actualizarInterfazLogueado(data.usuario);
+                cargarHistorial();
+            } catch (e) {
+                tokenJwt = '';
+                localStorage.removeItem('token_jwt');
+                localStorage.removeItem('username');
+            }
         }
 
         function actualizarInterfazLogueado(username) {
@@ -624,6 +636,14 @@ let resp = await fetch(baseUrl + '/historial/' + usuarioActual, {
                 }
 
                 contenedor.innerHTML = html;
+                if (datos.historial_info) {
+                    const h = datos.historial_info;
+                    let aviso = '';
+                    if (h.guardado) aviso = '📚 Historial: ' + h.usados + '/' + h.limite + ' análisis guardados. Restantes: ' + h.restantes + '.';
+                    else if (h.motivo === 'limite_historial') aviso = '📚 Has alcanzado el límite de ' + h.limite + ' análisis guardados de tu plan.';
+                    else if (h.motivo === 'invitado') aviso = '👤 Inicia sesión para guardar este análisis en tu historial.';
+                    if (aviso) contenedor.innerHTML += '<div class="mt-2 text-[10px] text-slate-400">' + aviso + '</div>';
+                }
 
                 if (tokenJwt) cargarHistorial();
 
