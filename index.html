@@ -148,10 +148,11 @@
             const tarjetas = document.getElementById('prom_tarjetas').value;
             const c_t35 = document.getElementById('c_t_mas35').value;
 
-            const url = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
+            // Aquí estaba el detalle: ahora sí incluimos el promedio de córners en la URL
+            const url = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_esperado_corners=' + corners + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
+            
             const contenedor = document.getElementById('resultado-jack');
-
-            contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca (Córners y Tarjetas)...</p>';
+            contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca completo...</p>';
             contenedor.classList.remove('hidden');
 
             try {
@@ -160,7 +161,7 @@
 
                 let html = '';
                 
-                // Columna Izquierda: Tarjetas
+                // Columna Izquierda: Tarjetas Completas
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2">';
                 html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Tarjetas (Árbitro: ' + datos.arbitraje.promedio_tarjetas_referencia + ')</h3>';
                 html += '<p class="text-sm">Más de 3.5 Tarjetas: <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
@@ -169,7 +170,7 @@
                 html += '<p class="text-sm">Menos de 4.5 Tarjetas: <b class="text-rose-400">' + datos.mercados_tarjetas_explicados["menos_de_4.5_tarjetas"] + '</b></p>';
                 html += '</div>';
 
-                // Columna Derecha: Córners Desglosados por Líneas (Desde 7.5 en adelante)
+                // Columna Derecha: Córners Desglosados (Más y Menos por línea)
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">';
                 html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Córners por Línea (Base: ' + corners + ')</h3>';
                 
@@ -177,13 +178,13 @@
                 let menosCorners = datos.mercados_tiros_de_esquina.menos_de;
 
                 html += '<div class="grid grid-cols-2 gap-2 text-xs">';
-                html += '<div><span class="text-slate-400 font-bold block mb-1">Más de (...)</span>';
+                html += '<div><span class="text-amber-300 font-bold block mb-1">Más de (...)</span>';
                 for (let linea in masCorners) {
                     html += '<p>Más ' + linea + ': <span class="text-emerald-400 font-bold">' + masCorners[linea] + '</span></p>';
                 }
                 html += '</div>';
 
-                html += '<div><span class="text-slate-400 font-bold block mb-1">Menos de (...)</span>';
+                html += '<div><span class="text-amber-300 font-bold block mb-1">Menos de (...)</span>';
                 for (let linea in menosCorners) {
                     html += '<p>Menos ' + linea + ': <span class="text-rose-400 font-bold">' + menosCorners[linea] + '</span></p>';
                 }
