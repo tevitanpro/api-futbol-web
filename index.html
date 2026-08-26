@@ -8,10 +8,21 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
     <div class="max-w-5xl mx-auto space-y-8">
-        <header class="text-center mb-4">
-            <h1 class="text-3xl font-extrabold text-emerald-400">⚽ API Master Pro</h1>
-            <p class="text-slate-400 text-sm mt-1">Panel Estocástico Independiente (Goles & JackBusca)</p>
+        <!-- TITULARES Y COPYWRITING PERSUASIVO -->
+        <header class="text-center mb-6 space-y-3">
+            <h1 class="text-3xl md:text-4xl font-extrabold text-emerald-400">⚽ API Master Pro</h1>
+            <p class="text-lg font-bold text-amber-300">¿Cansado de no acertar una? ¿De ir con el corazón y no con la razón?</p>
+            <p class="text-slate-300 text-sm max-w-2xl mx-auto leading-relaxed">
+                Deje de regalarle el dinero a las casas de apuestas a puro pálpito. Aquí la matemática estocástica no perdona y ningún detalle se escapa. Conecte las cuotas reales de <span class="text-emerald-400 font-semibold">Pinnacle</span> y empiece a facturar con base en datos duros.
+            </p>
         </header>
+
+        <!-- GUÍA RÁPIDA PARA EL USUARIO -->
+        <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl text-xs text-slate-300 space-y-1">
+            <p class="font-bold text-emerald-400 mb-1">💡 Instrucciones de uso:</p>
+            <p>1. Busque las cuotas de su partido en Pinnacle (o su casa de confianza) para Local, Empate, Visitante y Goles.</p>
+            <p>2. Ingréselas en las casillas correspondientes y ejecute el análisis matemático de forma inmediata.</p>
+        </div>
 
         <!-- BLOQUE 1: Motor Principal (1X2 y Goles) - GRATIS -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-xl space-y-6">
@@ -52,43 +63,15 @@
             <div id="resultado-goles" class="hidden grid grid-cols-1 md:grid-cols-3 gap-4 pt-4 border-t border-slate-800"></div>
         </div>
 
-        <!-- BLOQUE 2: Motor JackBusca (Córners y Tarjetas) - PROTEGIDO CON PAGO -->
-        <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-6 shadow-xl space-y-6 relative overflow-hidden">
+        <!-- BLOQUE 2: Motor JackBusca (Córners y Tarjetas) - FREEMIUM INTELIGENTE -->
+        <div class="bg-slate-900 border border-amber-500/30 rounded-2xl p-6 shadow-xl space-y-6">
             
-            <!-- CAPA DE BLOQUEO (Muro de Pago Nequi) -->
-            <div id="jackbusca-lock" class="absolute inset-0 bg-slate-950/95 z-20 flex flex-col items-center justify-center p-6 text-center space-y-4 backdrop-blur-sm">
-                <div class="w-16 h-16 bg-amber-500/10 border border-amber-500/30 rounded-full flex items-center justify-center text-3xl mb-1">
-                    🔒
-                </div>
-                <div>
-                    <h3 class="text-xl font-extrabold text-amber-400">Motor JackBusca (VIP Exclusivo)</h3>
-                    <p class="text-xs text-slate-400 mt-1 max-w-md">Este módulo avanzado de córners y tarjetas requiere una inversión de <b class="text-amber-300">$12.000 COP</b> vía Nequi para habilitar su acceso.</p>
-                </div>
-
-                <div class="flex flex-col sm:flex-row gap-3 w-full max-w-md justify-center">
-                    <!-- Botón para pagar por WhatsApp -->
-                    <a href="https://wa.me/573007033243?text=Hola,%20quiero%20pagar%20los%20$12.000%20por%20Nequi%20para%20desbloquear%20el%20Motor%20JackBusca.%20Adjunto%20comprobante." target="_blank" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold text-xs px-5 py-3 rounded-xl transition shadow-lg flex items-center justify-center gap-2">
-                        💜 Pagar $12k vía Nequi
-                    </a>
-                </div>
-
-                <!-- Input para ingresar clave si ya pagó -->
-                <div class="pt-4 border-t border-slate-800 w-full max-w-xs flex flex-col gap-2">
-                    <label class="text-[11px] text-slate-400 font-semibold">¿Ya realizaste el pago? Ingresa tu contraseña:</label>
-                    <div class="flex gap-2">
-                        <input type="password" id="vip_code" placeholder="Código de acceso" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-xs text-center text-amber-300 w-full focus:outline-none focus:border-amber-500">
-                        <button onclick="verificarVIP()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-4 py-2 rounded-lg transition cursor-pointer">
-                            Entrar
-                        </button>
-                    </div>
-                    <span id="error-msg" class="text-[10px] text-rose-400 hidden">Código incorrecto. Verifica con el administrador.</span>
-                </div>
-            </div>
-
-            <!-- CONTENIDO REAL DE JACKBUSCA (Oculto hasta poner la clave) -->
             <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <h2 class="text-lg font-bold text-amber-300">2. Motor JackBusca (Córners y Tarjetas)</h2>
-                <span class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/20">Acceso VIP Concedido ✅</span>
+                <div>
+                    <h2 class="text-lg font-bold text-amber-300">2. Motor JackBusca (Córners y Tarjetas)</h2>
+                    <p class="text-xs text-slate-400 mt-0.5">Análisis avanzado de arbitraje y saques de esquina basado en rangos de probabilidad.</p>
+                </div>
+                <span id="vip-status-badge" class="bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/20">Modo Vista Previa 🔒</span>
             </div>
             
             <!-- Parámetros Generales de Tarjetas y Árbitro -->
@@ -165,27 +148,48 @@
                 </div>
             </div>
 
-            <button onclick="consultarJackBusca()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer">
-                Ejecutar Análisis JackBusca
-            </button>
+            <!-- CONTENEDOR BLOQUEADO EXCLUSIVAMENTE EN EL BOTÓN Y ACCESO -->
+            <div class="space-y-4 pt-2">
+                <!-- Zona del Botón Protegido -->
+                <div id="jackbusca-lock-container" class="bg-slate-950 border border-amber-500/40 p-4 rounded-xl text-center space-y-3">
+                    <div class="flex items-center justify-center gap-2 text-amber-400 font-bold text-sm">
+                        <span>🔒</span> Desbloquea los resultados de este motor por solo <b class="text-white">$12.000 COP</b>
+                    </div>
+                    <p class="text-xs text-slate-400 max-w-lg mx-auto">
+                        Invierta con cabeza fría. Realice el pago vía Nequi o ingrese su código de acceso autorizado para destrabar el cálculo.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-2 justify-center items-center pt-1">
+                        <a href="https://wa.me/573007033243?text=Hola,%20quiero%20pagar%20los%20$12.000%20por%20Nequi%20para%20desbloquear%20el%20Motor%20JackBusca.%20Adjunto%20comprobante." target="_blank" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-lg transition shadow-md flex items-center gap-1.5">
+                            💜 Pagar $12k vía Nequi
+                        </a>
+                        <div class="flex gap-1.5">
+                            <input type="password" id="vip_code" placeholder="Código VIP" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-center text-amber-300 w-32 focus:outline-none focus:border-amber-500">
+                            <button onclick="verificarVIP()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-2 rounded-lg transition cursor-pointer">
+                                Activar
+                            </button>
+                        </div>
+                    </div>
+                    <span id="error-msg" class="text-[10px] text-rose-400 block hidden">Código incorrecto. Verifique con el administrador.</span>
+                </div>
+
+                <!-- Botón de Ejecución (Bloqueado hasta ingresar clave) -->
+                <button id="btn-ejecutar-jack" onclick="consultarJackBusca()" disabled class="w-full bg-slate-800 text-slate-500 font-extrabold py-3 rounded-xl transition cursor-not-allowed shadow-none">
+                    🔒 Ejecutar Análisis JackBusca (Requiere Activación VIP)
+                </button>
+            </div>
 
             <!-- Resultados JackBusca -->
-            <div id="resultado-jack" class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800"></div>
+            <div id="resultado-jack" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800"></div>
         </div>
     </div>
 
     <script>
         const baseUrl = 'https://api-futbol-pro.onrender.com';
 
-        // Función para verificar Clave Maestra o Códigos Dinámicos de Clientes
         function verificarVIP() {
             const claveIngresada = document.getElementById('vip_code').value.trim();
             const errorMsg = document.getElementById('error-msg');
-
-            // 1. Su clave maestra personal exclusiva
             const claveMaestra = "TEVITAN2026";
-
-            // 2. Lista de códigos para los clientes que van pagando (puede agregar más separados por coma)
             const codigosClientes = [
                 "VIP-7782",
                 "NEQUI-1029",
@@ -194,7 +198,15 @@
             ];
 
             if (claveIngresada === claveMaestra || codigosClientes.includes(claveIngresada)) {
-                document.getElementById('jackbusca-lock').classList.add('hidden');
+                // Ocultar sección de pago y activar botón
+                document.getElementById('jackbusca-lock-container').classList.add('hidden');
+                const btn = document.getElementById('btn-ejecutar-jack');
+                btn.disabled = false;
+                btn.className = "w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer";
+                btn.innerText = "Ejecutar Análisis JackBusca";
+                
+                document.getElementById('vip-status-badge').className = "bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/20";
+                document.getElementById('vip-status-badge').innerText = "Acceso VIP Concedido ✅";
                 errorMsg.classList.add('hidden');
             } else {
                 errorMsg.classList.remove('hidden');
@@ -262,12 +274,36 @@
             
             const corners = document.getElementById('prom_corners').value;
             const tarjetas = document.getElementById('prom_tarjetas').value;
-            const c_t35 = document.getElementById('c_t_mas35').value;
 
-            const url = baseUrl + '/jackbusca/partido?cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + '&promedio_esperado_corners=' + corners + '&promedio_tarjetas_arbitro=' + tarjetas + '&cuota_tarjetas_mas_35=' + c_t35;
+            const c_t_mas35 = document.getElementById('c_t_mas35').value;
+            const c_t_menos35 = document.getElementById('c_t_menos35').value;
+            const c_t_mas45 = document.getElementById('c_t_mas45').value;
+            const c_t_menos45 = document.getElementById('c_t_menos45').value;
+
+            const c_c_mas75 = document.getElementById('c_corner_mas75').value;
+            const c_c_menos75 = document.getElementById('c_corner_menos75').value;
+            const c_c_mas85 = document.getElementById('c_corner_mas85').value;
+            const c_c_menos85 = document.getElementById('c_corner_menos85').value;
+            const c_c_mas95 = document.getElementById('c_corner_mas95').value;
+            const c_c_menos95 = document.getElementById('c_corner_menos95').value;
+            const c_c_mas105 = document.getElementById('c_corner_mas105').value;
+            const c_c_menos105 = document.getElementById('c_corner_menos105').value;
+
+            const url = baseUrl + '/jackbusca/partido?' + 
+                'cuota_local=' + l + '&cuota_empate=' + e + '&cuota_visitante=' + v + 
+                '&cuota_mas_25_goles=' + m25 + '&cuota_menos_25_goles=' + u25 + 
+                '&cuota_mas_35_goles=' + m35 + '&cuota_menos_35_goles=' + u35 + 
+                '&promedio_esperado_corners=' + corners + '&promedio_tarjetas_arbitro=' + tarjetas + 
+                '&cuota_tarjetas_mas_35=' + c_t_mas35 + '&cuota_tarjetas_menos_35=' + c_t_menos35 +
+                '&cuota_tarjetas_mas_45=' + c_t_mas45 + '&cuota_tarjetas_menos_45=' + c_t_menos45 +
+                '&cuota_corners_mas_75=' + c_c_mas75 + '&cuota_corners_menos_75=' + c_c_menos75 +
+                '&cuota_corners_mas_85=' + c_c_mas85 + '&cuota_corners_menos_85=' + c_c_menos85 +
+                '&cuota_corners_mas_95=' + c_c_mas95 + '&cuota_corners_menos_95=' + c_c_menos95 +
+                '&cuota_corners_mas_105=' + c_c_mas105 + '&cuota_corners_menos_105=' + c_c_menos105;
             
             const contenedor = document.getElementById('resultado-jack');
             contenedor.innerHTML = '<p class="col-span-2 text-center text-amber-400 animate-pulse py-2 font-bold">Calculando JackBusca completo...</p>';
+            contenedor.classList.remove('hidden');
 
             try {
                 let resp = await fetch(url);
@@ -275,7 +311,6 @@
 
                 let html = '';
                 
-                // Tarjetas
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-2">';
                 html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Tarjetas (Árbitro: ' + datos.arbitraje.promedio_tarjetas_referencia + ')</h3>';
                 html += '<p class="text-sm">Más de 3.5 Tarjetas: <b class="text-emerald-400">' + datos.mercados_tarjetas_explicados["mas_de_3.5_tarjetas"] + '</b></p>';
@@ -284,7 +319,6 @@
                 html += '<p class="text-sm">Menos de 4.5 Tarjetas: <b class="text-rose-400">' + datos.mercados_tarjetas_explicados["menos_de_4.5_tarjetas"] + '</b></p>';
                 html += '</div>';
 
-                // Córners desglosados
                 html += '<div class="bg-slate-800 p-4 rounded-xl border border-slate-700 space-y-3">';
                 html += '<h3 class="font-bold text-amber-400 border-b border-slate-700 pb-1">Córners por Línea (Base: ' + corners + ')</h3>';
                 
