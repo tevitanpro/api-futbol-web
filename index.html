@@ -988,5 +988,45 @@
             }
         }
     </script>
+  }
+    }
+</script>
+
+<!-- AQUI PEGADITO -->
+<!-- Footer Legal Discreto -->
+<footer style="margin-top: 40px; padding: 20px; text-align: center; border-top: 1px solid #24304d; color: #94a3b8; font-size: 13px; font-family: Arial, sans-serif;">
+    <p>© 2026 API Master Pro. Todos los derechos reservados.</p>
+    <p>
+        <a href="#" onclick="abrirModal('terminos')" style="color: #20d89a; text-decoration: none; margin: 0 10px;">Términos y Condiciones</a> | 
+        <a href="#" onclick="abrirModal('privacidad')" style="color: #20d89a; text-decoration: none; margin: 0 10px;">Política de Privacidad</a> | 
+        <a href="#" onclick="abrirModal('aviso')" style="color: #20d89a; text-decoration: none; margin: 0 10px;">Aviso Legal</a>
+    </p>
+</footer>
+
+<!-- Estructura del Modal Emergente -->
+<div id="modalLegal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(5,8,23,0.85); z-index:9999; justify-content:center; align-items:center;">
+    <div style="background:#11182b; border:1px solid #24304d; width:min(90%, 600px); max-height:80vh; overflow-y:auto; padding:30px; border-radius:15px; color:#fff; position:relative;">
+        <button onclick="cerrarModal()" style="position:absolute; top:15px; right:15px; background:none; border:none; color:#ff6b6b; font-size:20px; cursor:pointer;">✖</button>
+        <div id="contenidoModal"></div>
+    </div>
+</div>
+
+<script>
+    const textosLegales = {
+        terminos: "<h2>Términos y Condiciones</h2><p>El uso de API Master Pro implica la aceptación de los presentes términos. El servicio de simulación matemática y análisis de fútbol es de carácter estadístico y de entretenimiento, no garantizando aciertos absolutos en apuestas deportivas. El usuario es responsable del manejo de su cuenta y claves.</p>",
+        privacidad: "<h2>Política de Privacidad</h2><p>En API Master Pro recopilamos únicamente los datos básicos necesarios (correo electrónico y usuario) para la autenticación, seguridad de acceso, recuperación de credenciales y gestión de planes de suscripción. Sus datos son tratados con estricta confidencialidad y no se ceden a terceros.</p>",
+        aviso: "<h2>Aviso Legal</h2><p>API Master Pro es una plataforma de análisis estocástico y simulación algorítmica. Los pagos gestionados a través de pasarelas autorizadas o Nequi están sujetos a verificación administrativa. Prohibida la reproducción total o parcial de los algoritmos del motor sin autorización expresa.</p>"
+    };
+
+    function abrirModal(tipo) {
+        document.getElementById('contenidoModal').innerHTML = textosLegales[tipo];
+        document.getElementById('modalLegal').style.display = 'flex';
+    }
+
+    function cerrarModal() {
+        document.getElementById('modalLegal').style.display = 'none';
+    }
+</script>
+
 </body>
 </html>
