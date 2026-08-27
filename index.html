@@ -38,8 +38,7 @@
                             Iniciar Sesión
                         </button>
                         <div class="flex justify-between gap-2 text-[10px]">
-                            <button onclick="mostrarRecuperacion()" class="text-slate-400 hover:text-emerald-400 underline">¿Olvidaste tu contraseña?</button>
-                            <button onclick="mostrarReenvioVerificacion()" class="text-slate-400 hover:text-emerald-400 underline">Reenviar verificación</button>
+                            <span class="text-[10px] text-slate-500">Registro inmediato · sin verificación por correo</span>
                         </div>
                     </div>
 
@@ -52,15 +51,6 @@
                         <button onclick="ejecutarRegistro()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-2.5 rounded-xl text-xs transition shadow-md cursor-pointer">
                             Crear Cuenta Gratis
                         </button>
-                    </div>
-                    <div id="form-recovery-box" class="hidden space-y-2.5 border-t border-slate-800 pt-3">
-                        <p id="recovery-title" class="text-xs font-bold text-emerald-300">Recuperar contraseña</p>
-                        <input type="email" id="recovery_email" placeholder="Correo electrónico" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-                        <div id="recovery-password-wrap" class="hidden space-y-2">
-                            <input type="password" id="recovery_password" placeholder="Nueva contraseña (mín. 8 caracteres)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-2.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
-                        </div>
-                        <button id="recovery-action-btn" onclick="solicitarRecuperacion()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold py-2 rounded-xl text-xs">Enviar enlace</button>
-                        <button onclick="ocultarRecuperacion()" class="w-full text-[10px] text-slate-500 hover:text-slate-300">Volver</button>
                     </div>
                     <span id="auth-msg" class="text-[10px] block text-center text-rose-400 hidden"></span>
                 </div>
@@ -301,31 +291,23 @@
                     </div>
                 </div>
 
-                <!-- CONTENEDOR BLOQUEADO CON WOMPI INTEGRADO -->
+                <!-- CONTENEDOR BLOQUEADO: activación manual por Nequi -->
                 <div class="space-y-4 pt-2">
                     <div id="jackbusca-lock-container" class="bg-slate-950 border border-amber-500/40 p-4 rounded-xl text-center space-y-3">
                         <div class="flex items-center justify-center gap-2 text-amber-400 font-bold text-sm">
-                            <span>🔒</span> Desbloquea los resultados de este motor por solo <b class="text-white">$12.000 COP</b>
+                            <span>🔒</span> JackBusca requiere un plan activo
                         </div>
                         <p class="text-xs text-slate-400 max-w-lg mx-auto">
-                            Invierta con cabeza fría. Realice el pago automático de forma segura (Nequi, PSE, Tarjeta) con un plan activo o acceso de administrador.
+                            En esta versión el pago se gestiona directamente por Nequi y la activación la realiza el administrador.
                         </p>
-
-                        <!-- CHECKOUT WOMPI DINÁMICO: la referencia, monto y firma vienen del backend -->
-                        <div class="flex flex-col sm:flex-row gap-2 justify-center items-center pt-1">
-                            <button type="button" onclick="iniciarCheckout('1_mes')" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition shadow-md cursor-pointer">
-                                💜 1 mes — $12.000 + IVA
-                            </button>
-                            <button type="button" onclick="iniciarCheckout('3_meses')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition shadow-md cursor-pointer">
-                                💙 3 meses — $35.000 + IVA
-                            </button>
-                            <button type="button" onclick="iniciarCheckout('12_meses')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition shadow-md cursor-pointer">
-                                💚 1 año — $100.000 + IVA
-                            </button>
-
-                            <p class="text-[10px] text-slate-500">El acceso premium se controla desde tu cuenta y el servidor. No se usan claves maestras en el navegador.</p>
-                        </form>
-                        <span id="error-msg" class="text-[10px] text-rose-400 block hidden">Código incorrecto. Verifique con el administrador.</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px]">
+                            <div class="bg-slate-900 border border-slate-800 rounded-lg p-2"><b class="text-white">1 mes</b><br>$12.000 COP</div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-lg p-2"><b class="text-white">3 meses</b><br>$35.000 COP</div>
+                            <div class="bg-slate-900 border border-slate-800 rounded-lg p-2"><b class="text-white">1 año</b><br>$100.000 COP</div>
+                        </div>
+                        <p class="text-[10px] text-slate-500">Después de confirmar el pago, el administrador activa el plan desde el panel.
+                        </p>
+                        <span id="error-msg" class="text-[10px] text-rose-400 block hidden">No se pudo comprobar el estado del plan.</span>
                     </div>
 
                     <!-- Botón de Ejecución -->
@@ -342,29 +324,10 @@
 
     <script>
         const baseUrl = 'https://api-futbol-pro.onrender.com';
-        async function iniciarCheckout(planId) {
-            if (!tokenJwt) {
-                alert('Primero debes iniciar sesión para asociar el pago a tu cuenta.');
-                return;
-            }
-            try {
-                const r = await fetch(`${baseUrl}/suscripcion/checkout?plan_id=${encodeURIComponent(planId)}`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${tokenJwt}` }
-                });
-                const data = await r.json();
-                if (!r.ok) throw new Error(data.detail || 'No se pudo crear el checkout.');
-                window.location.href = data.checkout_url;
-            } catch (e) {
-                alert(e.message || 'No se pudo iniciar el pago.');
-            }
-        }
-
         let tokenJwt = localStorage.getItem('token_jwt') || '';
 
         // Comprobar estado de sesión al cargar la página
         window.addEventListener('DOMContentLoaded', () => {
-            procesarEnlacesEmail();
             if (tokenJwt) {
                 verificarTokenGuardado();
             }
@@ -389,81 +352,11 @@
             }
         }
 
-        function mostrarRecuperacion() {
-            document.getElementById('form-login-box').classList.add('hidden');
-            document.getElementById('form-register-box').classList.add('hidden');
-            document.getElementById('form-recovery-box').classList.remove('hidden');
-            document.getElementById('recovery-title').innerText = 'Recuperar contraseña';
-            document.getElementById('recovery-action-btn').innerText = 'Enviar enlace';
-            document.getElementById('recovery-action-btn').onclick = solicitarRecuperacion;
-            document.getElementById('recovery-password-wrap').classList.add('hidden');
-        }
-        function mostrarReenvioVerificacion() {
-            document.getElementById('form-login-box').classList.add('hidden');
-            document.getElementById('form-register-box').classList.add('hidden');
-            document.getElementById('form-recovery-box').classList.remove('hidden');
-            document.getElementById('recovery-title').innerText = 'Reenviar verificación de correo';
-            document.getElementById('recovery-action-btn').innerText = 'Reenviar enlace';
-            document.getElementById('recovery-action-btn').onclick = reenviarVerificacion;
-            document.getElementById('recovery-password-wrap').classList.add('hidden');
-        }
-        function ocultarRecuperacion() {
-            document.getElementById('form-recovery-box').classList.add('hidden');
-            document.getElementById('form-login-box').classList.remove('hidden');
-        }
-        async function solicitarRecuperacion() {
-            const email = document.getElementById('recovery_email').value.trim();
-            const msg = document.getElementById('auth-msg');
-            if (!email) { msg.innerText = 'Ingresa tu correo.'; msg.classList.remove('hidden'); return; }
-            try {
-                const resp = await fetch(baseUrl + '/auth/forgot-password', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({correo:email})});
-                const data = await resp.json();
-                msg.innerText = data.mensaje || 'Solicitud procesada. Revisa tu correo.';
-                msg.className = 'text-[10px] block text-center text-emerald-400';
-            } catch(e) { msg.innerText='No fue posible contactar al servidor.'; msg.className='text-[10px] block text-center text-rose-400'; }
-        }
-        async function reenviarVerificacion() {
-            const email = document.getElementById('recovery_email').value.trim();
-            const msg = document.getElementById('auth-msg');
-            if (!email) { msg.innerText = 'Ingresa tu correo.'; msg.classList.remove('hidden'); return; }
-            try {
-                const resp = await fetch(baseUrl + '/auth/resend-verification', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({correo:email})});
-                const data = await resp.json();
-                msg.innerText = data.mensaje || 'Solicitud procesada. Revisa tu correo.';
-                msg.className = 'text-[10px] block text-center text-emerald-400';
-            } catch(e) { msg.innerText='No fue posible contactar al servidor.'; msg.className='text-[10px] block text-center text-rose-400'; }
-        }
-        async function procesarEnlacesEmail() {
-            const params = new URLSearchParams(window.location.search);
-            const verify = params.get('verify_email');
-            const reset = params.get('reset_password');
-            if (verify) {
-                try {
-                    const resp = await fetch(baseUrl + '/auth/verify-email?token=' + encodeURIComponent(verify));
-                    const data = await resp.json();
-                    alert(resp.ok ? (data.mensaje || 'Correo verificado.') : (data.detail || 'Enlace inválido.'));
-                    window.history.replaceState({}, document.title, window.location.pathname);
-                } catch(e) { alert('No fue posible verificar el correo.'); }
-            }
-            if (reset) {
-                mostrarRecuperacion();
-                document.getElementById('recovery-title').innerText = 'Nueva contraseña';
-                document.getElementById('recovery-password-wrap').classList.remove('hidden');
-                document.getElementById('recovery-action-btn').innerText = 'Cambiar contraseña';
-                document.getElementById('recovery-action-btn').onclick = async function() {
-                    const password = document.getElementById('recovery_password').value;
-                    const msg = document.getElementById('auth-msg');
-                    if (password.length < 8) { msg.innerText='La nueva contraseña debe tener al menos 8 caracteres.'; msg.classList.remove('hidden'); return; }
-                    try {
-                        const resp = await fetch(baseUrl + '/auth/reset-password', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token:reset,password})});
-                        const data = await resp.json();
-                        msg.innerText = resp.ok ? data.mensaje : (data.detail || 'No se pudo cambiar la contraseña.');
-                        msg.className = resp.ok ? 'text-[10px] block text-center text-emerald-400' : 'text-[10px] block text-center text-rose-400';
-                        if (resp.ok) window.history.replaceState({}, document.title, window.location.pathname);
-                    } catch(e) { msg.innerText='No fue posible contactar al servidor.'; msg.className='text-[10px] block text-center text-rose-400'; }
-                };
-            }
-        }
+
+
+
+
+
 
         async function ejecutarRegistro() {
             const u = document.getElementById('reg_username').value.trim();
@@ -486,7 +379,7 @@
                 let data = await resp.json();
                 if (resp.ok) {
                     msg.classList.add('hidden');
-                    alert(data.mensaje || 'Cuenta creada. Revisa tu correo para verificarla.');
+                    alert(data.mensaje || 'Cuenta creada correctamente. Ya puedes iniciar sesión.');
                     switchAuthTab('login');
                 } else {
                     msg.innerText = data.detail || "Error al registrarse.";
@@ -556,7 +449,7 @@
             document.getElementById('auth-forms-container').classList.add('hidden');
             document.getElementById('user-logged-box').classList.remove('hidden');
             document.getElementById('lbl-username').innerText = username;
-            document.getElementById('lbl-email').innerText = correo || 'Correo verificado';
+            document.getElementById('lbl-email').innerText = correo || 'Correo';
             document.getElementById('lbl-plan').innerText = plan === 'gratis' ? 'GRATIS' : String(plan).toUpperCase();
             const adminBtn=document.getElementById('btn-admin-panel');
             if(adminBtn) adminBtn.classList.toggle('hidden', rol !== 'admin');
@@ -701,7 +594,7 @@
                 box.innerHTML=(d.usuarios||[]).map(u=>`<div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1">
                     <div class="flex justify-between"><b class="text-emerald-300">${escapeHtml(u.usuario)}</b><span class="text-[9px] text-violet-300">${escapeHtml(u.rol)}</span></div>
                     <div class="text-[10px] text-slate-400">${escapeHtml(u.correo)}</div>
-                    <div class="text-[10px] text-slate-500">Plan: ${escapeHtml(u.plan)} · ${u.activo?'Activo':'Suspendido'} · ${u.email_verificado?'Correo ✓':'Correo pendiente'}</div>
+                    <div class="text-[10px] text-slate-500">Plan: ${escapeHtml(u.plan)} · ${u.activo?'Activo':'Suspendido'} · Cuenta activa</div>
                     <button onclick="verAdminUsuario(${u.id})" class="mt-1 bg-slate-800 hover:bg-violet-900/30 text-violet-300 px-3 py-1.5 rounded-lg text-[10px] font-bold">Ver detalle</button>
                 </div>`).join('') || '<p class="text-slate-500 text-xs">No hay usuarios.</p>';
             }catch(e){box.innerHTML='<p class="text-rose-400 text-xs">No se pudo cargar el panel.</p>';}
@@ -713,7 +606,8 @@
                 const u=d.usuario;
                 box.innerHTML=`<div class="flex justify-between"><b class="text-violet-300">${escapeHtml(u.usuario)}</b><span>${escapeHtml(u.correo)}</span></div>
                 <div class="mt-2 text-slate-400">Rol: <b>${escapeHtml(u.rol)}</b> · Plan: <b>${escapeHtml(u.plan)}</b> · Estado: <b>${u.activo?'ACTIVO':'SUSPENDIDO'}</b></div>
-                <div class="mt-3 flex gap-2"><button onclick="cambiarEstadoAdmin(${u.id},'ACTIVO')" class="bg-emerald-700 px-2 py-1 rounded text-[10px]">Activar</button><button onclick="cambiarEstadoAdmin(${u.id},'SUSPENDIDO')" class="bg-rose-800 px-2 py-1 rounded text-[10px]">Suspender</button><button onclick="cambiarRolAdmin(${u.id},'admin')" class="bg-violet-700 px-2 py-1 rounded text-[10px]">Dar admin</button><button onclick="cambiarRolAdmin(${u.id},'usuario')" class="bg-slate-700 px-2 py-1 rounded text-[10px]">Quitar admin</button></div>
+                <div class="mt-3 flex flex-wrap gap-2"><button onclick="cambiarEstadoAdmin(${u.id},'ACTIVO')" class="bg-emerald-700 px-2 py-1 rounded text-[10px]">Activar cuenta</button><button onclick="cambiarEstadoAdmin(${u.id},'SUSPENDIDO')" class="bg-rose-800 px-2 py-1 rounded text-[10px]">Suspender</button><button onclick="cambiarRolAdmin(${u.id},'admin')" class="bg-violet-700 px-2 py-1 rounded text-[10px]">Dar admin</button><button onclick="cambiarRolAdmin(${u.id},'usuario')" class="bg-slate-700 px-2 py-1 rounded text-[10px]">Quitar admin</button></div>
+                <div class="mt-3 border-t border-slate-800 pt-3 space-y-2"><b class="text-amber-300">Activar plan por Nequi</b><div class="grid grid-cols-1 sm:grid-cols-2 gap-2"><select id="admin-plan-${u.id}" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-[10px]"><option value="1_mes">1 mes — $12.000</option><option value="3_meses">3 meses — $35.000</option><option value="12_meses">1 año — $100.000</option></select><input id="admin-ref-${u.id}" placeholder="Referencia Nequi (opcional)" class="bg-slate-900 border border-slate-700 rounded-lg p-2 text-[10px]"></div><button onclick="activarPlanAdmin(${u.id})" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-extrabold px-3 py-2 rounded-lg text-[10px]">Confirmar pago y activar plan</button></div>
                 <div class="mt-3 border-t border-slate-800 pt-2"><b class="text-slate-300">Últimos análisis</b>${(d.historial||[]).map(h=>`<p class="text-[10px] text-slate-500 mt-1">${escapeHtml(h.fecha)} — ${escapeHtml(h.partido_resumen)}</p>`).join('')||'<p class="text-[10px] text-slate-500">Sin historial.</p>'}</div>`;
             }catch(e){box.innerHTML='<span class="text-rose-400">No se pudo cargar el usuario.</span>';}
         }
@@ -722,6 +616,18 @@
         }
         async function cambiarRolAdmin(id,rol){
             const r=await fetch(baseUrl+'/admin/usuarios/'+id+'/rol?rol='+encodeURIComponent(rol),{method:'POST',headers:{'Authorization':'Bearer '+tokenJwt}}); const d=await r.json(); if(!r.ok) return alert(d.detail||'Error'); cargarAdminUsuarios();
+        }
+        async function activarPlanAdmin(id){
+            const plan=document.getElementById('admin-plan-'+id).value;
+            const referencia=document.getElementById('admin-ref-'+id).value.trim();
+            if(!confirm('Confirma que el pago por Nequi fue recibido antes de activar este plan.')) return;
+            try{
+                const r=await fetch(baseUrl+'/admin/usuarios/'+id+'/activar-plan',{method:'POST',headers:{'Authorization':'Bearer '+tokenJwt,'Content-Type':'application/json'},body:JSON.stringify({tipo_plan:plan,referencia_pago:referencia})});
+                const d=await r.json();
+                if(!r.ok) throw new Error(d.detail||'No se pudo activar el plan.');
+                alert('Plan activado correctamente hasta '+new Date(d.fecha_expiracion).toLocaleString());
+                cargarAdminUsuarios(); cargarAdminResumen(); verAdminUsuario(id);
+            }catch(e){ alert(e.message||'No se pudo activar el plan.'); }
         }
 
         async function consultarGoles() {
