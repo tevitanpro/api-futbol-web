@@ -585,6 +585,29 @@
             } catch(e) { box.innerHTML='<p class="text-[10px] text-rose-400">No se pudieron cargar los planes.</p>'; }
         }
 
+        const WHATSAPP_COMPROBANTE = '573165418265';
+        let ultimoPagoWhatsapp = null;
+
+        function planIdNombre(planId) {
+            const mapa = { '1_mes':'1 mes', '3_meses':'3 meses', '12_meses':'1 año' };
+            return mapa[planId] || planId || '';
+        }
+
+        function abrirWhatsAppComprobante() {
+            if (!ultimoPagoWhatsapp) return;
+            const mensaje = [
+                'Hola, realicé el pago de API Master Pro.',
+                'Usuario: ' + (localStorage.getItem('username') || ''),
+                'Plan: ' + planIdNombre(ultimoPagoWhatsapp.plan),
+                'Valor: $' + Number(ultimoPagoWhatsapp.monto || 0).toLocaleString('es-CO') + ' COP',
+                'Referencia: ' + (ultimoPagoWhatsapp.referencia || ''),
+                '',
+                'Adjunto el comprobante de pago.',
+                'Quedo pendiente de la verificación y activación.'
+            ].join('\n');
+            window.open('https://wa.me/' + WHATSAPP_COMPROBANTE + '?text=' + encodeURIComponent(mensaje), '_blank');
+        }
+
         async function solicitarPago(planId) {
             const msg=document.getElementById('pago-msg');
             if(!tokenJwt){ msg.innerText='Primero inicia sesión para solicitar un plan.'; msg.className='text-[10px] text-amber-300 bg-amber-500/5 border border-amber-500/20 rounded-xl p-3'; msg.classList.remove('hidden'); return; }
@@ -592,8 +615,10 @@
                 const resp=await fetch(baseUrl+'/pagos/solicitar',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tokenJwt},body:JSON.stringify({tipo_plan:planId})});
                 const data=await resp.json();
                 if(!resp.ok) throw new Error(data.detail||'No se pudo registrar la solicitud.');
-                msg.innerHTML='<b>Solicitud registrada.</b><br>Referencia: '+escapeHtml(data.referencia)+'<br>Total: $'+Number(data.monto).toLocaleString('es-CO')+' COP<br><span class="text-slate-400">'+escapeHtml(data.mensaje)+'</span>'+(data.contacto_nequi?'<br><button onclick="window.open(\''+data.contacto_nequi+'\',\'_blank\')" class="mt-2 bg-emerald-500 text-slate-950 font-bold px-3 py-1.5 rounded-lg">Contactar para enviar comprobante</button>':'');
+                ultimoPagoWhatsapp = { referencia: data.referencia, monto: data.monto, plan: planId };
+                msg.innerHTML='<b>Solicitud registrada.</b><br>Referencia: '+escapeHtml(data.referencia)+'<br>Total: $'+Number(data.monto).toLocaleString('es-CO')+' COP<br><span class=\"text-slate-400\">Realiza el pago por Nequi al <strong>3007033243</strong>.</span><br><span class=\"text-slate-400\">Después de pagar, envía el comprobante por WhatsApp al <strong>+57 316 541 8265</strong>. Tu solicitud quedará pendiente hasta verificar el pago. La activación se realizará después de la aprobación.</span><br><button onclick=\"abrirWhatsAppComprobante()\" class=\"mt-3 bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold px-4 py-2 rounded-lg\">📲 Enviar comprobante por WhatsApp</button>';
                 msg.className='text-[10px] text-emerald-300 bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-3'; msg.classList.remove('hidden');
+                cargarMisPagos();
             } catch(e) { msg.innerText=e.message; msg.className='text-[10px] text-rose-400 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3'; msg.classList.remove('hidden'); }
         }
 
