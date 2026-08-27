@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API Master Pro - Panel Táctico Estocástico v8.8</title>
+    <title>API Master Pro - Panel Táctico Estocástico v8.9 · Nequi + Administrador</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans p-4 md:p-8">
@@ -74,6 +74,34 @@
                         <div class="flex justify-between gap-3"><span class="text-[10px] text-slate-500">Historial</span><b id="lbl-history-count" class="text-[10px] text-violet-300">0/10</b></div>
                     </div>
                     <button onclick="cerrarSesion()" class="w-full bg-slate-800 hover:bg-rose-950/40 hover:text-rose-400 hover:border-rose-800 border border-slate-700 text-slate-300 font-bold py-2 rounded-xl text-xs transition cursor-pointer">Cerrar Sesión</button>
+                </div>
+            </div>
+
+            <!-- PLANES Y PAGO DIRECTO POR NEQUI -->
+            <div id="planes-box" class="bg-slate-900 border border-amber-500/30 rounded-2xl p-5 shadow-xl space-y-3">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-xs font-bold text-amber-300">💳 Activar JackBusca</h3>
+                    <span class="text-[9px] text-slate-500">Nequi directo</span>
+                </div>
+                <p class="text-[10px] text-slate-400">El usuario solicita un plan, paga por Nequi al <b class="text-white">3007033243</b> y envía el comprobante. Tú revisas y activas el plan desde el panel administrador.</p>
+                <div id="planes-lista" class="space-y-2"></div>
+                <div id="pago-msg" class="hidden text-[10px] text-emerald-300 bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-3"></div>
+                <div id="mis-pagos" class="space-y-1 text-[10px] text-slate-400"></div>
+            </div>
+
+            <!-- PANEL ADMINISTRADOR -->
+            <div id="admin-box" class="hidden bg-slate-900 border border-violet-500/30 rounded-2xl p-5 shadow-xl space-y-3">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                    <h3 class="text-xs font-bold text-violet-300">🛡️ Panel Administrador</h3>
+                    <button onclick="cargarAdmin()" class="text-[10px] text-slate-400 hover:text-violet-300 underline">Actualizar</button>
+                </div>
+                <div id="admin-resumen" class="grid grid-cols-2 gap-2 text-[10px]"></div>
+                <div class="text-[10px] text-slate-400 bg-slate-950 rounded-xl p-3">
+                    <div class="flex justify-between items-center mb-2">
+                        <b class="text-slate-200">Solicitudes Nequi</b>
+                        <span class="text-violet-300">3007033243</span>
+                    </div>
+                    <div id="admin-pagos" class="space-y-2 max-h-[420px] overflow-y-auto"></div>
                 </div>
             </div>
 
@@ -286,40 +314,19 @@
                     </div>
                 </div>
 
-                <!-- CONTENEDOR BLOQUEADO CON WOMPI INTEGRADO -->
+                <!-- BLOQUE DE ACCESO A JACKBUSCA -->
                 <div class="space-y-4 pt-2">
                     <div id="jackbusca-lock-container" class="bg-slate-950 border border-amber-500/40 p-4 rounded-xl text-center space-y-3">
                         <div class="flex items-center justify-center gap-2 text-amber-400 font-bold text-sm">
-                            <span>🔒</span> Desbloquea los resultados de este motor por solo <b class="text-white">$12.000 COP</b>
+                            <span>🔒</span> JackBusca requiere un plan activo
                         </div>
-                        <p class="text-xs text-slate-400 max-w-lg mx-auto">
-                            Invierta con cabeza fría. Realice el pago automático de forma segura (Nequi, PSE, Tarjeta) o ingrese su código VIP autorizado.
-                        </p>
-
-                        <!-- FORMULARIO AUTOMÁTICO WOMPI -->
-                        <form action="https://checkout.wompi.co/p/" method="GET" class="flex flex-col sm:flex-row gap-2 justify-center items-center pt-1">
-                            <input type="hidden" name="public-key" value="pub_test_TrgWfbEn77YfBKkLdO2PgG86RYRJlo6L">
-                            <input type="hidden" name="currency" value="COP">
-                            <input type="hidden" name="amount-in-cents" value="1200000">
-                            <input type="hidden" name="reference" value="API-MASTER-PRO-VIP-2026">
-
-                            <button type="submit" class="bg-fuchsia-600 hover:bg-fuchsia-500 text-white font-extrabold text-xs px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-1.5 cursor-pointer">
-                                💜 Pagar $12k Automático (Nequi / Wompi)
-                            </button>
-
-                            <div class="flex gap-1.5 mt-2 sm:mt-0">
-                                <input type="password" id="vip_code" placeholder="Código VIP" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-2 text-xs text-center text-amber-300 w-32 focus:outline-none focus:border-amber-500">
-                                <button type="button" onclick="verificarVIP()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold text-xs px-3 py-2 rounded-xl transition cursor-pointer">
-                                    Activar
-                                </button>
-                            </div>
-                        </form>
-                        <span id="error-msg" class="text-[10px] text-rose-400 block hidden">Código incorrecto. Verifique con el administrador.</span>
+                        <p id="jackbusca-lock-text" class="text-xs text-slate-400 max-w-lg mx-auto">Inicia sesión y solicita un plan desde el panel de pago.</p>
+                        <p class="text-[10px] text-slate-500">Los planes se pagan por Nequi al <b class="text-white">3007033243</b> y se activan después de la revisión del administrador.</p>
                     </div>
 
                     <!-- Botón de Ejecución -->
                     <button id="btn-ejecutar-jack" onclick="consultarJackBusca()" disabled class="w-full bg-slate-800 text-slate-500 font-extrabold py-3 rounded-xl transition cursor-not-allowed shadow-none">
-                        🔒 Ejecutar Análisis JackBusca (Requiere Activación VIP)
+                        🔒 Ejecutar Análisis JackBusca (Requiere Plan)
                     </button>
                 </div>
 
@@ -336,6 +343,7 @@
         // Comprobar estado de sesión al cargar la página
         window.addEventListener('DOMContentLoaded', () => {
             procesarEnlacesEmail();
+            cargarPlanes();
             if (tokenJwt) {
                 verificarTokenGuardado();
             }
@@ -494,7 +502,7 @@
             localStorage.setItem('token_jwt', tokenJwt);
             localStorage.setItem('username', data.usuario);
             msg.classList.add('hidden');
-            actualizarInterfazLogueado(data.usuario, data.correo, data.plan);
+            actualizarInterfazLogueado(data.usuario, data.correo, data.plan, data.rol || (data.plan === 'admin' ? 'admin' : 'usuario'));
             cargarHistorial();
         } else {
             msg.innerText = data.detail || "Credenciales incorrectas.";
@@ -514,7 +522,7 @@
                 if (!resp.ok) throw new Error('Sesión inválida');
                 const data = await resp.json();
                 localStorage.setItem('username', data.usuario);
-                actualizarInterfazLogueado(data.usuario, data.correo, data.plan);
+                actualizarInterfazLogueado(data.usuario, data.correo, data.plan, data.rol || (data.plan === 'admin' ? 'admin' : 'usuario'));
                 cargarHistorial();
             } catch (e) {
                 tokenJwt = '';
@@ -523,15 +531,23 @@
             }
         }
 
-        function actualizarInterfazLogueado(username, correo='', plan='gratis') {
+        function actualizarInterfazLogueado(username, correo='', plan='gratis', rol='usuario') {
             document.getElementById('auth-forms-container').classList.add('hidden');
             document.getElementById('user-logged-box').classList.remove('hidden');
             document.getElementById('lbl-username').innerText = username;
             document.getElementById('lbl-email').innerText = correo || 'Correo verificado';
-            document.getElementById('lbl-plan').innerText = plan === 'gratis' ? 'GRATIS' : String(plan).toUpperCase();
+            document.getElementById('lbl-plan').innerText = rol === 'admin' ? 'ADMIN' : (plan === 'gratis' ? 'GRATIS' : String(plan).toUpperCase());
+
             const badge = document.getElementById('user-status-badge');
             badge.className = "bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2 py-0.5 rounded-full border border-emerald-500/20";
-            badge.innerText = "Sesión Activa ✅";
+            badge.innerText = rol === 'admin' ? "Administrador 🛡️" : "Sesión Activa ✅";
+
+            const admin = document.getElementById('admin-box');
+            if (admin) admin.classList.toggle('hidden', rol !== 'admin');
+
+            actualizarAccesoJack(plan, rol === 'admin');
+            if (rol === 'admin') cargarAdmin();
+            cargarMisPagos();
         }
 
         function cerrarSesion() {
@@ -540,6 +556,9 @@
             localStorage.removeItem('username');
             document.getElementById('auth-forms-container').classList.remove('hidden');
             document.getElementById('user-logged-box').classList.add('hidden');
+            document.getElementById('admin-box')?.classList.add('hidden');
+            actualizarAccesoJack('gratis', false);
+            document.getElementById('mis-pagos').innerHTML = '';
             const badge = document.getElementById('user-status-badge');
             badge.className = "bg-slate-800 text-slate-400 text-[10px] font-bold px-2 py-0.5 rounded-full";
             badge.innerText = "Modo Invitado";
@@ -611,30 +630,75 @@
             }catch(e){ alert(e.message); }
         }
 
-        function verificarVIP() {
-            const claveIngresada = document.getElementById('vip_code').value.trim();
-            const errorMsg = document.getElementById('error-msg');
-            const claveMaestra = "TEVITAN2026";
-            const codigosClientes = [
-                "VIP-7782",
-                "NEQUI-1029",
-                "JACK-4451",
-                "PRO-9983"
-            ];
-
-            if (claveIngresada === claveMaestra || codigosClientes.includes(claveIngresada)) {
-                document.getElementById('jackbusca-lock-container').classList.add('hidden');
-                const btn = document.getElementById('btn-ejecutar-jack');
-                btn.disabled = false;
-                btn.className = "w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer";
-                btn.innerText = "Ejecutar Análisis JackBusca";
-                
-                document.getElementById('vip-status-badge').className = "bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/20";
-                document.getElementById('vip-status-badge').innerText = "Acceso VIP Concedido ✅";
-                errorMsg.classList.add('hidden');
+        function actualizarAccesoJack(plan='gratis', esAdmin=false) {
+            const lock = document.getElementById('jackbusca-lock-container');
+            const btn = document.getElementById('btn-ejecutar-jack');
+            const badge = document.getElementById('vip-status-badge');
+            const text = document.getElementById('jackbusca-lock-text');
+            const activo = esAdmin || (plan && plan !== 'gratis');
+            if (activo) {
+                lock?.classList.add('hidden');
+                if (btn) { btn.disabled = false; btn.className = "w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer"; btn.innerText = "Ejecutar Análisis JackBusca"; }
+                if (badge) { badge.className = "bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/20"; badge.innerText = esAdmin ? "Acceso Administrador ✅" : "Plan activo ✅"; }
             } else {
-                errorMsg.classList.remove('hidden');
+                lock?.classList.remove('hidden');
+                if (btn) { btn.disabled = true; btn.className = "w-full bg-slate-800 text-slate-500 font-extrabold py-3 rounded-xl transition cursor-not-allowed shadow-none"; btn.innerText = "🔒 Ejecutar Análisis JackBusca (Requiere Plan)"; }
+                if (badge) { badge.className = "bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/20"; badge.innerText = "Plan premium requerido 🔒"; }
+                if (text) text.innerText = tokenJwt ? "Solicita un plan y paga por Nequi al 3007033243." : "Inicia sesión y activa un plan desde el panel de pago.";
             }
+        }
+
+        async function cargarPlanes() {
+            const box=document.getElementById('planes-lista'); if(!box) return;
+            try {
+                const resp=await fetch(baseUrl+'/planes');
+                const data=await resp.json();
+                const planes=data.planes||{};
+                box.innerHTML=Object.entries(planes).map(([id,p])=>`<button onclick="solicitarPago('${id}')" class="w-full text-left bg-slate-950 border border-slate-800 hover:border-amber-500/50 rounded-xl p-3 transition"><div class="flex justify-between gap-2"><b class="text-amber-300">${escapeHtml(p.nombre)}</b><b class="text-emerald-300">$${Number(p.precio_total).toLocaleString('es-CO')} COP</b></div><p class="text-[9px] text-slate-500 mt-1">Plan ${escapeHtml(p.nombre)} · Pago por Nequi</p></button>`).join('');
+            } catch(e) { box.innerHTML='<p class="text-[10px] text-rose-400">No se pudieron cargar los planes.</p>'; }
+        }
+
+        async function solicitarPago(planId) {
+            const msg=document.getElementById('pago-msg');
+            if(!tokenJwt){ msg.innerText='Primero inicia sesión para solicitar un plan.'; msg.className='text-[10px] text-amber-300 bg-amber-500/5 border border-amber-500/20 rounded-xl p-3'; msg.classList.remove('hidden'); return; }
+            try {
+                const resp=await fetch(baseUrl+'/pagos/solicitar',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tokenJwt},body:JSON.stringify({tipo_plan:planId})});
+                const data=await resp.json();
+                if(!resp.ok) throw new Error(data.detail||'No se pudo registrar la solicitud.');
+                msg.innerHTML='<b>Solicitud registrada.</b><br>Referencia: '+escapeHtml(data.referencia)+'<br>Total: $'+Number(data.monto).toLocaleString('es-CO')+' COP<br><span class="text-slate-400">'+escapeHtml(data.mensaje)+'</span><br><b class="text-white">Nequi: 3007033243</b><br><span class="text-slate-400">Guarda la referencia y envía el comprobante al administrador.</span>';
+                msg.className='text-[10px] text-emerald-300 bg-emerald-500/5 border border-emerald-500/20 rounded-xl p-3'; msg.classList.remove('hidden');
+                cargarMisPagos();
+            } catch(e) { msg.innerText=e.message; msg.className='text-[10px] text-rose-400 bg-rose-500/5 border border-rose-500/20 rounded-xl p-3'; msg.classList.remove('hidden'); }
+        }
+
+        async function cargarMisPagos() {
+            const box=document.getElementById('mis-pagos'); if(!box || !tokenJwt) return;
+            try {
+                const r=await fetch(baseUrl+'/pagos/mis-pagos',{headers:{'Authorization':'Bearer '+tokenJwt}});
+                const d=await r.json(); if(!r.ok) return;
+                box.innerHTML=(d.pagos||[]).slice(0,5).map(p=>`<div class="flex justify-between gap-2 border-t border-slate-800 pt-1"><span>${escapeHtml(p.plan)} · ${escapeHtml(p.referencia)}</span><span class="${p.estado==='APPROVED'?'text-emerald-300':p.estado==='PENDING'?'text-amber-300':'text-rose-300'}">${p.estado}</span></div>`).join('');
+            } catch(e) {}
+        }
+
+        async function cargarAdmin() {
+            if(!tokenJwt) return;
+            try {
+                const opt={headers:{'Authorization':'Bearer '+tokenJwt}};
+                const [r1,r2]=await Promise.all([fetch(baseUrl+'/admin/resumen',opt),fetch(baseUrl+'/admin/pagos',opt)]);
+                if(!r1.ok || !r2.ok) throw new Error('Acceso administrativo no disponible.');
+                const resumen=await r1.json(); const pagos=(await r2.json()).pagos||[];
+                document.getElementById('admin-resumen').innerHTML='<div class="bg-slate-950 rounded-lg p-2">Usuarios <b class="text-violet-300 block">'+resumen.usuarios+'</b></div><div class="bg-slate-950 rounded-lg p-2">Premium <b class="text-emerald-300 block">'+resumen.premium+'</b></div><div class="bg-slate-950 rounded-lg p-2">Aprobados <b class="text-emerald-300 block">'+resumen.pagos_aprobados+'</b></div><div class="bg-slate-950 rounded-lg p-2">Pendientes <b class="text-amber-300 block">'+resumen.pagos_pendientes+'</b></div>';
+                document.getElementById('admin-pagos').innerHTML=pagos.length?pagos.map(p=>`<div class="bg-slate-950 border border-slate-800 rounded-xl p-3 space-y-1"><div class="flex justify-between"><b class="text-xs text-slate-200">${escapeHtml(p.usuario)}</b><span class="text-[9px] ${p.estado==='APPROVED'?'text-emerald-300':p.estado==='PENDING'?'text-amber-300':'text-rose-300'}">${p.estado}</span></div><p class="text-[9px] text-slate-500">${escapeHtml(p.plan)} · $${Number(p.monto).toLocaleString('es-CO')} · ${escapeHtml(p.referencia)}</p><p class="text-[9px] text-slate-500">${escapeHtml(p.creado_en||'')}</p>${p.estado==='PENDING'?'<div class="flex gap-2 pt-2"><button onclick="resolverPago('+p.id+',true)" class="flex-1 bg-emerald-500 text-slate-950 font-bold py-1.5 rounded-lg text-[10px]">Aprobar y activar</button><button onclick="resolverPago('+p.id+',false)" class="bg-rose-950/40 text-rose-300 border border-rose-900 px-3 rounded-lg text-[10px]">Rechazar</button></div>':''}${p.notas_admin?'<p class="text-[9px] text-slate-400">Nota: '+escapeHtml(p.notas_admin)+'</p>':''}</div>`).join(''):'<p class="text-[10px] text-slate-500 text-center py-3">No hay solicitudes de pago.</p>';
+            } catch(e) { const box=document.getElementById('admin-pagos'); if(box) box.innerHTML='<p class="text-[10px] text-rose-400">'+escapeHtml(e.message)+'</p>'; }
+        }
+
+        async function resolverPago(id, aprobar) {
+            const nota=prompt(aprobar?'Nota opcional de aprobación:':'Motivo del rechazo:','') ?? '';
+            try {
+                const resp=await fetch(baseUrl+'/admin/pagos/'+id+'/'+(aprobar?'aprobar':'rechazar'),{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+tokenJwt},body:JSON.stringify({nota})});
+                const data=await resp.json(); if(!resp.ok) throw new Error(data.detail||'No se pudo resolver el pago.');
+                alert(data.mensaje||'Operación realizada.'); cargarAdmin();
+            } catch(e) { alert(e.message); }
         }
 
         async function consultarGoles() {
