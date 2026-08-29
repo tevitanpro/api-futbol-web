@@ -222,55 +222,97 @@
                     </div>
                 </div>
 
-                <!-- CUOTAS JACKBUSCA: MISMA ESTRUCTURA QUE MOTOR PRINCIPAL -->
+                <!-- Cuotas Específicas de Tarjetas -->
                 <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
-                    <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas JackBusca — Referencia Pinnacle + Casa donde apuesto</p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
-                        <div class="text-slate-500 font-bold p-2">MERCADO</div>
-                        <div class="bg-emerald-950/30 border border-emerald-500/20 rounded-lg p-2 text-center font-bold text-emerald-300">PINNACLE · REFERENCIA</div>
-                        <div class="bg-blue-950/30 border border-blue-500/20 rounded-lg p-2 text-center font-bold text-blue-300">CASA DONDE APUESTO</div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 3.5 Tarjetas</div>
-                        <div><input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_t_mas35" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 3.5 Tarjetas</div>
-                        <div><input type="number" id="c_t_menos35" value="1.95" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_t_menos35" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 4.5 Tarjetas</div>
-                        <div><input type="number" id="c_t_mas45" value="2.50" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_t_mas45" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 4.5 Tarjetas</div>
-                        <div><input type="number" id="c_t_menos45" value="1.50" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_t_menos45" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 5.5 Tarjetas</div>
-                        <div><input type="number" id="c_t_mas55" value="3.80" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_t_mas55" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 5.5 Tarjetas</div>
-                        <div><input type="number" id="c_t_menos55" value="1.25" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_t_menos55" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 8.5 Córners</div>
-                        <div><input type="number" id="c_corner_mas85" value="1.75" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_c_mas85" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 8.5 Córners</div>
-                        <div><input type="number" id="c_corner_menos85" value="2.00" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_c_menos85" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 9.5 Córners</div>
-                        <div><input type="number" id="c_corner_mas95" value="2.10" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_c_mas95" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 9.5 Córners</div>
-                        <div><input type="number" id="c_corner_menos95" value="1.65" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_c_menos95" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 10.5 Córners</div>
-                        <div><input type="number" id="c_corner_mas105" value="2.75" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_c_mas105" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 10.5 Córners</div>
-                        <div><input type="number" id="c_corner_menos105" value="1.40" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_c_menos105" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Más 11.5 Córners</div>
-                        <div><input type="number" id="c_corner_mas115" value="" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_c_mas115" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
-                        <div class="bg-slate-950/40 border border-slate-800 rounded-lg p-2 flex items-center">Menos 11.5 Córners</div>
-                        <div><input type="number" id="c_corner_menos115" value="" step="0.01" class="w-full bg-slate-800 border border-emerald-900/60 rounded-lg p-2 text-center font-bold text-emerald-300" title="Cuota Pinnacle de referencia"></div>
-                        <div><input type="number" id="casa_c_menos115" value="" step="0.01" min="1.01" placeholder="Cuota de la casa" class="w-full bg-slate-800 border border-blue-900/60 rounded-lg p-2 text-center font-bold text-blue-300" title="Cuota de la casa donde vas a apostar"></div>
+                    <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Pinnacle de Tarjetas — Referencia (opcionales):</p>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Más 3.5 Tarjetas</label>
+                            <input type="number" id="c_t_mas35" value="1.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Menos 3.5 Tarjetas</label>
+                            <input type="number" id="c_t_menos35" value="1.95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Más 4.5 Tarjetas</label>
+                            <input type="number" id="c_t_mas45" value="2.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Menos 4.5 Tarjetas</label>
+                            <input type="number" id="c_t_menos45" value="1.50" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Más 5.5 Tarjetas</label>
+                            <input type="number" id="c_t_mas55" value="3.80" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Menos 5.5 Tarjetas</label>
+                            <input type="number" id="c_t_menos55" value="1.25" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cuotas Específicas de Córners -->
+                <div class="bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-3">
+                    <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Pinnacle de Córners — Referencia (opcionales):</p>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Más 7.5 Córners</label>
+                            <input type="number" id="c_corner_mas75" value="1.45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Menos 7.5 Córners</label>
+                            <input type="number" id="c_corner_menos75" value="2.60" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Más 8.5 Córners</label>
+                            <input type="number" id="c_corner_mas85" value="1.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Menos 8.5 Córners</label>
+                            <input type="number" id="c_corner_menos85" value="2.00" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Más 9.5 Córners</label>
+                            <input type="number" id="c_corner_mas95" value="2.10" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Menos 9.5 Córners</label>
+                            <input type="number" id="c_corner_menos95" value="1.65" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Más 10.5 Córners</label>
+                            <input type="number" id="c_corner_mas105" value="2.75" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-slate-400 mb-1">Menos 10.5 Córners</label>
+                            <input type="number" id="c_corner_menos105" value="1.40" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CUOTAS DE LA CASA DONDE APUESTA EL USUARIO -->
+                <div class="bg-slate-950 p-4 rounded-xl border border-emerald-500/20 space-y-3">
+                    <div>
+                        <p class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Cuotas de la casa donde apuestas — Opcionales</p>
+                        <p class="text-[10px] text-slate-400 mt-1">No cambian el modelo. Solo permiten calcular probabilidad implícita, Edge, EV y valor.</p>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                        <input type="number" id="casa_t_mas35" placeholder="Casa Más 3.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_t_menos35" placeholder="Casa Menos 3.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_t_mas45" placeholder="Casa Más 4.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_t_menos45" placeholder="Casa Menos 4.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_t_mas55" placeholder="Casa Más 5.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_t_menos55" placeholder="Casa Menos 5.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_c_mas75" placeholder="Casa Más 7.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_c_menos75" placeholder="Casa Menos 7.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_c_mas85" placeholder="Casa Más 8.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_c_menos85" placeholder="Casa Menos 8.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_c_mas95" placeholder="Casa Más 9.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_c_menos95" placeholder="Casa Menos 9.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_c_mas105" placeholder="Casa Más 10.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                        <input type="number" id="casa_c_menos105" placeholder="Casa Menos 10.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
                     </div>
                 </div>
 
@@ -877,8 +919,8 @@
             const t55n = document.getElementById('c_t_menos55').value; if(t55n) paramsTarjeta['cuota_tarjetas_menos_55'] = t55n;
 
             let paramsCorners = {};
-            const c75s = document.getElementById('c_corner_mas115').value; if(c75s) paramsCorners['cuota_corners_mas_115'] = c75s;
-            const c75n = document.getElementById('c_corner_menos115').value; if(c75n) paramsCorners['cuota_corners_menos_115'] = c75n;
+            const c75s = document.getElementById('c_corner_mas75').value; if(c75s) paramsCorners['cuota_corners_mas_75'] = c75s;
+            const c75n = document.getElementById('c_corner_menos75').value; if(c75n) paramsCorners['cuota_corners_menos_75'] = c75n;
             const c85s = document.getElementById('c_corner_mas85').value; if(c85s) paramsCorners['cuota_corners_mas_85'] = c85s;
             const c85n = document.getElementById('c_corner_menos85').value; if(c85n) paramsCorners['cuota_corners_menos_85'] = c85n;
             const c95s = document.getElementById('c_corner_mas95').value; if(c95s) paramsCorners['cuota_corners_mas_95'] = c95s;
@@ -908,7 +950,7 @@
                 casa_tarjetas_mas_35: document.getElementById('casa_t_mas35').value, casa_tarjetas_menos_35: document.getElementById('casa_t_menos35').value,
                 casa_tarjetas_mas_45: document.getElementById('casa_t_mas45').value, casa_tarjetas_menos_45: document.getElementById('casa_t_menos45').value,
                 casa_tarjetas_mas_55: document.getElementById('casa_t_mas55').value, casa_tarjetas_menos_55: document.getElementById('casa_t_menos55').value,
-                casa_corners_mas_115: document.getElementById('casa_c_mas115').value, casa_corners_menos_115: document.getElementById('casa_c_menos115').value,
+                casa_corners_mas_75: document.getElementById('casa_c_mas75').value, casa_corners_menos_75: document.getElementById('casa_c_menos75').value,
                 casa_corners_mas_85: document.getElementById('casa_c_mas85').value, casa_corners_menos_85: document.getElementById('casa_c_menos85').value,
                 casa_corners_mas_95: document.getElementById('casa_c_mas95').value, casa_corners_menos_95: document.getElementById('casa_c_menos95').value,
                 casa_corners_mas_105: document.getElementById('casa_c_mas105').value, casa_corners_menos_105: document.getElementById('casa_c_menos105').value
@@ -990,8 +1032,8 @@
                 'c_btts_si','c_btts_no',
                 'prom_tarjetas','prom_corners',
                 'c_t_mas35','c_t_menos35','c_t_mas45','c_t_menos45','c_t_mas55','c_t_menos55',
-                'c_corner_mas115','c_corner_menos115','c_corner_mas85','c_corner_menos85',
-                'c_corner_mas95','c_corner_menos95','c_corner_mas105','c_corner_menos105','c_corner_mas115','c_corner_menos115'
+                'c_corner_mas75','c_corner_menos75','c_corner_mas85','c_corner_menos85',
+                'c_corner_mas95','c_corner_menos95','c_corner_mas105','c_corner_menos105'
             ];
 
             const p = new URLSearchParams();
@@ -1005,10 +1047,10 @@
                 c_t_mas35:'cuota_tarjetas_mas_35', c_t_menos35:'cuota_tarjetas_menos_35',
                 c_t_mas45:'cuota_tarjetas_mas_45', c_t_menos45:'cuota_tarjetas_menos_45',
                 c_t_mas55:'cuota_tarjetas_mas_55', c_t_menos55:'cuota_tarjetas_menos_55',
-                c_corner_mas115:'cuota_corners_mas_115', c_corner_menos115:'cuota_corners_menos_115',
+                c_corner_mas75:'cuota_corners_mas_75', c_corner_menos75:'cuota_corners_menos_75',
                 c_corner_mas85:'cuota_corners_mas_85', c_corner_menos85:'cuota_corners_menos_85',
                 c_corner_mas95:'cuota_corners_mas_95', c_corner_menos95:'cuota_corners_menos_95',
-                c_corner_mas105:'cuota_corners_mas_105', c_corner_menos105:'cuota_corners_menos_105', c_corner_mas115:'cuota_corners_mas_115', c_corner_menos115:'cuota_corners_menos_115'
+                c_corner_mas105:'cuota_corners_mas_105', c_corner_menos105:'cuota_corners_menos_105'
             };
 
             ids.forEach(id => {
