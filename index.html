@@ -332,6 +332,31 @@
                 <!-- Resultados JackBusca -->
                 <div id="resultado-jack" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-slate-800"></div>
             </div>
+
+            <!-- BLOQUE 3: MOTOR UNIFICADO PREDICTIVO v2 -->
+            <div class="bg-slate-900 border border-violet-500/30 rounded-2xl p-6 shadow-xl space-y-5">
+                <div class="flex justify-between items-center border-b border-slate-800 pb-2">
+                    <div>
+                        <h2 class="text-lg font-bold text-violet-300">3. Motor Unificado Predictivo v2</h2>
+                        <p class="text-xs text-slate-400 mt-0.5">Cruza el vector del Motor Principal con el vector de JackBusca.</p>
+                    </div>
+                    <span class="bg-violet-500/10 text-violet-300 text-[10px] font-bold px-2.5 py-1 rounded-full border border-violet-500/20">PREDICTIVO</span>
+                </div>
+
+                <div class="bg-slate-950 border border-violet-500/20 p-4 rounded-xl text-xs text-slate-300 space-y-1">
+                    <p><b class="text-violet-300">Lectura independiente:</b> aquí EV y Edge NO deciden la predicción.</p>
+                    <p>El sistema busca <b class="text-emerald-300">CONFLUENCIA</b>, <b class="text-rose-300">CONTRADICCIÓN</b>, <b class="text-blue-300">COMPLEMENTARIEDAD</b> o <b class="text-slate-300">NEUTRO</b>.</p>
+                    <p>Las cuotas de la casa siguen siendo una capa separada para valorar una apuesta.</p>
+                </div>
+
+                <button id="btn-ejecutar-unificado" onclick="consultarUnificado()" disabled
+                    class="w-full bg-slate-800 text-slate-500 font-extrabold py-3 rounded-xl transition cursor-not-allowed">
+                    🔒 Ejecutar Lectura Unificada (Requiere Plan)
+                </button>
+
+                <div id="resultado-unificado" class="hidden space-y-4 pt-4 border-t border-slate-800"></div>
+            </div>
+
         </main>
     </div>
 
@@ -556,6 +581,7 @@
             const activo = esAdmin || (plan && plan !== 'gratis');
             const lock = document.getElementById('jackbusca-lock-container');
             const btn = document.getElementById('btn-ejecutar-jack');
+            const btnUnificado = document.getElementById('btn-ejecutar-unificado');
             const badge = document.getElementById('vip-status-badge');
             const text = document.getElementById('jackbusca-lock-text');
             if (activo) {
@@ -563,6 +589,11 @@
                 btn.disabled = false;
                 btn.className = "w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer";
                 btn.innerText = "Ejecutar Análisis JackBusca";
+                if (btnUnificado) {
+                    btnUnificado.disabled = false;
+                    btnUnificado.className = "w-full bg-violet-500 hover:bg-violet-600 text-white font-extrabold py-3 rounded-xl transition shadow-lg shadow-violet-500/20 cursor-pointer";
+                    btnUnificado.innerText = "Ejecutar Lectura Unificada";
+                }
                 badge.className = "bg-emerald-500/10 text-emerald-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-emerald-500/20";
                 badge.innerText = esAdmin ? "Acceso Administrador ✅" : "Plan activo ✅";
             } else {
@@ -570,6 +601,11 @@
                 btn.disabled = true;
                 btn.className = "w-full bg-slate-800 text-slate-500 font-extrabold py-3 rounded-xl transition cursor-not-allowed shadow-none";
                 btn.innerText = "🔒 Ejecutar Análisis JackBusca (Requiere Plan)";
+                if (btnUnificado) {
+                    btnUnificado.disabled = true;
+                    btnUnificado.className = "w-full bg-slate-800 text-slate-500 font-extrabold py-3 rounded-xl transition cursor-not-allowed";
+                    btnUnificado.innerText = "🔒 Ejecutar Lectura Unificada (Requiere Plan)";
+                }
                 badge.className = "bg-amber-500/10 text-amber-400 text-[10px] font-bold px-2.5 py-1 rounded-full border border-amber-500/20";
                 badge.innerText = "Requiere plan 🔒";
                 if (text) text.innerText = tokenJwt ? "Activa un plan desde el panel de pago y espera la confirmación del administrador." : "Inicia sesión y activa un plan desde el panel de pago.";
@@ -988,6 +1024,117 @@
                 contenedor.innerHTML = '<p class="col-span-2 text-center text-red-400 py-2">Error de conexión: ' + err + '</p>';
             }
         }
+
+        async function consultarUnificado() {
+            const ids = [
+                'c_local','c_empate','c_visitante',
+                'c_mas25','c_menos25','c_mas35','c_menos35',
+                'c_btts_si','c_btts_no',
+                'prom_tarjetas','prom_corners',
+                'c_t_mas35','c_t_menos35','c_t_mas45','c_t_menos45','c_t_mas55','c_t_menos55',
+                'c_corner_mas75','c_corner_menos75','c_corner_mas85','c_corner_menos85',
+                'c_corner_mas95','c_corner_menos95','c_corner_mas105','c_corner_menos105'
+            ];
+
+            const p = new URLSearchParams();
+            const map = {
+                c_local:'cuota_local', c_empate:'cuota_empate', c_visitante:'cuota_visitante',
+                c_mas25:'cuota_mas_25_goles', c_menos25:'cuota_menos_25_goles',
+                c_mas35:'cuota_mas_35_goles', c_menos35:'cuota_menos_35_goles',
+                c_btts_si:'cuota_btts_si', c_btts_no:'cuota_btts_no',
+                prom_tarjetas:'promedio_tarjetas_arbitro',
+                prom_corners:'promedio_esperado_corners',
+                c_t_mas35:'cuota_tarjetas_mas_35', c_t_menos35:'cuota_tarjetas_menos_35',
+                c_t_mas45:'cuota_tarjetas_mas_45', c_t_menos45:'cuota_tarjetas_menos_45',
+                c_t_mas55:'cuota_tarjetas_mas_55', c_t_menos55:'cuota_tarjetas_menos_55',
+                c_corner_mas75:'cuota_corners_mas_75', c_corner_menos75:'cuota_corners_menos_75',
+                c_corner_mas85:'cuota_corners_mas_85', c_corner_menos85:'cuota_corners_menos_85',
+                c_corner_mas95:'cuota_corners_mas_95', c_corner_menos95:'cuota_corners_menos_95',
+                c_corner_mas105:'cuota_corners_mas_105', c_corner_menos105:'cuota_corners_menos_105'
+            };
+
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el && el.value !== '') p.append(map[id], el.value);
+            });
+
+            const contenedor = document.getElementById('resultado-unificado');
+            contenedor.classList.remove('hidden');
+            contenedor.innerHTML = '<p class="text-center text-violet-300 animate-pulse py-3 font-bold">Comparando los dos vectores...</p>';
+
+            try {
+                const options = tokenJwt ? {headers:{'Authorization':'Bearer '+tokenJwt}} : {};
+                const resp = await fetch(baseUrl + '/unificado/partido?' + p.toString(), options);
+                const datos = await resp.json();
+                if (!resp.ok) throw new Error(datos.detail || 'No se pudo ejecutar el Unificado.');
+
+                if (datos.error) throw new Error(datos.error);
+
+                const lectura = datos.lectura_unificada || {};
+                const tipo = lectura.tipo || 'NEUTRO';
+                const clases = {
+                    'CONFLUENCIA':'text-emerald-300 border-emerald-500/30',
+                    'CONTRADICCIÓN':'text-rose-300 border-rose-500/30',
+                    'COMPLEMENTARIEDAD':'text-blue-300 border-blue-500/30',
+                    'NEUTRO':'text-slate-300 border-slate-700'
+                };
+                const clase = clases[tipo] || clases.NEUTRO;
+
+                let out = '';
+                out += '<div class="bg-slate-950 border p-5 rounded-xl '+clase+'">';
+                out += '<div class="text-xs font-bold mb-1">LECTURA UNIFICADA</div>';
+                out += '<div class="text-2xl font-extrabold">'+tipo+'</div>';
+                out += '<div class="text-sm mt-1">Confianza: <b>'+Number(lectura.confianza || 0).toFixed(1)+'%</b></div>';
+                out += '<p class="text-xs text-slate-300 mt-3">'+(lectura.motivo || '')+'</p>';
+                out += '</div>';
+
+                out += '<div class="grid grid-cols-1 md:grid-cols-2 gap-4">';
+
+                const vp = datos.motor_principal?.vector || {};
+                out += '<div class="bg-slate-800 p-4 rounded-xl border border-emerald-500/20">';
+                out += '<h3 class="font-bold text-emerald-300 mb-2">Vector Motor Principal</h3>';
+                out += '<p>Resultado: <b>'+vp.resultado+'</b> — '+vp.probabilidad_resultado+'%</p>';
+                out += '<p>Goles: <b>'+vp.mercado_goles+'</b> — '+vp.probabilidad_goles+'%</p>';
+                out += '<p>BTTS: <b>'+vp.btts+'</b> — '+vp.probabilidad_btts+'%</p>';
+                out += '<p class="text-xs text-slate-400 mt-2">Confianza: '+vp.confianza+'%</p>';
+                out += '</div>';
+
+                const vj = datos.jackbusca?.vector || {};
+                out += '<div class="bg-slate-800 p-4 rounded-xl border border-amber-500/20">';
+                out += '<h3 class="font-bold text-amber-300 mb-2">Vector JackBusca</h3>';
+                out += '<p>Córners: <b>'+(vj.corners?.nombre || 'Sin señal')+'</b></p>';
+                if (vj.corners) out += '<p>Probabilidad: '+vj.corners.probabilidad+'%</p>';
+                out += '<p class="mt-2">Tarjetas: <b>'+(vj.tarjetas?.nombre || 'Sin señal')+'</b></p>';
+                if (vj.tarjetas) out += '<p>Probabilidad: '+vj.tarjetas.probabilidad+'%</p>';
+                out += '<p class="text-xs text-slate-400 mt-2">Señales disponibles: '+(vj.señales_disponibles || 0)+'</p>';
+                out += '</div></div>';
+
+                out += '<div class="bg-slate-800 p-4 rounded-xl border border-violet-500/20">';
+                out += '<h3 class="font-bold text-violet-300 mb-2">3 mejores selecciones predictivas</h3>';
+                out += '<p class="text-[10px] text-slate-400 mb-3">Esta lista NO usa EV/Edge. Solo combina las señales predictivas y su confianza.</p>';
+                const tops = datos.top_3_selecciones || [];
+                if (tops.length) {
+                    tops.forEach((m,i) => {
+                        const ok = m.accion === 'RECOMENDADA';
+                        out += '<div class="border-t border-slate-700 pt-2 mt-2">';
+                        out += '<b class="'+(ok?'text-emerald-300':'text-amber-300')+'">#'+(i+1)+' '+m.seleccion+'</b>';
+                        out += ' — '+m.probabilidad+'% | confianza '+m.confianza+'%';
+                        out += ' — <b>'+m.accion+'</b>';
+                        out += '<div class="text-[10px] text-slate-400">'+m.fuente+' · '+m.detalle+'</div>';
+                        out += '</div>';
+                    });
+                } else {
+                    out += '<p class="text-amber-300">NO RECOMENDACIÓN: no hubo una señal suficiente.</p>';
+                }
+                out += '</div>';
+
+                contenedor.innerHTML = out;
+                if (datos.historial_info && tokenJwt) cargarHistorial();
+            } catch (err) {
+                contenedor.innerHTML = '<p class="text-center text-rose-400 py-3">Error: '+err.message+'</p>';
+            }
+        }
+
     </script>
   }
     }
