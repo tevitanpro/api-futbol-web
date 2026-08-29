@@ -258,12 +258,12 @@
                     <p class="text-xs font-bold text-amber-400 uppercase tracking-wider">Cuotas Pinnacle de Córners — Referencia (opcionales):</p>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                         <div>
-                            <label class="block text-[10px] text-slate-400 mb-1">Más 7.5 Córners</label>
-                            <input type="number" id="c_corner_mas75" value="1.45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                            <label class="block text-[10px] text-slate-400 mb-1">Más 11.5 Córners</label>
+                            <input type="number" id="c_corner_mas115" value="" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                         </div>
                         <div>
-                            <label class="block text-[10px] text-slate-400 mb-1">Menos 7.5 Córners</label>
-                            <input type="number" id="c_corner_menos75" value="2.60" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
+                            <label class="block text-[10px] text-slate-400 mb-1">Menos 11.5 Córners</label>
+                            <input type="number" id="c_corner_menos115" value="" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-sm font-bold text-amber-300" placeholder="Opcional">
                         </div>
                         <div>
                             <label class="block text-[10px] text-slate-400 mb-1">Más 8.5 Córners</label>
@@ -298,21 +298,73 @@
                         <p class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Cuotas de la casa donde apuestas — Opcionales</p>
                         <p class="text-[10px] text-slate-400 mt-1">No cambian el modelo. Solo permiten calcular probabilidad implícita, Edge, EV y valor.</p>
                     </div>
-                    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        <input type="number" id="casa_t_mas35" placeholder="Casa Más 3.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_t_menos35" placeholder="Casa Menos 3.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_t_mas45" placeholder="Casa Más 4.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_t_menos45" placeholder="Casa Menos 4.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_t_mas55" placeholder="Casa Más 5.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_t_menos55" placeholder="Casa Menos 5.5 T" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_c_mas75" placeholder="Casa Más 7.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_c_menos75" placeholder="Casa Menos 7.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_c_mas85" placeholder="Casa Más 8.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_c_menos85" placeholder="Casa Menos 8.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_c_mas95" placeholder="Casa Más 9.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_c_menos95" placeholder="Casa Menos 9.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_c_mas105" placeholder="Casa Más 10.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
-                        <input type="number" id="casa_c_menos105" placeholder="Casa Menos 10.5 C" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Tarjetas</p>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Más 3.5 Tarjetas</label>
+                                    <input type="number" id="casa_t_mas35" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Menos 3.5 Tarjetas</label>
+                                    <input type="number" id="casa_t_menos35" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Más 4.5 Tarjetas</label>
+                                    <input type="number" id="casa_t_mas45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Menos 4.5 Tarjetas</label>
+                                    <input type="number" id="casa_t_menos45" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Más 5.5 Tarjetas</label>
+                                    <input type="number" id="casa_t_mas55" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Menos 5.5 Tarjetas</label>
+                                    <input type="number" id="casa_t_menos55" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">Córners</p>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Más 8.5 Córners</label>
+                                    <input type="number" id="casa_c_mas85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Menos 8.5 Córners</label>
+                                    <input type="number" id="casa_c_menos85" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Más 9.5 Córners</label>
+                                    <input type="number" id="casa_c_mas95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Menos 9.5 Córners</label>
+                                    <input type="number" id="casa_c_menos95" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Más 10.5 Córners</label>
+                                    <input type="number" id="casa_c_mas105" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Menos 10.5 Córners</label>
+                                    <input type="number" id="casa_c_menos105" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Más 11.5 Córners</label>
+                                    <input type="number" id="casa_c_mas115" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] text-slate-400 mb-1">Menos 11.5 Córners</label>
+                                    <input type="number" id="casa_c_menos115" step="0.01" class="w-full bg-slate-800 border border-slate-700 rounded-lg p-1.5 text-center text-xs text-emerald-300">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -919,8 +971,8 @@
             const t55n = document.getElementById('c_t_menos55').value; if(t55n) paramsTarjeta['cuota_tarjetas_menos_55'] = t55n;
 
             let paramsCorners = {};
-            const c75s = document.getElementById('c_corner_mas75').value; if(c75s) paramsCorners['cuota_corners_mas_75'] = c75s;
-            const c75n = document.getElementById('c_corner_menos75').value; if(c75n) paramsCorners['cuota_corners_menos_75'] = c75n;
+            const c115s = document.getElementById('c_corner_mas115').value; if(c115s) paramsCorners['cuota_corners_mas_115'] = c115s;
+            const c115n = document.getElementById('c_corner_menos115').value; if(c115n) paramsCorners['cuota_corners_menos_115'] = c115n;
             const c85s = document.getElementById('c_corner_mas85').value; if(c85s) paramsCorners['cuota_corners_mas_85'] = c85s;
             const c85n = document.getElementById('c_corner_menos85').value; if(c85n) paramsCorners['cuota_corners_menos_85'] = c85n;
             const c95s = document.getElementById('c_corner_mas95').value; if(c95s) paramsCorners['cuota_corners_mas_95'] = c95s;
@@ -950,7 +1002,7 @@
                 casa_tarjetas_mas_35: document.getElementById('casa_t_mas35').value, casa_tarjetas_menos_35: document.getElementById('casa_t_menos35').value,
                 casa_tarjetas_mas_45: document.getElementById('casa_t_mas45').value, casa_tarjetas_menos_45: document.getElementById('casa_t_menos45').value,
                 casa_tarjetas_mas_55: document.getElementById('casa_t_mas55').value, casa_tarjetas_menos_55: document.getElementById('casa_t_menos55').value,
-                casa_corners_mas_75: document.getElementById('casa_c_mas75').value, casa_corners_menos_75: document.getElementById('casa_c_menos75').value,
+                casa_corners_mas_115: document.getElementById('casa_c_mas115').value, casa_corners_menos_115: document.getElementById('casa_c_menos115').value,
                 casa_corners_mas_85: document.getElementById('casa_c_mas85').value, casa_corners_menos_85: document.getElementById('casa_c_menos85').value,
                 casa_corners_mas_95: document.getElementById('casa_c_mas95').value, casa_corners_menos_95: document.getElementById('casa_c_menos95').value,
                 casa_corners_mas_105: document.getElementById('casa_c_mas105').value, casa_corners_menos_105: document.getElementById('casa_c_menos105').value
@@ -1032,7 +1084,7 @@
                 'c_btts_si','c_btts_no',
                 'prom_tarjetas','prom_corners',
                 'c_t_mas35','c_t_menos35','c_t_mas45','c_t_menos45','c_t_mas55','c_t_menos55',
-                'c_corner_mas75','c_corner_menos75','c_corner_mas85','c_corner_menos85',
+                'c_corner_mas115','c_corner_menos115','c_corner_mas85','c_corner_menos85',
                 'c_corner_mas95','c_corner_menos95','c_corner_mas105','c_corner_menos105'
             ];
 
@@ -1047,7 +1099,7 @@
                 c_t_mas35:'cuota_tarjetas_mas_35', c_t_menos35:'cuota_tarjetas_menos_35',
                 c_t_mas45:'cuota_tarjetas_mas_45', c_t_menos45:'cuota_tarjetas_menos_45',
                 c_t_mas55:'cuota_tarjetas_mas_55', c_t_menos55:'cuota_tarjetas_menos_55',
-                c_corner_mas75:'cuota_corners_mas_75', c_corner_menos75:'cuota_corners_menos_75',
+                c_corner_mas115:'cuota_corners_mas_115', c_corner_menos115:'cuota_corners_menos_115',
                 c_corner_mas85:'cuota_corners_mas_85', c_corner_menos85:'cuota_corners_menos_85',
                 c_corner_mas95:'cuota_corners_mas_95', c_corner_menos95:'cuota_corners_menos_95',
                 c_corner_mas105:'cuota_corners_mas_105', c_corner_menos105:'cuota_corners_menos_105'
